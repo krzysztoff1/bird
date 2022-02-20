@@ -18,6 +18,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useState } from "react";
 import { Result } from "postcss";
+import { createResizedImage } from "./resizeImage";
 
 export async function getCurrentUser() {
   const user = auth.currentUser;
@@ -53,45 +54,78 @@ export async function uploadPost(text) {
 
 export async function uploadPostWithImage({ text, file }) {
   let progress = "";
+  let progressT = "";
+  let fullImageUrl = "";
+  let imageId = Math.floor(Math.random() * 1000);
+
   const user = await getCurrentUser();
-  const storageRef = ref(
-    storage,
-    `postImages/full${Math.floor(Math.random() * 1000)}.jpg`
-  );
-  const uploadTask = uploadBytesResumable(storageRef, file);
-  uploadTask.on(
+
+  const storageRef = ref(storage, `postImages/full_${imageId}.jpg`);
+  const uploadImage = uploadBytesResumable(storageRef, file);
+  uploadImage.on(
     "state_changed",
     (snapshot) => {
       progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log(progress);
     },
     (error) => {
       console.log(error);
     },
     () => {
-      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        try {
-          addDoc(collection(db, "posts"), {
-            account: user.displayName,
-            uid: user.uid,
-            text: text,
-            timestamp: serverTimestamp(),
-            likedByUsers: [],
-            imageUrl: downloadURL,
-          });
-          console.log("Added post with image");
-        } catch (error) {
-          console.error("Error adding post: ", error);
-        }
+      getDownloadURL(uploadImage.snapshot.ref).then((downloadURL) => {
+        fullImageUrl = downloadURL;
+        uploadPost();
       });
     }
   );
+
+  const thumbnail = await createResizedImage(file);
+
+  let thumbnailUrl = "";
+  const storageRefThumbnail = ref(
+    storage,
+    `postImages/thumbnail_${imageId}.jpg`
+  );
+  const uploadThumbnail = uploadBytesResumable(storageRefThumbnail, thumbnail);
+  uploadThumbnail.on(
+    "state_changed",
+    (snapshot) => {
+      progressT = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log(progressT);
+    },
+    (error) => {
+      console.log(error);
+    },
+    () => {
+      getDownloadURL(uploadThumbnail.snapshot.ref).then((downloadURL) => {
+        thumbnailUrl = downloadURL;
+      });
+    }
+  );
+
+  function uploadPost() {
+    try {
+      addDoc(collection(db, "posts"), {
+        account: user.displayName,
+        uid: user.uid,
+        text: text,
+        timestamp: serverTimestamp(),
+        likedByUsers: [],
+        imageUrl: fullImageUrl,
+        thumbnailUrl: thumbnailUrl,
+      });
+      console.log("Added post with image");
+    } catch (error) {
+      console.error("Error adding post: ", error);
+    }
+  }
   return progress;
 }
 
 export async function getPosts() {
   const postsRef = collection(db, "posts");
   const postsSnapshot = await getDocs(postsRef);
-  return postsSnapshot.docs.map((doc) => doc.data());
+  return postsSnapshot.docs.map((post) => post.data());
 }
 
 export async function getUsers() {

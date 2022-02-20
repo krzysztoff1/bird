@@ -6,8 +6,20 @@ import {
 } from "../../../services/firebase";
 import { HeartIcon, ChatAlt2Icon } from "@heroicons/react/solid";
 import { Link } from "react-router-dom";
+import ProgressiveImage from "react-progressive-graceful-image";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-const Post = ({ account, text, likedByUsers, time, id, uid }) => {
+const Post = ({
+  account,
+  text,
+  likedByUsers,
+  time,
+  id,
+  uid,
+  thumbnailUrl,
+  imageUrl,
+}) => {
   const [user, setUser] = useState();
   const [profilePicture, setProfilePicture] = useState("");
 
@@ -36,12 +48,23 @@ const Post = ({ account, text, likedByUsers, time, id, uid }) => {
             <p className="text-sm text-gray-700 dark:text-slate-300">
               {time?.seconds
                 ? new Date(time.seconds * 1000).toString()
-                : Date.now()}
+                : Date.now() || <Skeleton count={1} />}
             </p>
           </div>
           <p className="mt-3 text-sm text-gray-700 dark:text-slate-200">
             {text}
           </p>
+          {imageUrl && thumbnailUrl ? (
+            <ProgressiveImage src={imageUrl} placeholder={thumbnailUrl}>
+              {(src) =>
+                <img className="w-full" src={src} alt="" /> || (
+                  <Skeleton count={1} />
+                )
+              }
+            </ProgressiveImage>
+          ) : null}
+          {imageUrl && !thumbnailUrl ? <img src={imageUrl} alt=""></img> : null}
+
           <div className="mt-4 h-fit px-2 flex items-center justify-between">
             <div
               onClick={() => likePost({ id })}

@@ -17,8 +17,6 @@ const PostsList = () => {
   const [posts, setPosts] = useState();
   const [following, setFollowing] = useState([]);
   const [numberOfPosts, setNumberOfPosts] = useState(7);
-  const [numberOfAllPosts, setNumberOfAllPosts] = useState();
-  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     getFollowed().then((res) => setFollowing(res));
@@ -27,7 +25,6 @@ const PostsList = () => {
   useEffect(() => {
     if (following) {
       if (following.length === 0) return;
-
       onSnapshot(
         query(
           collection(db, "posts"),
@@ -36,7 +33,6 @@ const PostsList = () => {
           orderBy("timestamp", "desc")
         ),
         (snapshot) => {
-          console.log(snapshot.size);
           setPosts(
             snapshot.docs.map((doc) => ({
               id: doc.id,
@@ -45,11 +41,9 @@ const PostsList = () => {
           );
         }
       );
-
     }
-  }, [following, numberOfPosts, hasMore]);
-  
-  
+  }, [following, numberOfPosts]);
+
   function fetchMoreData() {
     setNumberOfPosts(numberOfPosts + 5);
   }
@@ -85,6 +79,8 @@ const PostsList = () => {
           time={post.timestamp}
           text={post.text}
           likedByUsers={post.likedByUsers}
+          imageUrl={post.imageUrl}
+          thumbnailUrl={post.thumbnailUrl}
         />
       ))}
     </InfiniteScroll>

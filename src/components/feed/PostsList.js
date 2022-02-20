@@ -15,8 +15,10 @@ import { useState, useEffect } from "react";
 
 const PostsList = () => {
   const [posts, setPosts] = useState();
-  const [following, setFollowing] = useState();
-  const [numberOfPosts, setNumberOfPosts] = useState(10);
+  const [following, setFollowing] = useState([]);
+  const [numberOfPosts, setNumberOfPosts] = useState(7);
+  const [numberOfAllPosts, setNumberOfAllPosts] = useState();
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     getFollowed().then((res) => setFollowing(res));
@@ -24,6 +26,8 @@ const PostsList = () => {
 
   useEffect(() => {
     if (following) {
+      if (following.length === 0) return;
+
       onSnapshot(
         query(
           collection(db, "posts"),
@@ -32,6 +36,7 @@ const PostsList = () => {
           orderBy("timestamp", "desc")
         ),
         (snapshot) => {
+          console.log(snapshot.size);
           setPosts(
             snapshot.docs.map((doc) => ({
               id: doc.id,
@@ -40,11 +45,13 @@ const PostsList = () => {
           );
         }
       );
-    }
-  }, [following]);
 
-  function fetchMorePosts() {
-    setNumberOfPosts((state) => state + 5);
+    }
+  }, [following, numberOfPosts, hasMore]);
+  
+  
+  function fetchMoreData() {
+    setNumberOfPosts(numberOfPosts + 5);
   }
 
   if (!posts) {
@@ -56,7 +63,7 @@ const PostsList = () => {
   return (
     <InfiniteScroll
       dataLength={numberOfPosts}
-      next={fetchMorePosts}
+      next={fetchMoreData}
       hasMore={true}
       loader={Array(1)
         .fill()
@@ -74,14 +81,14 @@ const PostsList = () => {
           key={post.id}
           id={post.id}
           uid={post.uid}
+          account={post.account}
           time={post.timestamp}
           text={post.text}
-          account={post.account}
           likedByUsers={post.likedByUsers}
         />
       ))}
     </InfiniteScroll>
   );
-};
+};;
 
 export default PostsList;

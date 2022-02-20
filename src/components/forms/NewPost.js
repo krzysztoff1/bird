@@ -1,14 +1,17 @@
 import { useState } from "react";
-import { getPosts, uploadPost } from "../../services/firebase";
+import { uploadPost, uploadPostWithImage } from "../../services/firebase";
 
 const NewPost = () => {
   const [text, setText] = useState("");
+  const [file, setFile] = useState();
 
   function handleSubmit(e) {
     e.preventDefault();
-    uploadPost({ text });
-    setText("");
-    getPosts();
+    if (!file) {
+      uploadPost({ text });
+      return;
+    }
+    uploadPostWithImage({ text, file });
   }
 
   return (
@@ -16,13 +19,18 @@ const NewPost = () => {
       onSubmit={(e) => handleSubmit(e)}
       className="mx-auto flex max-w-md items-end justify-between py-2"
     >
-      <div className="w-f2ull mr-3">
-        <input
+      <div className="w-full mr-3">
+        <textarea
           onChange={(e) => setText(e.target.value)}
-          type="text"
-          placeholder="Type here"
-          className="input w-full"
-        ></input>
+          className="textarea w-full"
+          placeholder="Whaazzzaz Upppp"
+        />
+        <input
+          onChange={(e) => setFile(e.target.files[0])}
+          type="file"
+          name=""
+          id=""
+        />
       </div>
       <button
         type="submit"

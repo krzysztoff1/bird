@@ -1,4 +1,4 @@
-import { db, auth, provider } from "../lib/firebase";
+import { db, auth, provider, storage } from "../lib/firebase";
 import {
   serverTimestamp,
   addDoc,
@@ -14,6 +14,7 @@ import {
   arrayRemove,
   arrayUnion,
 } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useState } from "react";
 import { Result } from "postcss";
@@ -39,7 +40,7 @@ export function SignOut() {
   auth.signOut();
 }
 
-export async function uploadPost({ text }) {
+export async function uploadPost(text) {
   const user = await getCurrentUser();
   addDoc(collection(db, "posts"), {
     account: user.displayName,
@@ -50,11 +51,53 @@ export async function uploadPost({ text }) {
   });
 }
 
+export async function uploadPostWithImage({ text, file }) {
+  let progress = "";
+  const user = await getCurrentUser();
+  const storageRef = ref(
+    storage,
+    `postImages/full${Math.floor(Math.random() * 1000)}.jpg`
+  );
+  const uploadTask = uploadBytesResumable(storageRef, file);
+  uploadTask.on(
+    "state_changed",
+    (snapshot) => {
+      progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    },
+    (error) => {
+      console.log(error);
+    },
+    () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        try {
+          addDoc(collection(db, "posts"), {
+            account: user.displayName,
+            uid: user.uid,
+            text: text,
+            timestamp: serverTimestamp(),
+            likedByUsers: [],
+            imageUrl: downloadURL,
+          });
+          console.log("Added post with image");
+        } catch (error) {
+          console.error("Error adding post: ", error);
+        }
+      });
+    }
+  );
+  return progress;
+}
+
 export async function getPosts() {
   const postsRef = collection(db, "posts");
   const postsSnapshot = await getDocs(postsRef);
-  const posts = postsSnapshot.docs.map((doc) => doc.data());
-  return posts;
+  return postsSnapshot.docs.map((doc) => doc.data());
+}
+
+export async function getUsers() {
+  const usersRef = collection(db, "users");
+  const userSnap = await getDocs(usersRef);
+  return userSnap.docs.map((user) => user.data());
 }
 
 export async function isPostLikedByUser(id) {

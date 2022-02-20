@@ -4,23 +4,18 @@ import {
   likePost,
   getUserByUid,
 } from "../../../services/firebase";
-import { HeartIcon } from "@heroicons/react/solid";
+import { HeartIcon, ChatAlt2Icon } from "@heroicons/react/solid";
 import { Link } from "react-router-dom";
 
 const Post = ({ account, text, likedByUsers, time, id, uid }) => {
-  const [date, setDate] = useState("");
   const [user, setUser] = useState();
   const [profilePicture, setProfilePicture] = useState("");
 
-  getCurrentUser().then((res) => setUser(res));
-  getUserByUid(uid).then((res) => setProfilePicture(res.googleProfilePicture));
-
   useEffect(() => {
-    if (time === null) {
-      setDate("just now");
-    } else {
-      setDate(new Date(time.seconds * 1000).toString());
-    }
+    getCurrentUser().then((res) => setUser(res));
+    getUserByUid(uid).then((res) =>
+      setProfilePicture(res.googleProfilePicture)
+    );
   }, []);
 
   return (
@@ -38,24 +33,29 @@ const Post = ({ account, text, likedByUsers, time, id, uid }) => {
             <h2 className="-mt-1 mr-3 text-lg font-semibold text-gray-900 dark:text-slate-100">
               {account}
             </h2>
-            <p className="text-sm text-gray-700 dark:text-slate-300">{date}</p>
+            <p className="text-sm text-gray-700 dark:text-slate-300">
+              {time?.seconds
+                ? new Date(time.seconds * 1000).toString()
+                : Date.now()}
+            </p>
           </div>
           <p className="mt-3 text-sm text-gray-700 dark:text-slate-200">
             {text}
           </p>
-          <div className="mt-4 flex items-center ">
+          <div className="mt-4 h-fit px-2 flex items-center justify-between">
             <div
               onClick={() => likePost({ id })}
-              className="mr-3 flex text-sm text-gray-700 dark:text-slate-200"
+              className="mr-3 flex items-center text-sm text-gray-700 dark:text-slate-200"
             >
               {user && likedByUsers.includes(user.uid) ? (
-                <HeartIcon className="mr-1 w-5 text-rose-600" />
+                <HeartIcon className="mr-2 w-7 p-1 text-rose-600 rounded-full sm:hover:bg-rose-400/50 transition" />
               ) : (
-                <HeartIcon className="mr-1 w-5" />
+                <HeartIcon className="mr-2 w-7 p-1 sm:hover:text-rose-500 rounded-full sm:hover:bg-rose-400/50 transition" />
               )}
               <span>{likedByUsers.length}</span>
             </div>
-            <div className="mr-8 flex text-sm text-gray-700 dark:text-slate-200">
+            <div className="flex items-center text-sm text-gray-700 dark:text-slate-200">
+              <ChatAlt2Icon className="mr-2 w-7 p-1 rounded-full sm:hover:text-blue-600 sm:hover:bg-blue-300/50 transition" />
               <span>8</span>
             </div>
           </div>

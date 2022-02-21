@@ -41,9 +41,24 @@ export function SignOut() {
   auth.signOut();
 }
 
-export async function uploadPost(text) {
+export async function uploadPost({ text, id }) {
   const user = await getCurrentUser();
+
+  if (!id) {
+    addDoc(collection(db, "posts"), {
+      comment: false,
+      account: user.displayName,
+      uid: user.uid,
+      text: text,
+      timestamp: serverTimestamp(),
+      likedByUsers: [],
+    });
+    return;
+  }
+
   addDoc(collection(db, "posts"), {
+    comment: true,
+    parentId: id.id,
     account: user.displayName,
     uid: user.uid,
     text: text,
@@ -52,7 +67,7 @@ export async function uploadPost(text) {
   });
 }
 
-export async function uploadPostWithImage({ text, file }) {
+export async function uploadPostWithImage({ text, file, id }) {
   let progress = "";
   let progressT = "";
   let fullImageUrl = "";
@@ -104,8 +119,28 @@ export async function uploadPostWithImage({ text, file }) {
   );
 
   function uploadPost() {
+    if (!id) {
+      try {
+        addDoc(collection(db, "posts"), {
+          comment: false,
+          account: user.displayName,
+          uid: user.uid,
+          text: text,
+          timestamp: serverTimestamp(),
+          likedByUsers: [],
+          imageUrl: fullImageUrl,
+          thumbnailUrl: thumbnailUrl,
+        });
+        console.log("Added post with image");
+        return;
+      } catch (error) {
+        console.error("Error adding post: ", error);
+      }
+    }
     try {
       addDoc(collection(db, "posts"), {
+        comment: true,
+        parentId: id.id,
         account: user.displayName,
         uid: user.uid,
         text: text,
@@ -115,6 +150,7 @@ export async function uploadPostWithImage({ text, file }) {
         thumbnailUrl: thumbnailUrl,
       });
       console.log("Added post with image");
+      return;
     } catch (error) {
       console.error("Error adding post: ", error);
     }
@@ -126,6 +162,13 @@ export async function getPosts() {
   const postsRef = collection(db, "posts");
   const postsSnapshot = await getDocs(postsRef);
   return postsSnapshot.docs.map((post) => post.data());
+}
+
+export async function getPostById(id) {
+  const postRef = doc(db, "posts", id);
+  const docSnap = await getDoc(postRef);
+
+  return docSnap.data();
 }
 
 export async function getUsers() {

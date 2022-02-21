@@ -23,25 +23,29 @@ const PostsList = () => {
   }, []);
 
   useEffect(() => {
-    if (following) {
-      if (following.length === 0) return;
-      onSnapshot(
-        query(
-          collection(db, "posts"),
-          where("uid", "in", following),
-          limit(numberOfPosts),
-          orderBy("timestamp", "desc")
-        ),
-        (snapshot) => {
-          setPosts(
-            snapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }))
-          );
-        }
-      );
-    }
+    if (!following.length) return;
+    const unsubscribe = onSnapshot(
+      query(
+        collection(db, "posts"),
+        where("comment", "==", false),
+        where("uid", "in", following),
+        limit(numberOfPosts),
+        orderBy("timestamp", "desc")
+      ),
+      (snapshot) => {
+        setPosts(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+        );
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    return () => unsubscribe();
   }, [following, numberOfPosts]);
 
   function fetchMoreData() {
@@ -54,6 +58,7 @@ const PostsList = () => {
       .map((item, i) => <PostSkeleton key={i} />);
   }
 
+  
   return (
     <InfiniteScroll
       dataLength={numberOfPosts}

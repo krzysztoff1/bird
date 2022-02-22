@@ -1,14 +1,15 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import {
   getCurrentUser,
   likePost,
   getUserByUid,
 } from "../../../services/firebase";
-import LazyLoad from "react-lazyload";
 import { HeartIcon, ChatAlt2Icon } from "@heroicons/react/solid";
 import { Link } from "react-router-dom";
 import ProgressiveImage from "react-progressive-graceful-image";
 import TimeAgo from "javascript-time-ago";
+import { db } from "../../../lib/firebase";
+import { collection, onSnapshot, where, query } from "firebase/firestore";
 
 // English.
 import en from "javascript-time-ago/locale/en.json";
@@ -28,12 +29,30 @@ const Post = ({
 }) => {
   const [user, setUser] = useState();
   const [profilePicture, setProfilePicture] = useState("");
+  const [numberOfComments, setNumberOfComments] = useState("");
 
   useEffect(() => {
     getCurrentUser().then((res) => setUser(res));
     getUserByUid(uid).then((res) =>
       setProfilePicture(res.googleProfilePicture)
     );
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      query(
+        collection(db, "posts"),
+        where("comment", "==", true),
+        where("parentId", "==", id)
+      ),
+      (snapshot) => {
+        setNumberOfComments(snapshot.size);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    return () => unsubscribe();
   }, []);
 
   return (
@@ -86,7 +105,7 @@ const Post = ({
               <Link to={`/post/${id}`}>
                 <div className="flex items-center text-sm text-gray-700 dark:text-slate-200">
                   <ChatAlt2Icon className="mr-2 w-7 p-1 rounded-full sm:hover:text-blue-600 sm:hover:bg-blue-300/50 transition" />
-                  <span>8</span>
+                  <span>{numberOfComments ? numberOfComments : "0"}</span>
                 </div>
               </Link>
             )}

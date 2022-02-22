@@ -48,15 +48,13 @@ const PostsList = () => {
     return () => unsubscribe();
   }, [following, numberOfPosts]);
 
-  function fetchMoreData() {
-    setNumberOfPosts(numberOfPosts + 5);
-  }
+  const fetchMoreData = () => setNumberOfPosts(numberOfPosts + 5);
 
-  if (!posts) {
+  if (!posts)
     return Array(6)
       .fill()
       .map((item, i) => <PostSkeleton key={i} />);
-  }
+  
 
   
   return (

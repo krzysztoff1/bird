@@ -1,20 +1,19 @@
 import Post from "../components/feed/post/Post";
-import NewPost from "../components/forms/NewPost";
-import { useParams } from "react-router";
+import NewComment from "../components/forms/NewComment";
 import PostSkeleton from "../components/feed/post/PostSkeleton";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { db } from "../lib/firebase";
 import {
   collection,
   onSnapshot,
   orderBy,
+  doc,
   limit,
   where,
   query,
 } from "firebase/firestore";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import { getPostById } from "../services/firebase";
-import NewComment from "../components/forms/NewComment";
 
 const SinglePost = () => {
   const { id } = useParams();
@@ -23,11 +22,12 @@ const SinglePost = () => {
   const [numberOfPosts, setNumberOfPosts] = useState(7);
 
   useEffect(() => {
-    getPostById(id).then((res) => setPost(res));
-    console.log("====================================");
-    console.log(post);
-    console.log("====================================");
-  }, []);
+    const unsubscribe = onSnapshot(doc(db, "posts", id), (doc) => {
+      setPost(doc.data());
+    });
+
+    return () => unsubscribe();
+  }, [id]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -53,8 +53,6 @@ const SinglePost = () => {
     return () => unsubscribe();
   }, [numberOfPosts, id]);
 
-  let unsubscribe;
-
   function fetchMoreData() {
     setNumberOfPosts(numberOfPosts + 5);
   }
@@ -63,22 +61,19 @@ const SinglePost = () => {
 
   return (
     <div>
-      {post
-        ? (console.log(post.id),
-          (
-            <Post
-              parent
-              id={post.id}
-              uid={post.uid}
-              account={post.account}
-              time={post.timestamp}
-              text={post.text}
-              likedByUsers={post.likedByUsers}
-              imageUrl={post.imageUrl}
-              thumbnailUrl={post.thumbnailUrl}
-            />
-          ))
-        : null}
+      {post ? (
+        <Post
+          parent
+          id={id}
+          uid={post.uid}
+          account={post.account}
+          time={post.timestamp}
+          text={post.text}
+          likedByUsers={post.likedByUsers}
+          imageUrl={post.imageUrl}
+          thumbnailUrl={post.thumbnailUrl}
+        />
+      ) : null}
       <NewComment id={id} />
       <InfiniteScroll
         dataLength={numberOfPosts}

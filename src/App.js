@@ -10,6 +10,7 @@ import { db, auth } from "./lib/firebase";
 import { getCurrentUser } from "./services/firebase";
 import { getDoc, doc, setDoc } from "firebase/firestore";
 import { Link, Route, Routes, BrowserRouter } from "react-router-dom";
+import Header from "./components/header/Header";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -48,6 +49,7 @@ function App() {
       {currentUser ? (
         <>
           <Link to="/">Home</Link>
+          <Header />
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route path="/profile/:uid" element={<Profile />} />

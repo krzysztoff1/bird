@@ -3,8 +3,8 @@ import { useParams } from "react-router";
 import { useState, useEffect } from "react";
 import { isFollowed } from "../services/firebase";
 import { db } from "../lib/firebase";
-import Post from "../components/feed/post/Post";
-import PostSkeleton from "../components/feed/post/PostSkeleton";
+import Post from "../components/post/Post";
+import PostSkeleton from "../components/post/PostSkeleton";
 import {
   collection,
   onSnapshot,
@@ -52,12 +52,10 @@ const Profile = () => {
     return () => unsubscribe();
   }, [numberOfPosts, uid]);
 
-  const fetchMoreData = () => setNumberOfPosts(numberOfPosts + 5);
-
   if (!userData) return <></>;
 
   return (
-    <>
+    <div className="bg-slate-900 min-h-screen">
       <ProfileHeader
         profilePicture={userData.googleProfilePicture}
         account={userData.name}
@@ -65,11 +63,11 @@ const Profile = () => {
       />
       <InfiniteScroll
         dataLength={numberOfPosts}
-        next={fetchMoreData}
+        next={() => setNumberOfPosts(numberOfPosts + 5)}
         hasMore={true}
-        loader={Array(1)
+        loader={Array(3)
           .fill()
-          .map((item, i) => (
+          .map((i) => (
             <PostSkeleton key={i} />
           ))}
         endMessage={
@@ -92,7 +90,7 @@ const Profile = () => {
           />
         ))}
       </InfiniteScroll>
-    </>
+    </div>
   );
 };
 export default Profile;

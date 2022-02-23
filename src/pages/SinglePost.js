@@ -1,6 +1,7 @@
-import Post from "../components/feed/post/Post";
+import Post from "../components/post/Post";
+import PostSkeleton from "../components/post/PostSkeleton";
 import NewComment from "../components/forms/NewComment";
-import PostSkeleton from "../components/feed/post/PostSkeleton";
+import Comments from "../components/comment/Comments";
 import { db } from "../lib/firebase";
 import {
   collection,
@@ -53,14 +54,10 @@ const SinglePost = () => {
     return () => unsubscribe();
   }, [numberOfPosts, id]);
 
-  function fetchMoreData() {
-    setNumberOfPosts(numberOfPosts + 5);
-  }
-
   if (!post && !posts && !id) return <p>Loading...</p>;
 
   return (
-    <div>
+    <div className="bg-slate-900 min-h-screen">
       {post ? (
         <Post
           parent
@@ -74,10 +71,11 @@ const SinglePost = () => {
           thumbnailUrl={post.thumbnailUrl}
         />
       ) : null}
+      <div className="w-full h-1 bg-slate-700 mx-auto max-w-md" />
       <NewComment id={id} />
       <InfiniteScroll
         dataLength={numberOfPosts}
-        next={fetchMoreData}
+        next={() => setNumberOfPosts(numberOfPosts + 5)}
         hasMore={true}
         loader={Array(1)
           .fill()
@@ -91,7 +89,7 @@ const SinglePost = () => {
         }
       >
         {posts?.map((post) => (
-          <Post
+          <Comments
             key={post.id}
             id={post.id}
             uid={post.uid}

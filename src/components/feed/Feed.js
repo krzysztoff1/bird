@@ -15,17 +15,15 @@ const Feed = () => {
   return (
     <div>
       <NewPost />
-      <div className="my-3 flex w-full justify-center">
-        <div className="avatar-group mx-auto -space-x-4">
+      <div className="my-3 flex w-full justify-center bg-slate-700 py-4">
+        <div className="avatar-group mx-auto flex -space-x-4">
           {!users ? (
             <Skeleton />
           ) : (
             users.map((user) => (
               <Link key={user.uid} to={`/profile/${user.uid}`}>
-                <div className="avatar">
-                  <div className="w-12">
-                    <img alt="" src={user.googleProfilePicture} />
-                  </div>
+                <div className={`w-12 rounded-full overflow-hidden  shadow-md`}>
+                  <img alt="" src={user.googleProfilePicture} />
                 </div>
               </Link>
             ))

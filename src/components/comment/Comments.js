@@ -1,35 +1,35 @@
-import { db } from "../../lib/firebase";
-import { getFollowed } from "../../services/firebase";
-import PostSkeleton from "../post/PostSkeleton";
 import Post from "../post/Post";
+import PostSkeleton from "../post/PostSkeleton";
+import { db } from "../../lib/firebase";
+import { useEffect, useState } from "react";
 import {
   collection,
   onSnapshot,
   orderBy,
+  doc,
   limit,
   where,
   query,
 } from "firebase/firestore";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { useState, useEffect } from "react";
 
-const PostsList = () => {
+const Comments = ({
+  account,
+  text,
+  likedByUsers,
+  time,
+  id,
+  uid,
+  thumbnailUrl,
+  imageUrl,
+}) => {
   const [posts, setPosts] = useState();
-  const [following, setFollowing] = useState([]);
-  const [numberOfPosts, setNumberOfPosts] = useState(7);
 
   useEffect(() => {
-    getFollowed().then((res) => setFollowing(res));
-  }, []);
-
-  useEffect(() => {
-    if (!following.length) return;
     const unsubscribe = onSnapshot(
       query(
         collection(db, "posts"),
-        where("comment", "==", false),
-        where("uid", "in", following),
-        limit(numberOfPosts),
+        where("parentId", "==", id),
+        limit(2),
         orderBy("timestamp", "desc")
       ),
       (snapshot) => {
@@ -46,21 +46,26 @@ const PostsList = () => {
     );
 
     return () => unsubscribe();
-  }, [following, numberOfPosts]);
+  }, [id]);
 
-  if (!posts)
-    return Array(6)
-      .fill()
-      .map((item, i) => <PostSkeleton key={i} />);
+  if (!posts) return <PostSkeleton />;
 
   return (
-    <InfiniteScroll
-      dataLength={numberOfPosts}
-      next={() => setNumberOfPosts(numberOfPosts + 5)}
-      hasMore={true}
-    >
+    <div>
+      <Post
+        key={id}
+        id={id}
+        uid={uid}
+        account={account}
+        time={time}
+        text={text}
+        likedByUsers={likedByUsers}
+        imageUrl={imageUrl}
+        thumbnailUrl={thumbnailUrl}
+      />
       {posts.map((post) => (
         <Post
+          inlineComment
           key={post.id}
           id={post.id}
           uid={post.uid}
@@ -72,8 +77,8 @@ const PostsList = () => {
           thumbnailUrl={post.thumbnailUrl}
         />
       ))}
-    </InfiniteScroll>
+    </div>
   );
-};;
+};
 
-export default PostsList;
+export default Comments;

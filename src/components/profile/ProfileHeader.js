@@ -18,8 +18,8 @@ const ProfileHeader = ({ account, uid, profilePicture }) => {
               src={profilePicture}
               width="94"
               height="94"
-              alt="Avatar Tailwind CSS Component"
-              className="mask mask-squircle"
+              alt="User avatar"
+              className="rounded-full"
             />
           </div>
         </div>
@@ -27,33 +27,27 @@ const ProfileHeader = ({ account, uid, profilePicture }) => {
       <div>
         <div tabIndex="0">
           <div className="text-center">
-            <div className="text-lg font-extrabold">{account}</div>
-            {/* <div className="text-base-content my-3 text-sm text-opacity-60">
-              Strategic Art Manager
-              <br /> Global Illustration Observer
-              <br /> Business Alignment Developer
-            </div> */}
+            <div className="text-lg text-slate-100 font-extrabold">
+              {account}
+            </div>
           </div>
         </div>
-        {/* <div className="mt-2 text-center">
-            <div className="badge badge-ghost mx-1 bg-zinc-600">Design</div>
-            <div className="badge badge-ghost mx-1 bg-zinc-600">Art</div>
-            <div className="badge badge-ghost mx-1 bg-zinc-600">
-              Illustration
-            </div>
-          </div> */}
       </div>
-      <div tabIndex="0">
-        <div className="btn-group">
+      <div>
+        <div className="">
           <button
             onClick={() =>
               !followState
                 ? (follow(uid), setFollowState(true))
                 : (unFollow(uid), setFollowState(false))
             }
-            className={`btn ${!followState ? "btn-accent" : "btn-ghost"}`}
+            className={`${
+              !followState
+                ? "bg-blue-600 shadow-blue-600/30"
+                : "bg-transparent shadow-transparent  "
+            } w-28 text-white shadow-md border-2 border-blue-700 hover:bg-blue-800 transition-all font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
           >
-            {!followState ? "Follow" : "following"}
+            {!followState ? "Follow" : "Following"}
           </button>
         </div>
       </div>

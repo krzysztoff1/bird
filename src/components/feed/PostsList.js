@@ -17,6 +17,7 @@ const PostsList = () => {
   const [posts, setPosts] = useState();
   const [following, setFollowing] = useState([]);
   const [numberOfPosts, setNumberOfPosts] = useState(7);
+  const [isEmpty, setIsEmpty] = useState(false);
 
   useEffect(() => {
     getFollowed().then((res) => setFollowing(res));
@@ -33,6 +34,8 @@ const PostsList = () => {
         orderBy("timestamp", "desc")
       ),
       (snapshot) => {
+        if (snapshot.size === 0) return setIsEmpty(true);
+        if (snapshot.size !== 0) setIsEmpty(false);
         setPosts(
           snapshot.docs.map((doc) => ({
             id: doc.id,
@@ -48,10 +51,13 @@ const PostsList = () => {
     return () => unsubscribe();
   }, [following, numberOfPosts]);
 
+  if (isEmpty) return <p className="text-white">No posts yet</p>;
   if (!posts)
     return Array(6)
       .fill()
       .map((item, i) => <PostSkeleton key={i} />);
+
+  console.log(isEmpty);
 
   return (
     <InfiniteScroll

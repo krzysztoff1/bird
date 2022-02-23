@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { uploadPost, uploadPostWithImage } from "../../services/firebase";
 
-const NewComment = (id) => {
+const NewComment = (parentId) => {
   const [text, setText] = useState("");
   const [file, setFile] = useState();
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!file) return uploadPost({ text, id });
-    uploadPostWithImage({ text, file, id });
+    if (!file) return uploadPost({ text, parentId });
+    uploadPostWithImage({ text, file, parentId });
   }
 
   return (

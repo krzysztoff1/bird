@@ -41,10 +41,12 @@ export function SignOut() {
   auth.signOut();
 }
 
-export async function uploadPost({ text, id }) {
+export async function uploadPost({ text, parentId, grandParentId }) {
   const user = await getCurrentUser();
 
-  if (!id) {
+  console.log(parentId);
+
+  if (!parentId && !grandParentId) {
     addDoc(collection(db, "posts"), {
       comment: false,
       account: user.displayName,
@@ -56,9 +58,23 @@ export async function uploadPost({ text, id }) {
     return;
   }
 
+  if (parentId && !grandParentId) {
+    addDoc(collection(db, "posts"), {
+      comment: true,
+      parentId: parentId.parentId,
+      account: user.displayName,
+      uid: user.uid,
+      text: text,
+      timestamp: serverTimestamp(),
+      likedByUsers: [],
+    });
+    return;
+  }
+
   addDoc(collection(db, "posts"), {
     comment: true,
-    parentId: id.id,
+    parentId: parentId.parentId,
+    grandParentId: grandParentId.id,
     account: user.displayName,
     uid: user.uid,
     text: text,
@@ -66,6 +82,7 @@ export async function uploadPost({ text, id }) {
     likedByUsers: [],
   });
 }
+
 
 export async function uploadPostWithImage({ text, file, id }) {
   let progress = "";

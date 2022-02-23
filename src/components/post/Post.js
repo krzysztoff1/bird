@@ -51,10 +51,16 @@ const Post = ({
 
   return (
     <article
-      className={`dark:border-slate-800 border-slate-300
-           flex flex-grow p-3 w-full dark:bg-slate-900 bg-slate-100 max-w-md mx-auto border rounded-md my-2 sm:hover:shadow-xl shadow-slate-500"`}
+      className={`${
+        inlineComment ? "pl-8 border-r-2 border-t-0" : "mt-2 "
+      } dark:border-slate-800 border-slate-300
+          inlineComment flex flex-grow p-3 w-full bg-slate-900 max-w-md mx-auto border rounded-md sm:hover:shadow-xl shadow-slate-500"`}
     >
-      <PostAside uid={uid} profilePicture={profilePicture} />
+      <PostAside
+        inlineComment={inlineComment}
+        uid={uid}
+        profilePicture={profilePicture}
+      />
       <div className="w-full">
         <PostHeader account={account} time={time} uid={uid} />
         <PostContent text={text} />

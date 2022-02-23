@@ -1,16 +1,15 @@
 import Post from "../post/Post";
 import PostSkeleton from "../post/PostSkeleton";
 import { db } from "../../lib/firebase";
-import { useEffect, useState } from "react";
 import {
   collection,
   onSnapshot,
   orderBy,
-  doc,
   limit,
   where,
   query,
 } from "firebase/firestore";
+import { useEffect, useState } from "react";
 
 const Comments = ({
   account,
@@ -23,6 +22,21 @@ const Comments = ({
   imageUrl,
 }) => {
   const [posts, setPosts] = useState();
+  const [totalComments, setTotalComments] = useState();
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      query(collection(db, "posts"), where("parentId", "==", id)),
+      (snapshot) => {
+        setTotalComments(snapshot.size);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [id]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -33,6 +47,7 @@ const Comments = ({
         orderBy("timestamp", "desc")
       ),
       (snapshot) => {
+        console.log(snapshot.size);
         setPosts(
           snapshot.docs.map((doc) => ({
             id: doc.id,
@@ -53,7 +68,6 @@ const Comments = ({
   return (
     <div>
       <Post
-        key={id}
         id={id}
         uid={uid}
         account={account}
@@ -77,6 +91,11 @@ const Comments = ({
           thumbnailUrl={post.thumbnailUrl}
         />
       ))}
+      {totalComments > 2 ? (
+        <p className="max-w-md mx-auto text-center text-blue-500">
+          Show all comments ({totalComments})
+        </p>
+      ) : null}
     </div>
   );
 };

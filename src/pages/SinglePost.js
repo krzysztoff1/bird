@@ -60,7 +60,7 @@ const SinglePost = () => {
   console.log(isEmpty);
 
   return (
-    <div className="bg-slate-900 min-h-screen">
+    <div className="bg-slate-900 pt-20 min-h-screen">
       {post ? (
         <Post
           parent

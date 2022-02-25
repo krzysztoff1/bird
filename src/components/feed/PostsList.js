@@ -57,7 +57,6 @@ const PostsList = () => {
       .fill()
       .map((item, i) => <PostSkeleton key={i} />);
 
-  console.log(isEmpty);
 
   return (
     <InfiniteScroll

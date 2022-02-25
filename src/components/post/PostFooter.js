@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 
 const PostFooter = ({ likedByUsers, user, id, parent, numberOfComments }) => {
   return (
-    <div className="flex justify-between w-full mt-3">
-      <div className="flex items-center translate-x-[-8px] w-[55px]">
+    <div className="z-10 mt-3 flex w-full justify-between">
+      <div className="flex w-[55px] items-center">
         <div className="w-[40px]">
           <div
             onClick={() => likePost({ id })}
-            className="flex cursor-pointer justify-center items-center shadow-xl"
+            className="flex cursor-pointer items-center justify-center shadow-xl"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -34,45 +34,33 @@ const PostFooter = ({ likedByUsers, user, id, parent, numberOfComments }) => {
             </svg>
           </div>
         </div>
-        <p className="h-fit text-xs dark:text-white text-slate-800">
+        <p className="h-fit text-xs text-slate-800 dark:text-white">
           <span>{likedByUsers.length}</span>
         </p>
       </div>
-      <div className="flex items-center w-[55px]">
-        <div
-          // onClick={() => repostFunction()}
-          className="w-[40px]"
-        >
-          {/* {repostedByUsers && repostedByUsers.includes(user.uid) ? (
-                        <span className="sm:hover:bg-green-200 w-[34px] h-[34px] flex-shrink-0 sm:hover:text-green-400 dark:sm:hover:text-green-400 dark:text-emerald-500 text-slate-800 p-[8px]  rounded-full transition">
-                          <i className="fas fa-retweet"></i>
-                        </span>
-                      ) : ( */}
-          <span className="sm:hover:bg-green-200 w-[34px] h-[34px] flex-shrink-0 sm:hover:text-green-400 dark:sm:hover:text-green-400 dark:text-white text-slate-800 p-[8px]  rounded-full transition">
+      <div className="flex w-[55px] items-center">
+        <div className="w-[40px]">
+          <span className="h-[34px] w-[34px] flex-shrink-0 rounded-full p-[8px] text-slate-800 transition dark:text-white sm:hover:bg-green-200  sm:hover:text-green-400 dark:sm:hover:text-green-400">
             <i className="fas fa-retweet"></i>
           </span>
-          {/* )} */}
         </div>
-
-        <p className="h-fit text-xs dark:text-white text-slate-800">
-          {/* {repostedByUsers ? repostedByUsers.length : 0} */}0
-        </p>
+        <p className="h-fit text-xs text-slate-800 dark:text-white">0</p>
       </div>
-      <div className="flex items-center w-[55px]">
+      <div className="flex w-[55px] items-center">
         <div className="w-[40px]">
           {parent ? (
-            <span className="sm:hover:bg-blue-200 w-[34px] h-[34px] flex-shrink-0 sm:hover:text-blue-400 dark:sm:hover:text-blue-400 dark:text-white text-slate-800 p-[8px]  rounded-full transition">
+            <span className="h-[34px] w-[34px] flex-shrink-0 rounded-full p-[8px] text-slate-800 transition dark:text-white sm:hover:bg-blue-200  sm:hover:text-blue-400 dark:sm:hover:text-blue-400">
               <i className="far fa-comment"></i>
             </span>
           ) : (
             <Link to={`/post/${id}`}>
-              <span className="sm:hover:bg-blue-200 w-[34px] h-[34px] flex-shrink-0 sm:hover:text-blue-400 dark:sm:hover:text-blue-400 dark:text-white text-slate-800 p-[8px]  rounded-full transition">
+              <span className="h-[34px] w-[34px] flex-shrink-0 rounded-full p-[8px] text-slate-800 transition dark:text-white sm:hover:bg-blue-200  sm:hover:text-blue-400 dark:sm:hover:text-blue-400">
                 <i className="far fa-comment"></i>
               </span>
             </Link>
           )}
         </div>
-        <p className="h-fit text-xs dark:text-white text-slate-800">
+        <p className="h-fit text-xs text-slate-800 dark:text-white">
           {numberOfComments ? numberOfComments : "0"}
         </p>
       </div>

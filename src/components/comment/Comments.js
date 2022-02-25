@@ -9,6 +9,7 @@ import {
   where,
   query,
 } from "firebase/firestore";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const Comments = ({
@@ -92,9 +93,11 @@ const Comments = ({
         />
       ))}
       {totalComments > 2 ? (
-        <p className="max-w-md mx-auto text-center text-blue-500">
-          Show all comments ({totalComments})
-        </p>
+        <Link to={`/post/${id}`}>
+          <p className="hover:underline max-w-md mx-auto text-center text-blue-500">
+            Show all comments ({totalComments})
+          </p>
+        </Link>
       ) : null}
     </div>
   );

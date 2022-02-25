@@ -41,6 +41,15 @@ export function SignOut() {
   auth.signOut();
 }
 
+export async function saveWorkingCopy(text) {
+  const user = await getCurrentUser();
+
+  addDoc(collection(db, "drafts"), {
+    uid: user.uid,
+    text: text,
+  });
+}
+
 export async function uploadPost({ text, parentId, grandParentId }) {
   const user = await getCurrentUser();
 

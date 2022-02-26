@@ -6,19 +6,19 @@ const Nav = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="bg-white fixed w-full top-0 border-gray-200 px-4 sm:px-4 py-2.5 dark:bg-gray-800">
-      <div className="container flex flex-wrap justify-between items-center mx-auto">
+    <nav className="fixed top-0 z-20 w-full border-gray-200 bg-white px-4 py-2.5 dark:bg-gray-800 sm:px-4">
+      <div className="container mx-auto flex flex-wrap items-center justify-between">
         <Link to="/">
           <div className="flex items-center">
-            <FaKiwiBird className="text-teal-400 mr-2" />
-            <p className="text-teal-400 text-xl font-bold">Bird</p>
+            <FaKiwiBird className="mr-2 text-teal-400" />
+            <p className="text-xl font-bold text-teal-400">Bird</p>
           </div>
         </Link>
         <div className="flex md:order-2">
-          <div className="hidden relative mr-3 md:mr-0 md:block">
-            <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+          <div className="relative mr-3 hidden md:mr-0 md:block">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <svg
-                className="w-5 h-5 text-gray-500"
+                className="h-5 w-5 text-gray-500"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +33,7 @@ const Nav = () => {
             <input
               type="text"
               id="email-adress-icon"
-              className="block p-2 pl-10 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 pl-10 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
               placeholder="Search..."
             />
           </div>
@@ -41,13 +41,13 @@ const Nav = () => {
             onClick={() => setOpen((state) => !state)}
             data-collapse-toggle="mobile-menu-3"
             type="button"
-            className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            className="ml-3 inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 md:hidden"
             aria-controls="mobile-menu-3"
             aria-expanded="false"
           >
             <span className="sr-only">Open main menu</span>
             <svg
-              className="w-6 h-6"
+              className="h-6 w-6"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +59,7 @@ const Nav = () => {
               ></path>
             </svg>
             <svg
-              className="hidden w-6 h-6"
+              className="hidden h-6 w-6"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -75,25 +75,25 @@ const Nav = () => {
         <div
           className={`${
             !open ? "hidden" : ""
-          } justify-between items-center w-full md:flex md:w-auto md:order-1`}
+          } w-full items-center justify-between md:order-1 md:flex md:w-auto`}
           id="mobile-menu-3"
         >
-          <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
+          <ul className="mt-4 flex flex-col md:mt-0 md:flex-row md:space-x-8 md:text-sm md:font-medium">
             <li>
               <p
-                className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
+                className="block rounded bg-blue-700 py-2 pr-4 pl-3 text-white dark:text-white md:bg-transparent md:p-0 md:text-blue-700"
                 aria-current="page"
               >
                 Home
               </p>
             </li>
             <li>
-              <p className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
+              <p className="block border-b border-gray-100 py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-white">
                 About
               </p>
             </li>
             <li>
-              <p className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
+              <p className="block border-b border-gray-100 py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-white">
                 Services
               </p>
             </li>

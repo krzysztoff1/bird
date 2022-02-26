@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { follow, unFollow, isFollowed } from "../../services/firebase";
 import { motion } from "framer-motion";
 
-const ProfileHeader = ({ account, uid, profilePicture }) => {
+const ProfileHeader = ({ account, uid, profilePicture, description }) => {
   const [followState, setFollowState] = useState(false);
 
   useEffect(() => {
@@ -10,7 +10,7 @@ const ProfileHeader = ({ account, uid, profilePicture }) => {
   }, [uid]);
 
   return (
-    <div className="max-w-md mx-auto pt-24">
+    <div className="mx-auto max-w-md px-3 pt-24">
       <div className="flex justify-between">
         <img
           src={profilePicture}
@@ -31,12 +31,13 @@ const ProfileHeader = ({ account, uid, profilePicture }) => {
             !followState
               ? "bg-blue-600 shadow-blue-600/30"
               : "bg-transparent shadow-transparent  "
-          } w-28 text-white shadow-md border-2 border-blue-700 hover:bg-blue-800 transition-all font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
+          } mr-2 mb-2 w-28 rounded-lg border-2 border-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white shadow-md transition-all hover:bg-blue-800`}
         >
           {!followState ? "Follow" : "Following"}
         </motion.button>
       </div>
-      <h3 className="text-slate-200 text-xl mt-2"> {account}</h3>
+      <h3 className="mt-2 text-xl text-slate-200"> {account}</h3>
+      <p className="md mt-2 text-slate-200"> {description}</p>
     </div>
   );
 };

@@ -57,21 +57,22 @@ const Profile = () => {
   if (!userData) return <></>;
 
   return (
-    <div className="bg-slate-900 min-h-screen">
+    <div className="min-h-screen bg-slate-900">
       <ProfileHeader
         profilePicture={userData.googleProfilePicture}
         account={userData.name}
         uid={uid}
+        description={userData.description}
       />
 
-      <div className="border-b sm:max-w-md mx-auto border-gray-200 dark:border-gray-700">
-        <ul className="flex flex-wrap -mb-px">
+      <div className="mx-auto border-b border-gray-200 dark:border-gray-700 sm:max-w-md">
+        <ul className="-mb-px flex flex-wrap">
           <li onClick={() => setTab("posts")} className="mr-2">
             <p
-              className={`inline-block py-4 px-4 text-sm font-medium text-center ${
+              className={`inline-block py-4 px-4 text-center text-sm font-medium ${
                 tab === "posts"
-                  ? "text-blue-600 rounded-t-lg border-b-2 border-blue-600 active dark:text-blue-500 dark:border-blue-500"
-                  : "text-gray-500 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300"
+                  ? "active rounded-t-lg border-b-2 border-blue-600 text-blue-600 dark:border-blue-500 dark:text-blue-500"
+                  : "rounded-t-lg border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300"
               }`}
             >
               Posts
@@ -79,10 +80,10 @@ const Profile = () => {
           </li>
           <li onClick={() => setTab("comments")} className="mr-2">
             <p
-              className={`inline-block py-4 px-4 text-sm font-medium text-center ${
+              className={`inline-block py-4 px-4 text-center text-sm font-medium ${
                 tab === "comments"
-                  ? "text-blue-600 rounded-t-lg border-b-2 border-blue-600 active dark:text-blue-500 dark:border-blue-500"
-                  : "text-gray-500 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300"
+                  ? "active rounded-t-lg border-b-2 border-blue-600 text-blue-600 dark:border-blue-500 dark:text-blue-500"
+                  : "rounded-t-lg border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300"
               }`}
             >
               Comments and posts
@@ -100,7 +101,7 @@ const Profile = () => {
             <PostSkeleton key={i} />
           ))}
         endMessage={
-          <p className="text-slate-100 font-bold text-center">
+          <p className="text-center font-bold text-slate-100">
             Yay! You have seen it all
           </p>
         }

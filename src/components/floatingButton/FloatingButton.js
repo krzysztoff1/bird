@@ -17,13 +17,16 @@ import {
   query,
 } from "firebase/firestore";
 import { AnimatePresence, motion } from "framer-motion";
+import BottomModal from "../modals/BottomModal";
+import { Link } from "react-router-dom";
 
 const FloatingButton = () => {
   const [open, toggleOpen] = useState(Boolean);
   const [modal, toggleModal] = useState(Boolean);
+  const [draftsModal, toggleDraftsModal] = useState(Boolean);
   const [text, setText] = useState(String);
   const [user, setUser] = useState();
-  const [drafts, setdrafts] = useState();
+  const [drafts, setDrafts] = useState();
   const [file, setFile] = useState();
 
   const textField = useRef();
@@ -37,9 +40,10 @@ const FloatingButton = () => {
     const unsubscribe = onSnapshot(
       query(collection(db, "drafts"), where("uid", "==", user.uid)),
       (snapshot) => {
-        if (snapshot.size === 0) return setdrafts(false);
-        setdrafts(
+        if (snapshot.size === 0) return setDrafts(false);
+        setDrafts(
           snapshot.docs.map((doc) => ({
+            id: doc.id,
             ...doc.data(),
           }))
         );
@@ -65,31 +69,35 @@ const FloatingButton = () => {
     <>
       <AnimatePresence>
         {!open ? (
-          <motion.div
-            exit={{ scale: 0.001, opacity: 0 }}
-            initial={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 2 }}
-            onClick={() => toggleOpen((state) => !state)}
-            className="fixed bottom-20 right-8 z-50 overflow-hidden rounded-full bg-teal-400"
-          >
-            <svg
-              className={`h-12 w-12 transition-all ${open ? "rotate-45" : ""}`}
-              fill="none"
-              stroke="white"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+          <Link to="/compose/post">
+            <motion.div
+              exit={{ scale: 0.001, opacity: 0 }}
+              initial={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              onClick={() => toggleOpen((state) => !state)}
+              className="fixed bottom-20 right-8 z-50 overflow-hidden rounded-full bg-teal-400"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-              ></path>
-            </svg>
-          </motion.div>
+              <svg
+                className={`h-12 w-12 transition-all ${
+                  open ? "rotate-45" : ""
+                }`}
+                fill="none"
+                stroke="white"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                ></path>
+              </svg>
+            </motion.div>
+          </Link>
         ) : null}
       </AnimatePresence>
-      <AnimatePresence>
+      {/* <AnimatePresence>
         {open ? (
           <motion.div
             initial={{ y: 200 }}
@@ -106,7 +114,7 @@ const FloatingButton = () => {
             >
               <div className="mt-6 w-full px-3">
                 <div className="flex w-full justify-between">
-                  <p
+                  <button
                     onClick={() =>
                       text
                         ? toggleModal((state) => !state)
@@ -114,15 +122,25 @@ const FloatingButton = () => {
                     }
                     className="p-3 font-bold text-slate-100"
                   >
-                    Return
-                  </p>
+                    <svg
+                      class="h-6 w-6"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </button>
                   <div className="flex">
                     {drafts ? (
                       <button
                         type="button"
                         onClick={() => {
-                          textField.current.value = drafts[0].text;
-                          setText(drafts[0].text);
+                          toggleDraftsModal((state) => !state);
                         }}
                         className="m-3 rounded-full  px-5 py-2.5 text-center text-sm font-medium text-white  focus:ring-4 focus:ring-blue-300 "
                       >
@@ -252,12 +270,7 @@ const FloatingButton = () => {
       </AnimatePresence>
       <AnimatePresence>
         {modal ? (
-          <motion.div
-            initial={{ y: 200 }}
-            animate={{ y: 0 }}
-            exit={{ y: 1400 }}
-            className="fixed bottom-0 z-50 flex h-[50vh] w-[100vw] flex-col items-center justify-center border-t-2 bg-slate-900"
-          >
+          <BottomModal>
             <button
               onClick={() => {
                 saveWorkingCopy(text);
@@ -266,7 +279,7 @@ const FloatingButton = () => {
               }}
               className="p-2 text-xl text-teal-400  hover:underline"
             >
-              Save working copy
+              Save draft
             </button>
             <button
               onClick={() => {
@@ -283,9 +296,45 @@ const FloatingButton = () => {
             >
               Cancel
             </button>
-          </motion.div>
+          </BottomModal>
         ) : null}
       </AnimatePresence>
+      <AnimatePresence>
+        {draftsModal ? (
+          <BottomModal>
+            <div className="flex w-full justify-between">
+              <button
+                onClick={() => toggleDraftsModal(false)}
+                className="text-slate-100"
+              >
+                Close
+              </button>
+              <button className="text-slate-100">Edit</button>
+            </div>
+            {drafts.map((draft, i) => (
+              <ul
+                key={draft.id}
+                className="flex w-full max-w-[80vw] rounded-md sm:hover:bg-slate-700"
+              >
+                <li
+                  onClick={() => {
+                    textField.current.value = drafts[i].text;
+                    setText(drafts[i].text);
+                    toggleDraftsModal(false);
+                  }}
+                  className="flex w-full cursor-pointer border-b-2 border-slate-700 py-2 text-zinc-100"
+                >
+                  <input
+                    class="form-check-input float-left mt-1 mr-2 h-4 w-4 cursor-pointer appearance-none rounded-full border border-gray-300 bg-white bg-contain bg-center bg-no-repeat align-top transition duration-200 checked:border-blue-600 checked:bg-blue-600 focus:outline-none"
+                    type="radio"
+                  />
+                  <p>{draft.text}</p>
+                </li>
+              </ul>
+            ))}
+          </BottomModal>
+        ) : null}
+      </AnimatePresence> */}
     </>
   );
 };

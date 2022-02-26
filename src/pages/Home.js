@@ -3,7 +3,7 @@ import FloatingButton from "../components/floatingButton/FloatingButton";
 
 const Home = () => {
   return (
-    <section className="bg-slate-800 py-10">
+    <section className="min-h-screen bg-slate-100 py-10 dark:bg-slate-900">
       <FloatingButton />
       <Feed />
     </section>

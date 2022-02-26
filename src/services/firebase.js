@@ -53,8 +53,6 @@ export async function saveWorkingCopy(text) {
 export async function uploadPost({ text, parentId, grandParentId }) {
   const user = await getCurrentUser();
 
-  console.log(parentId);
-
   if (!parentId && !grandParentId) {
     addDoc(collection(db, "posts"), {
       comment: false,
@@ -91,7 +89,6 @@ export async function uploadPost({ text, parentId, grandParentId }) {
     likedByUsers: [],
   });
 }
-
 
 export async function uploadPostWithImage({ text, file, id }) {
   let progress = "";
@@ -201,6 +198,15 @@ export async function getUsers() {
   const usersRef = collection(db, "users");
   const userSnap = await getDocs(usersRef);
   return userSnap.docs.map((user) => user.data());
+}
+
+export async function setUserDescription(text) {
+  const user = await getCurrentUser();
+  const postRef = doc(db, "users", user.uid);
+
+  updateDoc(postRef, {
+    description: text,
+  });
 }
 
 export async function isPostLikedByUser(id) {

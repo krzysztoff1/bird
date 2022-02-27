@@ -1,0 +1,93 @@
+[debug] [2022-02-27T16:31:27.245Z] ----------------------------------------------------------------------
+[debug] [2022-02-27T16:31:27.247Z] Command:       /usr/local/lib/node_modules/firebase-tools/lib/bin/firebase.js /Users/krzysztofduda/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/bin/firebase deploy
+[debug] [2022-02-27T16:31:27.247Z] CLI Version:   10.1.2
+[debug] [2022-02-27T16:31:27.247Z] Platform:      darwin
+[debug] [2022-02-27T16:31:27.247Z] Node Version:  v12.18.1
+[debug] [2022-02-27T16:31:27.250Z] Time:          Sun Feb 27 2022 17:31:27 GMT+0100 (Central European Standard Time)
+[debug] [2022-02-27T16:31:27.250Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-02-27T16:31:27.298Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-02-27T16:31:27.298Z] > authorizing via signed-in user (halidu13@gmail.com)
+[debug] [2022-02-27T16:31:27.298Z] [iam] checking project socialmediaapp-758f7 for permissions ["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]
+[debug] [2022-02-27T16:31:27.301Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/socialmediaapp-758f7:testIamPermissions  
+ {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}
+[debug] [2022-02-27T16:31:28.105Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 27 Feb 2022 16:31:28 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=678","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-27T16:31:28.110Z] > refreshing access token with scopes: []
+[debug] [2022-02-27T16:31:28.110Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-02-27T16:31:28.221Z] <<< HTTP RESPONSE 200 {"cache-control":"no-cache, no-store, max-age=0, must-revalidate","date":"Sun, 27 Feb 2022 16:31:28 GMT","expires":"Mon, 01 Jan 1990 00:00:00 GMT","pragma":"no-cache","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-27T16:31:28.274Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/socialmediaapp-758f7 [none]
+[debug] [2022-02-27T16:31:28.640Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/socialmediaapp-758f7 200
+[debug] [2022-02-27T16:31:28.641Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/socialmediaapp-758f7 {"projectId":"socialmediaapp-758f7","projectNumber":"629836977165","displayName":"SocialMediaApp","name":"projects/socialmediaapp-758f7","resources":{"hostingSite":"socialmediaapp-758f7","storageBucket":"socialmediaapp-758f7.appspot.com","locationId":"europe-west"},"state":"ACTIVE"}
+[info] 
+[info] === Deploying to 'socialmediaapp-758f7'...
+[info] 
+[info] i  deploying storage, firestore, hosting 
+[debug] [2022-02-27T16:31:28.645Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2022-02-27T16:31:28.645Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-02-27T16:31:28.742Z] <<< HTTP RESPONSE 200 {"date":"Sun, 27 Feb 2022 16:31:28 GMT","pragma":"no-cache","cache-control":"no-cache, no-store, max-age=0, must-revalidate","expires":"Mon, 01 Jan 1990 00:00:00 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-27T16:31:28.788Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/socialmediaapp-758f7  
+ 
+[debug] [2022-02-27T16:31:29.020Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 27 Feb 2022 16:31:29 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] i  firebase.storage: checking storage.rules for compilation errors... 
+[debug] [2022-02-27T16:31:29.026Z] > refreshing access token with scopes: []
+[debug] [2022-02-27T16:31:29.027Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-02-27T16:31:29.130Z] <<< HTTP RESPONSE 200 {"date":"Sun, 27 Feb 2022 16:31:29 GMT","expires":"Mon, 01 Jan 1990 00:00:00 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","pragma":"no-cache","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-27T16:31:29.173Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7:test [none]
+[debug] [2022-02-27T16:31:29.173Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7:test [omitted]
+[debug] [2022-02-27T16:31:30.071Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7:test 200
+[debug] [2022-02-27T16:31:30.071Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7:test {}
+[info] ✔  firebase.storage: rules file storage.rules compiled successfully 
+[info] i  firestore: reading indexes from firestore.indexes.json... 
+[info] i  cloud.firestore: checking firestore.rules for compilation errors... 
+[debug] [2022-02-27T16:31:30.081Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7:test [none]
+[debug] [2022-02-27T16:31:30.081Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7:test [omitted]
+[debug] [2022-02-27T16:31:30.926Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7:test 200
+[debug] [2022-02-27T16:31:30.927Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7:test {}
+[info] ✔  cloud.firestore: rules file firestore.rules compiled successfully 
+[debug] [2022-02-27T16:31:30.932Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2022-02-27T16:31:30.932Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-02-27T16:31:31.036Z] <<< HTTP RESPONSE 200 {"expires":"Mon, 01 Jan 1990 00:00:00 GMT","pragma":"no-cache","date":"Sun, 27 Feb 2022 16:31:31 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-27T16:31:31.081Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/socialmediaapp-758f7/versions  
+ {"config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2022-02-27T16:31:32.545Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 27 Feb 2022 16:31:32 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-27T16:31:32.547Z] > refreshing access token with scopes: []
+[debug] [2022-02-27T16:31:32.547Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-02-27T16:31:32.657Z] <<< HTTP RESPONSE 200 {"expires":"Mon, 01 Jan 1990 00:00:00 GMT","pragma":"no-cache","date":"Sun, 27 Feb 2022 16:31:32 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-27T16:31:32.707Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7/releases pageSize=10&pageToken=
+[debug] [2022-02-27T16:31:32.994Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7/releases 200
+[debug] [2022-02-27T16:31:32.994Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7/releases {"releases":[{"name":"projects/socialmediaapp-758f7/releases/cloud.firestore","rulesetName":"projects/socialmediaapp-758f7/rulesets/48041a1d-d9ee-4513-ae86-52c1e593b8b7","createTime":"2022-02-17T17:00:36.211400Z","updateTime":"2022-02-27T16:23:51.734595Z"},{"name":"projects/socialmediaapp-758f7/releases/firebase.storage/socialmediaapp-758f7.appspot.com","rulesetName":"projects/socialmediaapp-758f7/rulesets/537d1254-87be-46ff-8415-cafdc56f1da3","createTime":"2022-02-18T17:10:20.582608Z","updateTime":"2022-02-27T16:23:50.726619Z"}]}
+[debug] [2022-02-27T16:31:32.997Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7/rulesets/537d1254-87be-46ff-8415-cafdc56f1da3 [none]
+[debug] [2022-02-27T16:31:33.842Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7/rulesets/537d1254-87be-46ff-8415-cafdc56f1da3 200
+[debug] [2022-02-27T16:31:33.842Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7/rulesets/537d1254-87be-46ff-8415-cafdc56f1da3 [omitted]
+[info] i  storage: latest version of storage.rules already up to date, skipping upload... 
+[debug] [2022-02-27T16:31:33.849Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2022-02-27T16:31:33.849Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-02-27T16:31:33.850Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7/releases pageSize=10&pageToken=
+[debug] [2022-02-27T16:31:33.952Z] <<< HTTP RESPONSE 200 {"expires":"Mon, 01 Jan 1990 00:00:00 GMT","pragma":"no-cache","date":"Sun, 27 Feb 2022 16:31:34 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-27T16:31:33.995Z] >>> HTTP REQUEST GET https://firestore.googleapis.com/v1/projects/socialmediaapp-758f7/databases/(default)/collectionGroups/-/indexes  
+ 
+[debug] [2022-02-27T16:31:34.294Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 27 Feb 2022 16:31:34 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-27T16:31:34.296Z] >>> HTTP REQUEST GET https://firestore.googleapis.com/v1/projects/socialmediaapp-758f7/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false  
+ 
+[debug] [2022-02-27T16:31:34.597Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 27 Feb 2022 16:31:34 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] i  firestore: The following indexes are defined in your project but are not present in your firestore indexes file:
+	(posts) -- (parentId,ASCENDING) (timestamp,DESCENDING) 
+	(notifications) -- (read,ASCENDING) (timestamp,DESCENDING) 
+	(posts) -- (comment,ASCENDING) (uid,ASCENDING) (timestamp,DESCENDING) 
+	(notifications) -- (uid,ASCENDING) (timestamp,DESCENDING)  
+[debug] [2022-02-27T16:31:34.670Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7/releases 200
+[debug] [2022-02-27T16:31:34.670Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7/releases {"releases":[{"name":"projects/socialmediaapp-758f7/releases/cloud.firestore","rulesetName":"projects/socialmediaapp-758f7/rulesets/48041a1d-d9ee-4513-ae86-52c1e593b8b7","createTime":"2022-02-17T17:00:36.211400Z","updateTime":"2022-02-27T16:23:51.734595Z"},{"name":"projects/socialmediaapp-758f7/releases/firebase.storage/socialmediaapp-758f7.appspot.com","rulesetName":"projects/socialmediaapp-758f7/rulesets/537d1254-87be-46ff-8415-cafdc56f1da3","createTime":"2022-02-18T17:10:20.582608Z","updateTime":"2022-02-27T16:23:50.726619Z"}]}
+[debug] [2022-02-27T16:31:34.671Z] > refreshing access token with scopes: []
+[debug] [2022-02-27T16:31:34.671Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-02-27T16:31:34.761Z] <<< HTTP RESPONSE 200 {"pragma":"no-cache","expires":"Mon, 01 Jan 1990 00:00:00 GMT","date":"Sun, 27 Feb 2022 16:31:34 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-27T16:31:34.792Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7/rulesets/48041a1d-d9ee-4513-ae86-52c1e593b8b7 [none]
+[debug] [2022-02-27T16:31:35.631Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7/rulesets/48041a1d-d9ee-4513-ae86-52c1e593b8b7 200
+[debug] [2022-02-27T16:31:35.632Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/socialmediaapp-758f7/rulesets/48041a1d-d9ee-4513-ae86-52c1e593b8b7 [omitted]
+[info] i  firestore: latest version of firestore.rules already up to date, skipping upload... 

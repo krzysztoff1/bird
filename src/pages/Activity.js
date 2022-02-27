@@ -33,7 +33,7 @@ const Activity = () => {
         if (snapshot.size === 0) return setEmpty(true);
         setNotifications(
           snapshot.docs.map((doc) => ({
-            id: doc.id,
+            docId: doc.id,
             ...doc.data(),
           }))
         );
@@ -69,6 +69,7 @@ const Activity = () => {
               />
             ) : (
               <CommentNotification
+                docId={notification.docId}
                 key={notification.id}
                 id={notification.id}
                 name={notification.commentedByName}

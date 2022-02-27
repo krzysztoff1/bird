@@ -238,6 +238,23 @@ export async function likePost({ id }) {
   updateDoc(postRef, {
     likedByUsers: arrayUnion(user.uid),
   });
+
+  addDoc(collection(db, "notifications"), {
+    typeOfNotification: "like",
+    read: false,
+    timestamp: serverTimestamp(),
+    uid: docSnap.data().uid,
+    likedPost: id,
+    likedBy: user.uid,
+    likedByName: user.displayName,
+  });
+}
+
+export async function markReadNotification(id) {
+  const postRef = doc(db, "notifications", id);
+  updateDoc(postRef, {
+    read: true,
+  });
 }
 
 export async function getFollowed() {

@@ -6,6 +6,7 @@ import SinglePost from "./pages/SinglePost";
 import NewPost from "./components/forms/NewPost";
 import Settings from "./pages/Settings";
 import SignIn from "./pages/SignIn";
+import Activity from "./pages/Activity";
 import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "./lib/firebase";
@@ -56,6 +57,7 @@ function App() {
             <Route exact path="/" element={<Home />} />
             <Route path="/profile/:uid" element={<Profile />} />
             <Route path="/user/profile" element={<Settings />} />
+            <Route path="/activity" element={<Activity />} />
             <Route path="/post/:id" element={<SinglePost />} />
             <Route path="/compose/post" element={<NewPost />} />
           </Routes>

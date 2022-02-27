@@ -1,0 +1,79 @@
+import Notification from "../components/notifications/Notification";
+import { useState, useEffect } from "react";
+import { getCurrentUser } from "../services/firebase";
+import { db } from "../lib/firebase";
+import {
+  collection,
+  where,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
+
+const Activity = () => {
+  const [notifications, setNotifications] = useState();
+  const [user, setUser] = useState();
+  const [empty, setEmpty] = useState(false);
+
+  useEffect(() => {
+    getCurrentUser().then((res) => setUser(res));
+  }, []);
+
+  useEffect(() => {
+    if (!user) return;
+    const unsubscribe = onSnapshot(
+      query(
+        collection(db, "notifications"),
+        where("uid", "==", user.uid),
+        where("read", "==", false),
+        orderBy("timestamp", "desc")
+      ),
+      (snapshot) => {
+        if (snapshot.size === 0) return setEmpty(true);
+        setNotifications(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+        );
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    return () => unsubscribe();
+  }, [user]);
+
+  console.log(notifications);
+  if (empty)
+    return (
+      <section className="flex min-h-screen  items-center justify-center bg-slate-900 text-slate-100">
+        You are up to date
+      </section>
+    );
+
+  return (
+    <section className="min-h-screen bg-slate-900 py-4">
+      <h1 className="mb-2 px-5 text-2xl font-bold tracking-wider text-slate-100">
+        Activity
+      </h1>
+      <div className="overflow-y-scroll">
+        {notifications ? (
+          notifications.map((notification) => (
+            <Notification
+              key={notification.id}
+              id={notification.id}
+              name={notification.likedByName}
+              timestamp={notification.timestamp}
+              like={notification.typeOfNotification === "like"}
+            />
+          ))
+        ) : (
+          <p>test</p>
+        )}
+      </div>
+    </section>
+  );
+};
+
+export default Activity;

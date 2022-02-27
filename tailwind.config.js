@@ -17,6 +17,7 @@ module.exports = {
     "./src/components/post/PostImage.js",
     "./src/components/post/PostFooter.js",
     "./src/components/post/Post.js",
+    "./src/components/notifications/Notification.js",
     "./src/components/floatingButton/FloatingButton.js",
     "./src/components/alerts/AlertPositive.js",
     "./src/components/modals/BottomModal.js",

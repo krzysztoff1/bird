@@ -14,9 +14,9 @@ const NewComment = (parentId) => {
   return (
     <form
       onSubmit={(e) => handleSubmit(e)}
-      className="mx-auto flex max-w-md items-end fixed bottom-0 justify-between py-2"
+      className="fixed bottom-4 mx-auto flex max-w-md items-end justify-between py-2 pb-28"
     >
-      <div className="w-full mr-3">
+      <div className="mr-3 w-full">
         <textarea
           onChange={(e) => setText(e.target.value)}
           className="textarea w-full"

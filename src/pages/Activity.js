@@ -1,4 +1,5 @@
 import Notification from "../components/notifications/Notification";
+import CommentNotification from "../components/notifications/CommentNotification";
 import { useState, useEffect } from "react";
 import { getCurrentUser } from "../services/firebase";
 import { db } from "../lib/firebase";
@@ -44,7 +45,6 @@ const Activity = () => {
     return () => unsubscribe();
   }, [user]);
 
-  console.log(notifications);
   if (empty)
     return (
       <section className="flex min-h-screen  items-center justify-center bg-slate-900 text-slate-100">
@@ -59,15 +59,24 @@ const Activity = () => {
       </h1>
       <div className="overflow-y-scroll">
         {notifications ? (
-          notifications.map((notification) => (
-            <Notification
-              key={notification.id}
-              id={notification.id}
-              name={notification.likedByName}
-              timestamp={notification.timestamp}
-              like={notification.typeOfNotification === "like"}
-            />
-          ))
+          notifications.map((notification) =>
+            notification.typeOfNotification === "like" ? (
+              <Notification
+                key={notification.id}
+                id={notification.id}
+                name={notification.likedByName}
+                timestamp={notification.timestamp}
+              />
+            ) : (
+              <CommentNotification
+                key={notification.id}
+                id={notification.id}
+                name={notification.commentedByName}
+                timestamp={notification.timestamp}
+                commentText={notification.commentText}
+              />
+            )
+          )
         ) : (
           <p>test</p>
         )}

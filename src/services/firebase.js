@@ -20,6 +20,7 @@ import { useState } from "react";
 import { Result } from "postcss";
 import { createResizedImage } from "./resizeImage";
 
+// authentication
 export async function getCurrentUser() {
   const user = auth.currentUser;
   return user;
@@ -40,7 +41,7 @@ export function signInWithGoogle() {
 export function SignOut() {
   auth.signOut();
 }
-
+// drafts
 export async function saveWorkingCopy(text) {
   const user = await getCurrentUser();
 
@@ -49,10 +50,13 @@ export async function saveWorkingCopy(text) {
     text: text,
   });
 }
+// upload posts and comments
+
 
 export async function uploadPost({ text, parentId, grandParentId }) {
   const user = await getCurrentUser();
-
+  let id = Math.random() * 1000;
+  
   if (!parentId && !grandParentId) {
     addDoc(collection(db, "posts"), {
       comment: false,
@@ -75,6 +79,20 @@ export async function uploadPost({ text, parentId, grandParentId }) {
       timestamp: serverTimestamp(),
       likedByUsers: [],
     });
+
+    const parentPost = await getPostById(parentId.parentId);
+    
+    addDoc(collection(db, "notifications"), {
+      timestamp: serverTimestamp(),
+      typeOfNotification: "comment",
+      read: false,
+      uid: parentPost.uid,
+      id: parentId.parentId,
+      commentText: text,
+      commentedByUid: user.uid,
+      commentedByName: user.displayName,
+    });
+
     return;
   }
 
@@ -180,7 +198,7 @@ export async function uploadPostWithImage({ text, file, id }) {
   }
   return progress;
 }
-
+// get 
 export async function getPosts() {
   const postsRef = collection(db, "posts");
   const postsSnapshot = await getDocs(postsRef);
@@ -199,7 +217,7 @@ export async function getUsers() {
   const userSnap = await getDocs(usersRef);
   return userSnap.docs.map((user) => user.data());
 }
-
+// user profile
 export async function setUserDescription(text) {
   const user = await getCurrentUser();
   const postRef = doc(db, "users", user.uid);
@@ -216,7 +234,7 @@ export async function isPostLikedByUser(id) {
 
   return docSnap.data().likedByUsers.includes(user.uid);
 }
-
+// likes
 export async function getUserByUid(uid) {
   const postRef = doc(db, "users", uid);
   const docSnap = await getDoc(postRef);
@@ -249,14 +267,14 @@ export async function likePost({ id }) {
     likedByName: user.displayName,
   });
 }
-
+// notifications
 export async function markReadNotification(id) {
   const postRef = doc(db, "notifications", id);
   updateDoc(postRef, {
     read: true,
   });
 }
-
+// follow
 export async function getFollowed() {
   const user = await getCurrentUser();
   const postRef = doc(db, "users", user.uid);

@@ -1,28 +1,29 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import { saveWorkingCopy } from "../../services/firebase";
 import { db } from "../../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import Modal from "../modals/Modal";
-import AlertPositive from "../alert/AlertPositive";
 import {
+  saveWorkingCopy,
   getCurrentUser,
   uploadPost,
   uploadPostWithImage,
 } from "../../services/firebase";
 import { collection, onSnapshot, where, query } from "firebase/firestore";
-import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const NewPost = () => {
-  const [open, toggleOpen] = useState(Boolean);
-  const [modal, toggleModal] = useState(Boolean);
+  const { t } = useTranslation();
+
+  const [open, toggleOpen] = useState(false);
+  const [modal, toggleModal] = useState(false);
   const [draftsModal, toggleDraftsModal] = useState(false);
-  const [text, setText] = useState(String);
   const [user, setUser] = useState();
+  const [text, setText] = useState("");
   const [drafts, setDrafts] = useState();
   const [file, setFile] = useState();
-  let navigate = useNavigate();
   const textField = useRef();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getCurrentUser().then((res) => setUser(res));
@@ -61,7 +62,7 @@ const NewPost = () => {
   }
 
   return (
-    <>
+    <Suspense fallback={<p>Loading</p>}>
       <Modal
         modal={modal}
         toggleModal={toggleModal}
@@ -156,7 +157,7 @@ const NewPost = () => {
                   type="submit"
                   className="m-3 rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
-                  Post
+                  {t("post")}
                 </button>
               </div>
             </div>
@@ -271,7 +272,7 @@ const NewPost = () => {
           </div>
         </form>
       </section>
-    </>
+    </Suspense>
   );
 };
 

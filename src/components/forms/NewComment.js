@@ -14,7 +14,7 @@ const NewComment = (parentId) => {
   return (
     <form
       onSubmit={(e) => handleSubmit(e)}
-      className="fixed bottom-4 mx-auto flex max-w-md items-end justify-between py-2 pb-28"
+      className="fixed bottom-4 z-[100] mx-auto flex max-w-md items-end justify-between py-2 pb-28"
     >
       <div className="mr-3 w-full">
         <textarea

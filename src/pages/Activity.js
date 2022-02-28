@@ -62,15 +62,16 @@ const Activity = () => {
           notifications.map((notification) =>
             notification.typeOfNotification === "like" ? (
               <Notification
-                key={notification.id}
-                id={notification.id}
+                key={notification.docId}
+                docId={notification.docId}
+                id={notification.likedPost}
                 name={notification.likedByName}
                 timestamp={notification.timestamp}
               />
             ) : (
               <CommentNotification
                 docId={notification.docId}
-                key={notification.id}
+                key={notification.docId}
                 id={notification.id}
                 name={notification.commentedByName}
                 timestamp={notification.timestamp}

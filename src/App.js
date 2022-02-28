@@ -7,16 +7,15 @@ import NewPost from "./components/forms/NewPost";
 import Settings from "./pages/Settings";
 import SignIn from "./pages/SignIn";
 import Activity from "./pages/Activity";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "./lib/firebase";
 import { getCurrentUser } from "./services/firebase";
 import { getDoc, doc, setDoc } from "firebase/firestore";
 import { Link, Route, Routes, BrowserRouter } from "react-router-dom";
-import Nav from "./components/nav/Nav";
 import MobileNav from "./components/nav/MobileNav";
 
-function App() {
+function App({ t }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [pending, setPending] = useState(true);
   const [user, setUser] = useState();

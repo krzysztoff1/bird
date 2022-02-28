@@ -1,8 +1,9 @@
 import { markReadNotification } from "../../services/firebase";
 import TimeAgo from "javascript-time-ago";
+import { Link } from "react-router-dom";
 const timeAgo = new TimeAgo("pl-PL");
 
-const Notification = ({ id, name, timestamp, like }) => {
+const Notification = ({ docId, name, timestamp, id }) => {
   return (
     <article className="my-1 mx-2 rounded-md bg-slate-800 px-3 py-4">
       <div className="flex justify-between">
@@ -12,7 +13,7 @@ const Notification = ({ id, name, timestamp, like }) => {
             : ""}
         </p>
         <svg
-          onClick={() => markReadNotification(id)}
+          onClick={() => markReadNotification(docId)}
           className="inline-flex h-6 w-6 text-white"
           fill="currentColor"
           viewBox="0 0 20 20"
@@ -27,9 +28,11 @@ const Notification = ({ id, name, timestamp, like }) => {
         </svg>
       </div>
       <div className="flex text-slate-100">
-        <p>
-          <b>{name}</b> {like ? "liked your post." : ""}
-        </p>
+        <Link to={`/post/${id}`}>
+          <p>
+            <b>{name}</b> liked your post.
+          </p>
+        </Link>
       </div>
     </article>
   );

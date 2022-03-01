@@ -1,15 +1,18 @@
 import { markReadNotification } from "../../services/firebase";
+import { useTranslation } from "react-i18next";
 import TimeAgo from "javascript-time-ago";
 import { Link } from "react-router-dom";
 const timeAgo = new TimeAgo("pl-PL");
 
 const Notification = ({ docId, name, timestamp, id }) => {
+  const { t } = useTranslation();
+
   return (
     <article className="my-1 mx-2 rounded-md bg-slate-800 px-3 py-4">
       <div className="flex justify-between">
         <p className="inline-flex text-slate-300">
           {timestamp?.seconds
-            ? timeAgo.format(new Date(timestamp.seconds * 1000))
+            ? timeAgo.format(new Date(timestamp.seconds * 1000), "twitter")
             : ""}
         </p>
         <svg
@@ -29,9 +32,10 @@ const Notification = ({ docId, name, timestamp, id }) => {
       </div>
       <div className="flex text-slate-100">
         <Link to={`/post/${id}`}>
-          <p>
-            <b>{name}</b> liked your post.
-          </p>
+          <b>{name}</b>{" "}
+          <span className="font-light text-slate-300">
+            {t("liked_your_post.")}
+          </span>{" "}
         </Link>
       </div>
     </article>

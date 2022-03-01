@@ -56,6 +56,7 @@ export async function saveWorkingCopy(text) {
 export async function uploadPost({ text, parentId, grandParentId }) {
   const user = await getCurrentUser();
   let id = Math.random() * 1000;
+
   
   if (!parentId && !grandParentId) {
     addDoc(collection(db, "posts"), {
@@ -70,9 +71,11 @@ export async function uploadPost({ text, parentId, grandParentId }) {
   }
 
   if (parentId && !grandParentId) {
+    console.log(parentId);
+
     addDoc(collection(db, "posts"), {
       comment: true,
-      parentId: parentId.parentId,
+      parentId: parentId,
       account: user.displayName,
       uid: user.uid,
       text: text,
@@ -80,14 +83,14 @@ export async function uploadPost({ text, parentId, grandParentId }) {
       likedByUsers: [],
     });
 
-    const parentPost = await getPostById(parentId.parentId);
-    
+    const parentPost = await getPostById(parentId);
+
     addDoc(collection(db, "notifications"), {
       timestamp: serverTimestamp(),
       typeOfNotification: "comment",
       read: false,
       uid: parentPost.uid,
-      id: parentId.parentId,
+      id: parentId,
       commentText: text,
       commentedByUid: user.uid,
       commentedByName: user.displayName,

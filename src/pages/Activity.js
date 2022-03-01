@@ -3,6 +3,7 @@ import CommentNotification from "../components/notifications/CommentNotification
 import { useState, useEffect } from "react";
 import { getCurrentUser } from "../services/firebase";
 import { db } from "../lib/firebase";
+import { useTranslation } from "react-i18next";
 import {
   collection,
   where,
@@ -12,6 +13,7 @@ import {
 } from "firebase/firestore";
 
 const Activity = () => {
+  const { t } = useTranslation();
   const [notifications, setNotifications] = useState();
   const [user, setUser] = useState();
   const [empty, setEmpty] = useState(false);
@@ -55,7 +57,7 @@ const Activity = () => {
   return (
     <section className="min-h-screen bg-slate-900 py-4">
       <h1 className="mb-2 px-5 text-2xl font-bold tracking-wider text-slate-100">
-        Activity
+        {t("activity")}
       </h1>
       <div className="overflow-y-scroll">
         {notifications ? (

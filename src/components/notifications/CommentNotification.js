@@ -1,15 +1,18 @@
 import { markReadNotification } from "../../services/firebase";
 import TimeAgo from "javascript-time-ago";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 const timeAgo = new TimeAgo("pl-PL");
 
 const CommentNotification = ({ docId, id, name, timestamp, commentText }) => {
+  const { t } = useTranslation();
+
   return (
     <article className="my-1 mx-2 rounded-md bg-slate-800 px-3 py-4">
       <div className="flex justify-between">
         <p className="inline-flex text-slate-300">
           {timestamp?.seconds
-            ? timeAgo.format(new Date(timestamp.seconds * 1000))
+            ? timeAgo.format(new Date(timestamp.seconds * 1000), "twitter")
             : ""}
         </p>
         <button type="button" onClick={() => markReadNotification(docId)}>
@@ -31,11 +34,11 @@ const CommentNotification = ({ docId, id, name, timestamp, commentText }) => {
       <div className="flex text-slate-100">
         <p>
           <b>{name}</b>{" "}
-          <span className="font-light text-slate-300">commented</span>{" "}
+          <span className="font-light text-slate-300">{t("commented")}</span>{" "}
         </p>
       </div>
       <Link to={`/post/${id}`}>
-        <p className="text-md text-slate-100">{commentText}</p>
+        <p className="text-md text-slate-100">"{commentText}"</p>
       </Link>
     </article>
   );

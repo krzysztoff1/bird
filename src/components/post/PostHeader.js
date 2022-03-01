@@ -19,7 +19,7 @@ const PostHeader = ({ account, time, uid }) => {
         </p>
         <p className="text-slate-900 dark:text-slate-200 mr-2 text-xs">
           {time?.seconds
-            ? timeAgo.format(new Date(time.seconds * 1000))
+            ? timeAgo.format(new Date(time.seconds * 1000), "twitter")
             : Date.now().toString()}
         </p>
       </div>

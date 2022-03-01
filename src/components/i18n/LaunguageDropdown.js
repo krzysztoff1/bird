@@ -8,21 +8,27 @@ import { useState } from "react";
 import { changeLanguage } from "i18next";
 
 const LaunguageDropdown = () => {
-  const { i18n } = useTranslation();
-  const [lang, setLang] = useState("en");
+  const { t, i18n } = useTranslation();
+  const [lang, setLang] = useState("pl");
 
   const handleChange = (event) => {
     setLang(event.target.value);
-    i18n.changeLanguage(lang);
   };
 
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl>
-        <InputLabel id="demo-simple-select-label">Age</InputLabel>
-        <Select value={lang} label="Age" onChange={handleChange}>
-          <MenuItem value={"en"}>polish</MenuItem>
-          <MenuItem value={"pl"}>english</MenuItem>
+        <InputLabel>{t("language")}</InputLabel>
+        <Select
+          value={lang}
+          label="Age"
+          onChange={(e) => {
+            setLang(e.target.value);
+            i18n.changeLanguage(e.target.value);
+          }}
+        >
+          <MenuItem value={"pl"}>polish</MenuItem>
+          <MenuItem value={"en"}>english</MenuItem>
         </Select>
       </FormControl>
     </Box>

@@ -1,3 +1,12 @@
 {
-    "post": "Opublikuj"
+    "post": "Opublikuj",
+    "liked_your_post.": "polubił/a twój post.",
+    "language": "Język",
+    "commented": "skomentował/a twój post",
+    "activity": "Aktywność",
+    "no_comments_yet": "Nie ma jeszcze komantarzy, skomentuj jako pierwszy",
+    "likes": "Polubienie",
+    "comments": "Komentarze",
+    "in_response_to": "W odpowiedzi do",
+    "send_post_in_response": "Wyślij post z odpowiedzią"
 }

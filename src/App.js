@@ -11,11 +11,13 @@ import { useState, useEffect, Suspense } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "./lib/firebase";
 import { getCurrentUser } from "./services/firebase";
-import { getDoc, doc, setDoc } from "firebase/firestore";
+import { getDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { Link, Route, Routes, BrowserRouter } from "react-router-dom";
 import MobileNav from "./components/nav/MobileNav";
+import { useTranslation } from "react-i18next";
 
-function App({ t }) {
+function App() {
+  const { i18n } = useTranslation();
   const [currentUser, setCurrentUser] = useState(null);
   const [pending, setPending] = useState(true);
   const [user, setUser] = useState();
@@ -28,10 +30,25 @@ function App({ t }) {
     });
   }, [currentUser]);
 
+  useEffect(() => {
+    if (!user) return;
+    setLang();
+  }, [user]);
+
+  async function setLang() {
+    const postRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(postRef);
+    i18n.changeLanguage(docSnap.data().lang);
+  }
+
   if (user) {
     getDoc(doc(db, "users", user.uid)).then((docSnap) => {
-      if (docSnap.exists()) return;
+      if (docSnap.exists())
+        return updateDoc(doc(db, "users", user.uid), {
+          lang: navigator.language.substring(0, 2),
+        });
       setDoc(doc(db, "users", user.uid), {
+        lang: navigator.language.substring(0, 2),
         name: user.displayName,
         uid: user.uid,
         email: user.email,

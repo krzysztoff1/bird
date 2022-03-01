@@ -1,5 +1,6 @@
 import Post from "../components/post/Post";
 import PostSkeleton from "../components/post/PostSkeleton";
+import HighlightedPost from "../components/post/highlightedPost/HighlightedPost";
 import NewComment from "../components/forms/NewComment";
 import Comments from "../components/comment/Comments";
 import { db } from "../lib/firebase";
@@ -9,25 +10,36 @@ import {
   orderBy,
   doc,
   limit,
+  getDoc,
   where,
   query,
 } from "firebase/firestore";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
+import { getCurrentUser } from "../services/firebase";
+import { useTranslation } from "react-i18next";
 
 const SinglePost = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [post, setPost] = useState();
+  const [profileImage, setProfileImage] = useState();
   const [posts, setPosts] = useState();
   const [numberOfPosts, setNumberOfPosts] = useState(7);
   const [isEmpty, setIsEmpty] = useState(false);
 
+  async function getProfileImage() {
+    const user = await getCurrentUser();
+    const postRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(postRef);
+    setProfileImage(docSnap.data().googleProfilePicture);
+  }
+  getProfileImage();
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, "posts", id), (doc) => {
       setPost(doc.data());
     });
-
     return () => unsubscribe();
   }, [id]);
 
@@ -57,12 +69,10 @@ const SinglePost = () => {
     return () => unsubscribe();
   }, [numberOfPosts, id]);
 
-  console.log(isEmpty);
-
   return (
-    <div className="bg-slate-900 pt-20 min-h-screen">
+    <div className="bg-slate-900 pt-20 min-h-screen pb-16">
       {post ? (
-        <Post
+        <HighlightedPost
           parent
           id={id}
           uid={post.uid}
@@ -74,8 +84,7 @@ const SinglePost = () => {
           thumbnailUrl={post.thumbnailUrl}
         />
       ) : null}
-      <div className="w-full h-1 bg-slate-700 mx-auto max-w-md" />
-      <NewComment parentId={id} />
+      <NewComment parentId={id} post={post} profileImage={profileImage} />
       {!isEmpty ? (
         <InfiniteScroll
           dataLength={numberOfPosts}
@@ -108,7 +117,7 @@ const SinglePost = () => {
         </InfiniteScroll>
       ) : (
         <p className="text-slate-200 text-center mx-auto my-4">
-          No comments yet
+          {t("no_comments_yet")}
         </p>
       )}
     </div>
@@ -116,3 +125,5 @@ const SinglePost = () => {
 };
 
 export default SinglePost;
+
+  

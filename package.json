@@ -49,6 +49,7 @@
         ]
     },
     "devDependencies": {
+        "first-input-delay": "^0.1.3",
         "postcss": "^8.4.6"
     }
 }

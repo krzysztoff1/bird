@@ -1,3 +1,12 @@
 {
-    "post": "Post"
+    "post": "Post",
+    "liked_your_post.": "liked your post.",
+    "language": "language",
+    "commented": "commented",
+    "activity": "Activity",
+    "no_comments_yet": "No comments yet",
+    "likes": "Likes",
+    "comments": "Comments",
+    "in_response_to": "In response to",
+    "send_post_in_response": "Send post with response"
 }

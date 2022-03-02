@@ -7,6 +7,7 @@ import { getCurrentUser, getUserByUid } from "../../services/firebase";
 import { db } from "../../lib/firebase";
 import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Post = ({
   account,
@@ -63,7 +64,9 @@ const Post = ({
       />
       <div className="w-full">
         <PostHeader account={account} time={time} uid={uid} />
-        <PostContent text={text} />
+        <Link to={`/post/${id}`}>
+          <PostContent text={text} />
+        </Link>
         <PostImage imageUrl={imageUrl} thumbnailUrl={thumbnailUrl} />
         <PostFooter
           likedByUsers={likedByUsers}

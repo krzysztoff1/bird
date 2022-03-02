@@ -11,6 +11,7 @@ import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import TimeAgo from "javascript-time-ago";
 import { useTranslation } from "react-i18next";
+import { monthsShort } from "../../../constans/date";
 
 const timeAgo = new TimeAgo("pl-PL");
 
@@ -61,7 +62,7 @@ const Post = ({
       className={`${
         inlineComment ? "border-r-2 border-t-0 pl-8" : "mt-2 "
       } inlineComment shadow-slate-500" z-0
-          mx-auto w-full max-w-full flex-grow bg-slate-900 p-3 px-8 dark:border-slate-800 sm:max-w-md sm:p-3 sm:hover:shadow-xl md:max-w-xl`}
+          mx-auto w-full max-w-full flex-grow bg-slate-900 p-3 px-3 sm:px-8 dark:border-slate-800 sm:max-w-md sm:p-3 sm:hover:shadow-xl md:max-w-xl`}
     >
       <div className="flex">
         {profilePicture ? (
@@ -92,9 +93,7 @@ const Post = ({
       </div>
       <p className="mt-4 text-gray-700 text-xl dark:text-slate-200">{text}</p>
       <p className="text-slate-900 dark:text-slate-500 mr-2 mt-4">
-        {time?.seconds
-          ? new Date(Date.UTC(2019, 5, 11)).toString()
-          : Date.UTC(2019, 5, 11).now().toString()}
+        {monthsShort[new Date().getMonth(time?.seconds * 1000)]}
       </p>
       {likedByUsers.length || numberOfComments ? (
         <>

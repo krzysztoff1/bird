@@ -1,11 +1,14 @@
 import { likePost } from "../../services/firebase";
 import { Link } from "react-router-dom";
+import ReactTooltip from "react-tooltip";
+import { useTranslation } from "react-i18next";
 
 const PostFooter = ({ likedByUsers, user, id, parent, numberOfComments }) => {
+  const { t } = useTranslation();
   return (
     <div className="z-10 mt-3 flex w-full justify-between">
       <div className="flex w-[55px] items-center">
-        <div className="w-[40px]">
+        <div data-tip data-for="likeTip" className="w-[40px]">
           <div
             onClick={() => likePost({ id })}
             className="flex cursor-pointer items-center justify-center shadow-xl"
@@ -37,6 +40,9 @@ const PostFooter = ({ likedByUsers, user, id, parent, numberOfComments }) => {
         <p className="h-fit text-xs text-slate-800 dark:text-white">
           <span>{likedByUsers.length}</span>
         </p>
+        <ReactTooltip delayShow={500} id="likeTip" place="top" effect="solid">
+          {t("like_post")}
+        </ReactTooltip>
       </div>
       <div className="flex w-[55px] items-center">
         <div className="w-[40px]">

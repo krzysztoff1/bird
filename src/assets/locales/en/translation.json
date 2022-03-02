@@ -8,5 +8,6 @@
     "likes": "Likes",
     "comments": "Comments",
     "in_response_to": "In response to",
-    "send_post_in_response": "Send post with response"
+    "send_post_in_response": "Send post with response",
+    "like_post": "Like post"
 }

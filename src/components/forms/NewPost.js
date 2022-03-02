@@ -23,6 +23,7 @@ const NewPost = () => {
   const [drafts, setDrafts] = useState();
   const [file, setFile] = useState();
   const textField = useRef();
+  const fileRef = useRef();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,6 +61,10 @@ const NewPost = () => {
     uploadPostWithImage({ text, file });
     navigate("/");
   }
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
 
   return (
     <Suspense fallback={<p>Loading</p>}>
@@ -176,6 +181,21 @@ const NewPost = () => {
                 placeholder="Whaazzzaz Upppp"
               />
             </div>
+            <div className="my-2 px-4">
+              {file ? (
+                <>
+                  <label className="text-slate-100">
+                    {t("attached_files")}
+                  </label>
+                  <img
+                    className="h-28 w-28 rounded-md"
+                    src={URL.createObjectURL(file)}
+                    alt=""
+                    srcset=""
+                  />
+                </>
+              ) : null}
+            </div>
           </div>
           <div className="w-full">
             <div className="m-1 flex w-full border-b-2 border-slate-700 pb-1">
@@ -207,18 +227,29 @@ const NewPost = () => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                <svg
-                  className="h-6 w-6"
-                  fill="#4ade80"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
+                <div>
+                  <button type="button" onClick={() => fileRef.current.click()}>
+                    <svg
+                      className="h-6 w-6"
+                      fill="#4ade80"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                  <input
+                    ref={fileRef}
+                    onChange={handleFileChange}
+                    multiple={false}
+                    type="file"
+                    hidden
+                  />
+                </div>
                 <svg
                   className="h-6 w-6"
                   fill="#4ade80"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { uploadPost, uploadPostWithImage } from "../../services/firebase";
 import { useTranslation } from "react-i18next";
 
@@ -7,9 +7,12 @@ const NewComment = ({ post, profileImage, parentId }) => {
   const [text, setText] = useState("");
   const [open, toggleOpen] = useState(false);
   const [file, setFile] = useState();
+  const textArea = useRef();
 
   function handleSubmit(e) {
     e.preventDefault();
+    textArea.current.val("");
+    setText("");
     if (!parentId) return;
     if (!file) return uploadPost({ text, parentId });
     uploadPostWithImage({ text, file, parentId });
@@ -27,21 +30,24 @@ const NewComment = ({ post, profileImage, parentId }) => {
           <span className="text-teal-500"> @{post?.account.toLowerCase()}</span>
         </label>
       ) : null}
-      <div className="flex">
+      <div className="flex sm:p-0 pr-3">
         <img
           className="w-10 h-10 m-3 rounded-full"
           src={profileImage}
           alt=" "
         />
-        <div className="w-full">
+        <div className={`w-full ${open ? "" : "flex"}`}>
           <textarea
+            ref={textArea}
             onChange={(e) => setText(e.target.value)}
             id="message"
-            rows={open ? 3 : 1}
-            className="outline-none resize-none min-h-[70px] transition-all my-1 text-xl bg-transparent block py-2.5 w-full text-slate-100  bg-gray-50 "
+            rows={2}
+            className={`${
+              open ? "" : "truncate"
+            } outline-none resize-none min-h-[70px] transition-all my-1 text-xl bg-transparent block py-2.5 w-full text-slate-100  bg-gray-50`}
             placeholder={t("send_post_in_response")}
           />
-          <div className="flex justify-between items-center">
+          <div className="flex shadow-xl justify-between items-start">
             {open ? (
               <>
                 <div>
@@ -69,10 +75,9 @@ const NewComment = ({ post, profileImage, parentId }) => {
               </>
             ) : (
               <>
-                <div></div>
                 <button
                   type="submit"
-                  className="rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  className="mt-3 shadow-2xl overflow-visible rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   {t("post")}
                 </button>
@@ -81,6 +86,7 @@ const NewComment = ({ post, profileImage, parentId }) => {
           </div>
         </div>
       </div>
+      <hr className="my-2 border-t-[0.5px] border-slate-600" />
     </form>
   );
 };

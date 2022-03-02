@@ -16,7 +16,7 @@ import { useState, useEffect } from "react";
 const PostsList = () => {
   const [posts, setPosts] = useState();
   const [following, setFollowing] = useState([]);
-  const [numberOfPosts, setNumberOfPosts] = useState(7);
+  const [numberOfPosts, setNumberOfPosts] = useState(15);
   const [isEmpty, setIsEmpty] = useState(false);
 
   useEffect(() => {
@@ -57,11 +57,10 @@ const PostsList = () => {
       .fill()
       .map((item, i) => <PostSkeleton key={i} />);
 
-
   return (
     <InfiniteScroll
       dataLength={numberOfPosts}
-      next={() => setNumberOfPosts(numberOfPosts + 5)}
+      next={() => setNumberOfPosts(numberOfPosts + 10)}
       hasMore={true}
     >
       {posts.map((post) => (

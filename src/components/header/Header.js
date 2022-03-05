@@ -9,7 +9,7 @@ const Header = (children) => {
         <>
           <button
             onClick={() => window.history.go(-1)}
-            className="mx-4 rounded-full p-2 backdrop-blur-md transition-all hover:bg-white/25"
+            className="mx-4 rounded-full p-2 transition-all hover:bg-white/25 hover:backdrop-blur-md"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -27,9 +27,9 @@ const Header = (children) => {
             </svg>
           </button>
           <h1 className="text-xl font-bold">Post</h1>
-          <button className="mx-4 rounded-full p-2 backdrop-blur-md transition-all hover:bg-white/25">
+          <button className="mx-4 rounded-full p-2 transition-all hover:bg-white/25 hover:backdrop-blur-md">
             <svg
-              class="h-6 w-6"
+              className="h-6 w-6"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -70,8 +70,10 @@ const Header = (children) => {
   };
 
   return (
-    <header className="fixed top-0 z-50 mx-auto flex h-[50px] w-full max-w-full items-center justify-between bg-slate-900/70 px-4 py-2 text-slate-100  shadow-md backdrop-blur-md md:max-w-xl">
-      {renderHeader()}
+    <header className="fixed top-0 z-50 mx-auto  h-[50px] w-full bg-slate-900/70 px-4 py-2 text-slate-100 backdrop-blur-md">
+      <div className="min-w-sm mx-auto flex max-w-xl items-center justify-between">
+        {renderHeader()}
+      </div>
     </header>
   );
 };

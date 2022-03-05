@@ -35,11 +35,10 @@ const SinglePost = () => {
     const postRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(postRef);
     setProfileImage(
-      docSnap.data()?.profilePicture
+      docSnap.data().profilePicture
         ? docSnap.data().googleProfileImage
         : docSnap.data().profilePicture
     );
-    console.log(docSnap.data()?.profilePicture);
   }
   getProfileImage();
 
@@ -77,9 +76,9 @@ const SinglePost = () => {
   }, [numberOfPosts, id]);
 
   return (
-    <article className="min-h-screen min-w-[100vw] overflow-y-scroll bg-slate-900">
-      <div className="relative overflow-y-scroll">
-        {/* pt-20 pb-16 */}
+    <article className="fixed top-0 bottom-0 min-h-screen min-w-[100vw] overflow-y-scroll bg-slate-900">
+      {/* <article className="min-h-screen min-w-[100vw] bg-slate-900"> */}
+      <div className="mb-12 overflow-scroll">
         <button
           onClick={() => window.history.go(-1)}
           className="mx-4 rounded-full p-2 backdrop-blur-md transition-all hover:bg-white/25"

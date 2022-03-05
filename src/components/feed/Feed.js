@@ -21,7 +21,7 @@ const Feed = () => {
           ) : (
             users.map((user) => (
               <Link key={user.uid} to={`/profile/${user.uid}`}>
-                <div className={`w-12 rounded-full overflow-hidden  shadow-md`}>
+                <div className={`w-12 overflow-hidden rounded-full  shadow-md`}>
                   <img alt="" src={user.googleProfilePicture} />
                 </div>
               </Link>

@@ -122,7 +122,7 @@ const FloatingButton = () => {
                     className="p-3 font-bold text-slate-100"
                   >
                     <svg
-                      class="h-6 w-6"
+                      className="h-6 w-6"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -324,7 +324,7 @@ const FloatingButton = () => {
                   className="flex w-full cursor-pointer border-b-2 border-slate-700 py-2 text-zinc-100"
                 >
                   <input
-                    class="form-check-input float-left mt-1 mr-2 h-4 w-4 cursor-pointer appearance-none rounded-full border border-gray-300 bg-white bg-contain bg-center bg-no-repeat align-top transition duration-200 checked:border-blue-600 checked:bg-blue-600 focus:outline-none"
+                    className="form-check-input float-left mt-1 mr-2 h-4 w-4 cursor-pointer appearance-none rounded-full border border-gray-300 bg-white bg-contain bg-center bg-no-repeat align-top transition duration-200 checked:border-blue-600 checked:bg-blue-600 focus:outline-none"
                     type="radio"
                   />
                   <p>{draft.text}</p>

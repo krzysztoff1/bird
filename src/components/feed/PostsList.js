@@ -14,9 +14,10 @@ import {
 } from "firebase/firestore";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useState, useEffect } from "react";
-import { async } from "@firebase/util";
+import { useLocation } from "react-router";
 
 const PostsList = () => {
+  const location = useLocation();
   const [posts, setPosts] = useState();
   const [following, setFollowing] = useState([]);
   const [numberOfPosts, setNumberOfPosts] = useState(10);
@@ -138,7 +139,7 @@ const PostsList = () => {
       .map((item, i) => <PostSkeleton key={i} />);
 
   return (
-    <>
+    <div>
       <section>
         {posts.map((post) => (
           <Post
@@ -149,8 +150,8 @@ const PostsList = () => {
             time={post.timestamp}
             text={post.text}
             likedByUsers={post.likedByUsers}
-            // imageUrl={post.imageUrl}
-            // thumbnailUrl={post.thumbnailUrl}
+            imageUrl={post.imageUrl}
+            thumbnailUrl={post.thumbnailUrl}
           />
         ))}
         <p className="font-xl my-5 text-center text-slate-50">
@@ -197,8 +198,8 @@ const PostsList = () => {
           />
         ))}
       </InfiniteScroll> */}
-    </>
+    </div>
   );
-};;
+};
 
 export default PostsList;

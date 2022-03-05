@@ -343,7 +343,7 @@ export async function follow(uid) {
 
   const followedRef = doc(db, "users", uid);
   updateDoc(followedRef, {
-    followedBy: arrayUnion(uid),
+    followedBy: arrayUnion(user.uid),
   });
 }
 
@@ -356,6 +356,6 @@ export async function unFollow(uid) {
 
   const unFollowedRef = doc(db, "users", uid);
   updateDoc(unFollowedRef, {
-    followedBy: arrayRemove(uid),
+    followedBy: arrayRemove(user.uid),
   });
 }

@@ -1,8 +1,16 @@
 import { useState, useEffect } from "react";
 import { follow, unFollow, isFollowed } from "../../services/firebase";
-import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
-const ProfileHeader = ({ account, uid, profilePicture, description }) => {
+const ProfileHeader = ({
+  account,
+  uid,
+  profilePicture,
+  description,
+  following,
+  followedBy,
+}) => {
+  const { t } = useTranslation();
   const [followState, setFollowState] = useState(false);
 
   useEffect(() => {
@@ -19,9 +27,7 @@ const ProfileHeader = ({ account, uid, profilePicture, description }) => {
           alt="User avatar"
           className="rounded-full"
         />
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+        <button
           onClick={() =>
             !followState
               ? (follow(uid), setFollowState(true))
@@ -34,10 +40,24 @@ const ProfileHeader = ({ account, uid, profilePicture, description }) => {
           } mr-2 mb-2 w-28 rounded-lg border-2 border-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white shadow-md transition-all hover:bg-blue-800`}
         >
           {!followState ? "Follow" : "Following"}
-        </motion.button>
+        </button>
       </div>
       <h3 className="mt-2 text-xl text-slate-200"> {account}</h3>
       <p className="md mt-2 text-slate-200"> {description}</p>
+      <p className="text-slate-900 dark:text-slate-500">
+        {followedBy?.length !== 0 && (
+          <>
+            <b className="font-bold text-slate-200"> {followedBy.length} </b>{" "}
+            {t("followers")} •{" "}
+          </>
+        )}
+        {following?.length && (
+          <>
+            <b className="font-bold text-slate-200">{following.length} </b>{" "}
+            {t("following")}
+          </>
+        )}
+      </p>
     </div>
   );
 };

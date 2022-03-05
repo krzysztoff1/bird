@@ -11,11 +11,10 @@ const NewComment = ({ post, profileImage, parentId }) => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    textArea.current.val("");
-    setText("");
     if (!parentId) return;
     if (!file) return uploadPost({ text, parentId });
     uploadPostWithImage({ text, file, parentId });
+    setText("");
   }
 
   return (

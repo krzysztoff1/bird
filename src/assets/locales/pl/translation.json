@@ -9,5 +9,8 @@
     "comments": "Komentarze",
     "in_response_to": "W odpowiedzi do",
     "send_post_in_response": "Wyślij post z odpowiedzią",
-    "like_post": "Lubię"
+    "like_post": "Lubię",
+    "followers": "Obserwujący",
+    "following": "Obserwuje",
+    "posts": "Posty"
 }

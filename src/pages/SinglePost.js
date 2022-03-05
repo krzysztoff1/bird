@@ -15,12 +15,13 @@ import {
   query,
 } from "firebase/firestore";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { getCurrentUser } from "../services/firebase";
 import { useTranslation } from "react-i18next";
 
 const SinglePost = () => {
+  let location = useLocation();
   const { t } = useTranslation();
   const { id } = useParams();
   const [post, setPost] = useState();
@@ -33,9 +34,15 @@ const SinglePost = () => {
     const user = await getCurrentUser();
     const postRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(postRef);
-    setProfileImage(docSnap.data().googleProfilePicture);
+    setProfileImage(
+      docSnap.data()?.profilePicture
+        ? docSnap.data().googleProfileImage
+        : docSnap.data().profilePicture
+    );
+    console.log(docSnap.data()?.profilePicture);
   }
   getProfileImage();
+
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, "posts", id), (doc) => {
       setPost(doc.data());
@@ -70,57 +77,79 @@ const SinglePost = () => {
   }, [numberOfPosts, id]);
 
   return (
-    <div className="bg-slate-900 pt-20 min-h-screen pb-16">
-      {post ? (
-        <HighlightedPost
-          parent
-          id={id}
-          uid={post.uid}
-          account={post.account}
-          time={post.timestamp}
-          text={post.text}
-          likedByUsers={post.likedByUsers}
-          imageUrl={post.imageUrl}
-          thumbnailUrl={post.thumbnailUrl}
-        />
-      ) : null}
-      <NewComment parentId={id} post={post} profileImage={profileImage} />
-      {!isEmpty ? (
-        <InfiniteScroll
-          dataLength={numberOfPosts}
-          next={() => setNumberOfPosts(numberOfPosts + 5)}
-          hasMore={true}
-          loader={Array(1)
-            .fill()
-            .map((item, i) => (
-              <PostSkeleton key={i} />
-            ))}
-          endMessage={
-            <p className="text-slate-100 font-bold text-center">
-              Yay! You have seen it all
-            </p>
-          }
+    <article className="min-h-screen min-w-[100vw] overflow-y-scroll bg-slate-900">
+      <div className="relative overflow-y-scroll">
+        {/* pt-20 pb-16 */}
+        <button
+          onClick={() => window.history.go(-1)}
+          className="mx-4 rounded-full p-2 backdrop-blur-md transition-all hover:bg-white/25"
         >
-          {posts?.map((post) => (
-            <Comments
-              key={post.id}
-              id={post.id}
-              uid={post.uid}
-              account={post.account}
-              time={post.timestamp}
-              text={post.text}
-              likedByUsers={post.likedByUsers}
-              imageUrl={post.imageUrl}
-              thumbnailUrl={post.thumbnailUrl}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 text-slate-100"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
             />
-          ))}
-        </InfiniteScroll>
-      ) : (
-        <p className="text-slate-200 text-center mx-auto my-4">
-          {t("no_comments_yet")}
-        </p>
-      )}
-    </div>
+          </svg>
+        </button>
+        {post ? (
+          <HighlightedPost
+            parent
+            id={id}
+            uid={post.uid}
+            account={post.account}
+            time={post.timestamp}
+            text={post.text}
+            likedByUsers={post.likedByUsers}
+            imageUrl={post.imageUrl}
+            thumbnailUrl={post.thumbnailUrl}
+          />
+        ) : null}
+        <NewComment parentId={id} post={post} profileImage={profileImage} />
+        {!isEmpty ? (
+          <InfiniteScroll
+            dataLength={numberOfPosts}
+            next={() => setNumberOfPosts(numberOfPosts + 5)}
+            hasMore={true}
+            loader={Array(1)
+              .fill()
+              .map((item, i) => (
+                <PostSkeleton key={i} />
+              ))}
+            endMessage={
+              <p className="text-center font-bold text-slate-100">
+                Yay! You have seen it all
+              </p>
+            }
+          >
+            {posts?.map((post) => (
+              <Comments
+                key={post.id}
+                id={post.id}
+                uid={post.uid}
+                account={post.account}
+                time={post.timestamp}
+                text={post.text}
+                likedByUsers={post.likedByUsers}
+                imageUrl={post.imageUrl}
+                thumbnailUrl={post.thumbnailUrl}
+              />
+            ))}
+          </InfiniteScroll>
+        ) : (
+          <p className="mx-auto my-4 text-center text-slate-200">
+            {t("no_comments_yet")}
+          </p>
+        )}
+      </div>
+    </article>
   );
 };
 

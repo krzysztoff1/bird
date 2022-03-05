@@ -1,16 +1,14 @@
 import ProfileHeader from "../components/profile/ProfileHeader";
 import { useParams } from "react-router";
 import { useState, useEffect } from "react";
-import { isFollowed } from "../services/firebase";
-import "flowbite";
 import { db } from "../lib/firebase";
 import Post from "../components/post/Post";
 import PostSkeleton from "../components/post/PostSkeleton";
 import {
   collection,
   onSnapshot,
-  orderBy,
   doc,
+  orderBy,
   limit,
   where,
   query,
@@ -26,7 +24,10 @@ const Profile = () => {
   const [tab, setTab] = useState("posts");
 
   useEffect(() => {
-    getUserByUid(uid).then((res) => setUserData(res));
+    const unsubscribe = onSnapshot(doc(db, "users", uid), (doc) => {
+      setUserData(doc.data());
+    });
+    return () => unsubscribe();
   }, [uid]);
 
   useEffect(() => {
@@ -40,9 +41,9 @@ const Profile = () => {
       ),
       (snapshot) => {
         setPosts(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
+          snapshot.docs.map((post) => ({
+            id: post.id,
+            ...post.data(),
           }))
         );
       },
@@ -61,10 +62,11 @@ const Profile = () => {
       <ProfileHeader
         profilePicture={userData.googleProfilePicture}
         account={userData.name}
+        following={userData.following}
+        followedBy={userData.followedBy}
         uid={uid}
         description={userData.description}
       />
-
       <div className="mx-auto border-b border-gray-200 dark:border-gray-700 sm:max-w-md">
         <ul className="-mb-px flex flex-wrap">
           <li onClick={() => setTab("posts")} className="mr-2">

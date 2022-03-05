@@ -27,9 +27,13 @@ const Post = ({
 
   useEffect(() => {
     getCurrentUser().then((res) => setUser(res));
-    getUserByUid(uid).then((res) =>
-      setProfilePicture(res.googleProfilePicture)
-    );
+    getUserByUid(uid).then((userData) => {
+      setProfilePicture(
+        userData.profilePicture
+          ? userData.profilePicture
+          : userData.googleProfilePicture
+      );
+    });
   }, []);
 
   useEffect(() => {
@@ -67,7 +71,9 @@ const Post = ({
         <Link to={`/post/${id}`}>
           <PostContent text={text} />
         </Link>
-        <PostImage imageUrl={imageUrl} thumbnailUrl={thumbnailUrl} />
+        {imageUrl && thumbnailUrl ? (
+          <PostImage id={id} imageUrl={imageUrl} thumbnailUrl={thumbnailUrl} />
+        ) : null}
         <PostFooter
           likedByUsers={likedByUsers}
           user={user}

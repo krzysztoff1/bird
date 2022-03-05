@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaKiwiBird } from "react-icons/fa";
+import { useLocation } from "react-router";
 
 const Nav = () => {
   const [open, setOpen] = useState(false);

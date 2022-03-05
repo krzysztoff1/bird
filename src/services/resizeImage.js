@@ -19,3 +19,23 @@ export async function createResizedImage(file) {
 
   return resizeFile(file);
 }
+
+export async function createResizedImage200(file) {
+  const resizeFile = (file) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        200,
+        200,
+        "JPEG",
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "file"
+      );
+    });
+
+  return resizeFile(file);
+}

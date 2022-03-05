@@ -28,7 +28,6 @@ const FloatingButton = () => {
   const [user, setUser] = useState();
   const [drafts, setDrafts] = useState();
   const [file, setFile] = useState();
-
   const textField = useRef();
 
   useEffect(() => {

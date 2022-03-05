@@ -1,4 +1,5 @@
 module.exports = {
+  darkMode: "class",
   content: [
     "./src/App.js",
     "./src/pages/SignIn.js",
@@ -7,11 +8,14 @@ module.exports = {
     "./src/pages/Loading.js",
     "./src/pages/SinglePost.js",
     "./src/pages/Settings.js",
+    "./src/pages/Photo.js",
     "./src/components/loaders/Spinner.js",
     "./src/components/forms/NewPost.js",
     "./src/components/forms/NewComment.js",
+    "./src/components/forms/SetProfilePicture.js",
     "./src/components/feed/Feed.js",
     "./src/components/PostsList.js",
+    "./src/components/header/Header.js",
     "./src/components/post/PostSkeleton.js",
     "./src/components/post/PostAside.js",
     "./src/components/post/PostHeader.js",

@@ -3,6 +3,7 @@ import {
   serverTimestamp,
   addDoc,
   collection,
+  deleteDoc,
   getDocs,
   updateDoc,
   doc,
@@ -14,11 +15,15 @@ import {
   arrayRemove,
   arrayUnion,
 } from "firebase/firestore";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { useState } from "react";
-import { Result } from "postcss";
-import { createResizedImage } from "./resizeImage";
+import { createResizedImage, createResizedImage200 } from "./resizeImage";
+import FastAverageColor from "fast-average-color";
 
 // authentication
 export async function getCurrentUser() {
@@ -51,13 +56,10 @@ export async function saveWorkingCopy(text) {
   });
 }
 // upload posts and comments
-
-
 export async function uploadPost({ text, parentId, grandParentId }) {
   const user = await getCurrentUser();
   let id = Math.random() * 1000;
 
-  
   if (!parentId && !grandParentId) {
     addDoc(collection(db, "posts"), {
       comment: false,
@@ -115,7 +117,10 @@ export async function uploadPostWithImage({ text, file, id }) {
   let progress = "";
   let progressT = "";
   let fullImageUrl = "";
+  let averageColor;
   let imageId = Math.floor(Math.random() * 1000);
+
+  const fac = new FastAverageColor();
 
   const user = await getCurrentUser();
 
@@ -133,7 +138,11 @@ export async function uploadPostWithImage({ text, file, id }) {
     () => {
       getDownloadURL(uploadImage.snapshot.ref).then((downloadURL) => {
         fullImageUrl = downloadURL;
-        uploadPost();
+        const setAverageColor = async () => {
+          averageColor = await fac.getColorAsync(thumbnailUrl);
+          uploadPost();
+        };
+        setAverageColor();
       });
     }
   );
@@ -172,6 +181,7 @@ export async function uploadPostWithImage({ text, file, id }) {
           text: text,
           timestamp: serverTimestamp(),
           likedByUsers: [],
+          averageColor: averageColor,
           imageUrl: fullImageUrl,
           thumbnailUrl: thumbnailUrl,
         });
@@ -190,6 +200,7 @@ export async function uploadPostWithImage({ text, file, id }) {
         text: text,
         timestamp: serverTimestamp(),
         likedByUsers: [],
+        averageColor: averageColor,
         imageUrl: fullImageUrl,
         thumbnailUrl: thumbnailUrl,
       });
@@ -201,7 +212,7 @@ export async function uploadPostWithImage({ text, file, id }) {
   }
   return progress;
 }
-// get 
+// get
 export async function getPosts() {
   const postsRef = collection(db, "posts");
   const postsSnapshot = await getDocs(postsRef);
@@ -220,7 +231,7 @@ export async function getUsers() {
   const userSnap = await getDocs(usersRef);
   return userSnap.docs.map((user) => user.data());
 }
-// user profile
+// user profile / settings
 export async function setUserDescription(text) {
   const user = await getCurrentUser();
   const postRef = doc(db, "users", user.uid);
@@ -230,6 +241,42 @@ export async function setUserDescription(text) {
   });
 }
 
+export async function setUserPhoto(file) {
+  const user = await getCurrentUser();
+  const postRef = doc(db, "users", user.uid);
+  let progress = "";
+
+  deleteObject(ref(storage, `profilePictures/uid_${user.uid}.jpg`))
+    .then(() => {
+      console.log("previous photo deleted");
+    })
+    .catch((error) => {
+      console.log("no photo to delete" + error);
+    });
+
+  const resizedProfileImage = await createResizedImage200(file);
+  const storageRef = ref(storage, `profilePictures/uid_${user.uid}.jpg`);
+  const uploadImage = uploadBytesResumable(storageRef, resizedProfileImage);
+  uploadImage.on(
+    "state_changed",
+    (snapshot) => {
+      progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log(progress);
+    },
+    (error) => {
+      console.log(error);
+    },
+    () => {
+      getDownloadURL(uploadImage.snapshot.ref).then((downloadURL) => {
+        updateDoc(postRef, {
+          profilePicture: downloadURL,
+        });
+      });
+    }
+  );
+}
+
+// likes
 export async function isPostLikedByUser(id) {
   const user = await getCurrentUser();
   const postRef = doc(db, "posts", id);
@@ -237,7 +284,7 @@ export async function isPostLikedByUser(id) {
 
   return docSnap.data().likedByUsers.includes(user.uid);
 }
-// likes
+
 export async function getUserByUid(uid) {
   const postRef = doc(db, "users", uid);
   const docSnap = await getDoc(postRef);
@@ -250,16 +297,11 @@ export async function likePost({ id }) {
   const postRef = doc(db, "posts", id);
   const docSnap = await getDoc(postRef);
 
-  if (docSnap.data().likedByUsers.includes(user.uid)) {
-    updateDoc(postRef, {
-      likedByUsers: arrayRemove(user.uid),
-    });
-    return;
-  }
+  if (docSnap.data().likedByUsers.includes(user.uid))
+    return updateDoc(postRef, { likedByUsers: arrayRemove(user.uid) });
   updateDoc(postRef, {
     likedByUsers: arrayUnion(user.uid),
   });
-
   addDoc(collection(db, "notifications"), {
     typeOfNotification: "like",
     read: false,
@@ -272,10 +314,10 @@ export async function likePost({ id }) {
 }
 // notifications
 export async function markReadNotification(id) {
-  const postRef = doc(db, "notifications", id);
-  updateDoc(postRef, {
-    read: true,
-  });
+  await deleteDoc(doc(db, "notifications", id));
+  // updateDoc(postRef, {
+  //   read: true,
+  // });
 }
 // follow
 export async function getFollowed() {
@@ -294,9 +336,14 @@ export async function isFollowed(uid) {
 
 export async function follow(uid) {
   const user = await getCurrentUser();
-  const postRef = doc(db, "users", user.uid);
-  updateDoc(postRef, {
+  const userRef = doc(db, "users", user.uid);
+  updateDoc(userRef, {
     following: arrayUnion(uid),
+  });
+
+  const followedRef = doc(db, "users", uid);
+  updateDoc(followedRef, {
+    followedBy: arrayUnion(uid),
   });
 }
 
@@ -305,5 +352,10 @@ export async function unFollow(uid) {
   const postRef = doc(db, "users", user.uid);
   updateDoc(postRef, {
     following: arrayRemove(uid),
+  });
+
+  const unFollowedRef = doc(db, "users", uid);
+  updateDoc(unFollowedRef, {
+    followedBy: arrayRemove(uid),
   });
 }

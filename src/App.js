@@ -5,6 +5,7 @@ import Profile from "./pages/Profile";
 import SinglePost from "./pages/SinglePost";
 import NewPost from "./components/forms/NewPost";
 import Settings from "./pages/Settings";
+import Photo from "./pages/Photo";
 import SignIn from "./pages/SignIn";
 import Activity from "./pages/Activity";
 import { useState, useEffect, Suspense } from "react";
@@ -15,6 +16,7 @@ import { getDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { Link, Route, Routes, BrowserRouter } from "react-router-dom";
 import MobileNav from "./components/nav/MobileNav";
 import { useTranslation } from "react-i18next";
+import Header from "./components/header/Header";
 
 function App() {
   const { i18n } = useTranslation();
@@ -32,21 +34,12 @@ function App() {
 
   useEffect(() => {
     if (!user) return;
-    setLang();
+    // setLang();
   }, [user]);
-
-  async function setLang() {
-    const postRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(postRef);
-    i18n.changeLanguage(docSnap.data().lang);
-  }
 
   if (user) {
     getDoc(doc(db, "users", user.uid)).then((docSnap) => {
-      if (docSnap.exists())
-        return updateDoc(doc(db, "users", user.uid), {
-          lang: navigator.language.substring(0, 2),
-        });
+      if (docSnap.exists()) return;
       setDoc(doc(db, "users", user.uid), {
         lang: navigator.language.substring(0, 2),
         name: user.displayName,
@@ -60,6 +53,10 @@ function App() {
     });
   }
 
+  //! temp
+  document.documentElement.classList.add("dark");
+  //! temp
+
   if (pending) {
     return <Loading />;
   }
@@ -68,6 +65,7 @@ function App() {
     <BrowserRouter>
       {currentUser ? (
         <>
+          <Header />
           <MobileNav />
           <Routes>
             <Route exact path="/" element={<Home />} />
@@ -75,6 +73,7 @@ function App() {
             <Route path="/user/profile" element={<Settings />} />
             <Route path="/activity" element={<Activity />} />
             <Route path="/post/:id" element={<SinglePost />} />
+            <Route path="/post/:id/photo" element={<Photo />} />
             <Route path="/compose/post" element={<NewPost />} />
           </Routes>
         </>

@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import ProgressiveImage from "react-progressive-graceful-image";
 import { db } from "../../../lib/firebase";
 import {
   likePost,
@@ -9,11 +8,9 @@ import {
 import Spinner from "../../loaders/Spinner";
 import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import TimeAgo from "javascript-time-ago";
 import { useTranslation } from "react-i18next";
 import { monthsShort } from "../../../constans/date";
-
-const timeAgo = new TimeAgo("pl-PL");
+import PostImage from "../PostImage";
 
 const Post = ({
   account,
@@ -35,7 +32,9 @@ const Post = ({
   useEffect(() => {
     getCurrentUser().then((res) => setUser(res));
     getUserByUid(uid).then((res) =>
-      setProfilePicture(res.googleProfilePicture)
+      setProfilePicture(
+        res.profilePicture ? res.profilePicture : res.googleProfilePicture
+      )
     );
   }, []);
 
@@ -62,13 +61,13 @@ const Post = ({
       className={`${
         inlineComment ? "border-r-2 border-t-0 pl-8" : "mt-2 "
       } inlineComment shadow-slate-500" z-0
-          mx-auto w-full max-w-full flex-grow bg-slate-900 p-3 px-3 sm:px-8 dark:border-slate-800 sm:max-w-md sm:p-3 sm:hover:shadow-xl md:max-w-xl`}
+          mx-auto w-full max-w-full flex-grow bg-slate-900 p-3 px-3 dark:border-slate-800 sm:max-w-md sm:p-3 sm:px-8 sm:hover:shadow-xl md:max-w-xl`}
     >
       <div className="flex">
         {profilePicture ? (
           <Link to={`/profile/${uid}`}>
             <img
-              className="w-14 h-14 object-cover rounded-full"
+              className="h-14 w-14 rounded-full object-cover"
               src={profilePicture}
               alt="avatar"
             />
@@ -78,52 +77,50 @@ const Post = ({
             <Spinner />
           </div>
         )}
-        <div className="flex ml-2.5 flex-col items-start justify-center">
+        <div className="ml-2.5 flex flex-col items-start justify-center">
           <Link to={`/profile/${uid}`}>
-            <p className="text-slate-900 font-medium tracking-wider dark:text-slate-200 mr-2 text-md">
+            <p className="text-md mr-2 font-medium tracking-wider text-slate-900 dark:text-slate-200">
               {account}
             </p>
           </Link>
           <Link to={`/profile/${uid}`}>
-            <p className="text-slate-500 font-light dark:text-slate-500 mr-2 tracking-wider text-xs">
+            <p className="mr-2 text-xs font-light tracking-wider text-slate-500 dark:text-slate-500">
               @{account.toLowerCase().replace(/ /g, "")}
             </p>
           </Link>
         </div>
       </div>
-      <p className="mt-4 text-gray-700 text-xl dark:text-slate-200">{text}</p>
-      <p className="text-slate-900 dark:text-slate-500 mr-2 mt-4">
+      <p className="mt-4 mb-1 text-xl text-gray-700 dark:text-slate-200">
+        {text}
+      </p>
+      {imageUrl && thumbnailUrl ? (
+        <PostImage id={id} imageUrl={imageUrl} thumbnailUrl={thumbnailUrl} />
+      ) : null}
+      <p className="mr-2 mt-4 text-slate-900 dark:text-slate-500">
         {monthsShort[new Date().getMonth(time?.seconds * 1000)]}
       </p>
       {likedByUsers.length || numberOfComments ? (
-        <>
-          <hr className="mt-3 border-t-[0.5px] border-slate-600" />
-          <div className="flex gap-3 my-3">
-            {likedByUsers.length ? (
-              <p className="text-slate-900 dark:text-slate-500">
-                <b className="text-slate-200 font-bold">
-                  {likedByUsers.length}
-                </b>{" "}
-                {t("likes")}
-              </p>
-            ) : null}
-            {numberOfComments ? (
-              <p className="text-slate-900 dark:text-slate-500">
-                <b className="text-slate-200 font-bold">{numberOfComments}</b>{" "}
-                {t("comments")}
-              </p>
-            ) : null}
-          </div>
-        </>
+        <hr className="mt-3 border-t-[0.5px] border-slate-600" />
       ) : null}
-      <hr className="mt-2 border-t-[0.5px] border-slate-600" />
-      <div className="rounded-md overflow-hidden mt-1">
-        {imageUrl && thumbnailUrl ? (
-          <ProgressiveImage src={imageUrl} placeholder={thumbnailUrl}>
-            {(src) => <img className="w-full" src={src} alt="" />}
-          </ProgressiveImage>
+      <div
+        className={`${
+          likedByUsers.length || numberOfComments ? "my-3 flex gap-3" : null
+        }`}
+      >
+        {likedByUsers.length ? (
+          <p className="text-slate-900 dark:text-slate-500">
+            <b className="font-bold text-slate-200">{likedByUsers.length}</b>{" "}
+            {t("likes")}
+          </p>
+        ) : null}
+        {numberOfComments ? (
+          <p className="text-slate-900 dark:text-slate-500">
+            <b className="font-bold text-slate-200">{numberOfComments}</b>{" "}
+            {t("comments")}
+          </p>
         ) : null}
       </div>
+      <hr className="mt-2 border-t-[0.5px] border-slate-600" />
       <div className="z-10 mt-4 flex w-full justify-between">
         <div className="flex w-[55px] items-center">
           <div className="w-[40px]">

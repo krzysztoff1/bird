@@ -9,10 +9,12 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 
 const Nav = () => {
   const [user, setUser] = useState();
   const [notifications, setNotifications] = useState(false);
+  let location = useLocation();
 
   useEffect(() => {
     getCurrentUser().then((res) => setUser(res));
@@ -37,6 +39,8 @@ const Nav = () => {
     );
     return () => unsubscribe();
   }, [user]);
+
+  if (location.pathname.includes("post")) return <></>;
 
   return (
     <nav className="fixed bottom-0 z-50 flex w-[100vw] justify-around overflow-y-auto bg-slate-200/60 px-3 py-3 backdrop-blur-xl dark:bg-slate-900/30">

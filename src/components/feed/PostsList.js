@@ -143,6 +143,7 @@ const PostsList = () => {
       <section>
         {posts.map((post) => (
           <Post
+            averageColor={post.averageColor}
             key={post.id}
             id={post.id}
             uid={post.uid}

@@ -1,6 +1,6 @@
 import PostAside from "./PostAside";
 import PostHeader from "./PostHeader";
-import PostImage from "./PostImage";
+import PostImage from "./PostImage/PostImage";
 import PostContent from "./PostContent";
 import PostFooter from "./PostFooter";
 import { getCurrentUser, getUserByUid } from "../../services/firebase";
@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const Post = ({
+  averageColor,
   account,
   text,
   likedByUsers,
@@ -72,7 +73,12 @@ const Post = ({
           <PostContent text={text} />
         </Link>
         {imageUrl && thumbnailUrl ? (
-          <PostImage id={id} imageUrl={imageUrl} thumbnailUrl={thumbnailUrl} />
+          <PostImage
+            averageColor={averageColor}
+            id={id}
+            imageUrl={imageUrl}
+            thumbnailUrl={thumbnailUrl}
+          />
         ) : null}
         <PostFooter
           likedByUsers={likedByUsers}

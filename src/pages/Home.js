@@ -5,7 +5,6 @@ import LaunguageDropdown from "../components/i18n/LaunguageDropdown";
 
 const Home = () => {
   let location = useLocation();
-console.log(location.pathname.includes("post"));
 
 return (
   <section

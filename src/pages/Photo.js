@@ -4,7 +4,7 @@ import Spinner from "../components/loaders/Spinner";
 import { getPostById } from "../services/firebase";
 import ProgressiveImage from "react-progressive-graceful-image";
 
-const Photo = () => {
+const Photo = ({ toggle }) => {
   const { id } = useParams();
   const [photo, setPhoto] = useState();
 
@@ -17,10 +17,10 @@ const Photo = () => {
   if (!photo) return <Spinner />;
 
   return (
-    <>
+    <div className="fixed top-0 left-0 bottom-0 z-[100]">
       <header className="fixed top-4 z-40 flex w-full justify-between">
         <button
-          onClick={() => window.history.go(-1)}
+          onClick={() => toggle(false)}
           className="mx-4 rounded-full p-2 backdrop-blur-md transition-all hover:bg-white/25"
         >
           <svg
@@ -63,7 +63,7 @@ const Photo = () => {
           {(src) => <img className="w-full" src={src} alt="" />}
         </ProgressiveImage>
       </section>
-    </>
+    </div>
   );
 };
 

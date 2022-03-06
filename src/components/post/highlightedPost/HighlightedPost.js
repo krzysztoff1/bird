@@ -10,7 +10,7 @@ import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { monthsShort } from "../../../constans/date";
-import PostImage from "../PostImage";
+import PostImage from "../PostImage/PostImage";
 
 const Post = ({
   account,

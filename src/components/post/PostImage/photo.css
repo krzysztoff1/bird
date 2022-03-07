@@ -1,5 +1,6 @@
 .image-container {
     position: relative;
+    margin-top: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,6 +10,7 @@
 }
 
 .image-container.open {
+    margin-top: 0;
     position: fixed;
     height: 100vh;
     cursor: zoom-out;
@@ -23,6 +25,11 @@
     transition: all;
 }
 
+.image-container {
+    max-height: 100vh;
+    object-fit: contain;
+}
+
 .image-container .image-zoom {
     /* position: absolute; */
     top: 0;
@@ -30,6 +37,5 @@
     right: 0;
     bottom: 0;
     width: 100%;
-    z-index: 11;
     /* height: auto; */
 }

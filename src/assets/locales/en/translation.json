@@ -11,6 +11,7 @@
     "send_post_in_response": "Send post with response",
     "like_post": "Like post",
     "followers": "Followers",
+    "follow": "Follow",
     "following": "Following",
     "posts": "Posts"
 }

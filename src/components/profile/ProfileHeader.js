@@ -25,21 +25,25 @@ const ProfileHeader = ({
           width="60"
           height="60"
           alt="User avatar"
-          className="rounded-full"
+          className="h-20 w-20 rounded-full object-cover"
         />
+        {}
+
         <button
           onClick={() =>
             !followState
               ? (follow(uid), setFollowState(true))
               : (unFollow(uid), setFollowState(false))
           }
+          type="button"
           className={`${
-            !followState
-              ? "bg-blue-600 shadow-blue-600/30"
-              : "bg-transparent shadow-transparent  "
-          } mr-2 mb-2 w-28 rounded-lg border-2 border-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white shadow-md transition-all hover:bg-blue-800`}
+            followState
+              ? " border-slate-50/30  text-slate-50"
+              : " border-slate-50 bg-slate-50 hover:bg-slate-200"
+          } text-md h-min w-[8rem] rounded-full border-[1px] p-2 px-4 font-medium transition-all
+          `}
         >
-          {!followState ? "Follow" : "Following"}
+          {!followState ? t("follow") : t("following")}
         </button>
       </div>
       <h3 className="mt-2 text-xl text-slate-200"> {account}</h3>

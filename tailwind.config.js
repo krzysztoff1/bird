@@ -9,6 +9,8 @@ module.exports = {
     "./src/pages/SinglePost.js",
     "./src/pages/Settings.js",
     "./src/pages/Photo.js",
+    "./src/components/auth/SignInEmail.js",
+    "./src/components/auth/SignInGoogle.js",
     "./src/components/loaders/Spinner.js",
     "./src/components/forms/NewPost.js",
     "./src/components/forms/NewComment.js",

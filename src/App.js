@@ -17,6 +17,7 @@ import { Link, Route, Routes, BrowserRouter } from "react-router-dom";
 import MobileNav from "./components/nav/MobileNav";
 import { useTranslation } from "react-i18next";
 import Header from "./components/header/Header";
+import { AnimatePresence } from "framer-motion";
 
 function App() {
   const { i18n } = useTranslation();
@@ -34,24 +35,23 @@ function App() {
 
   useEffect(() => {
     if (!user) return;
-    // setLang();
   }, [user]);
 
-  if (user) {
-    getDoc(doc(db, "users", user.uid)).then((docSnap) => {
-      if (docSnap.exists()) return;
-      setDoc(doc(db, "users", user.uid), {
-        lang: navigator.language.substring(0, 2),
-        name: user.displayName,
-        uid: user.uid,
-        email: user.email,
-        googleProfilePicture: user.photoURL,
-        darkTheme: true,
-        following: [user.uid],
-      });
-      console.log("Added User");
-    });
-  }
+  // if (user) {
+  //   getDoc(doc(db, "users", user.uid)).then((docSnap) => {
+  //     if (docSnap.exists()) return;
+  //     setDoc(doc(db, "users", user.uid), {
+  //       lang: navigator.language.substring(0, 2),
+  //       name: user.displayName,
+  //       uid: user.uid,
+  //       email: user.email,
+  //       googleProfilePicture: user.photoURL,
+  //       darkTheme: true,
+  //       following: [user.uid],
+  //     });
+  //     console.log("Added User");
+  //   });
+  // }
 
   //! temp
   document.documentElement.classList.add("dark");
@@ -77,7 +77,9 @@ function App() {
               element={
                 <>
                   <Home />
-                  <SinglePost />
+                  <AnimatePresence exitBeforeEnter>
+                    <SinglePost />
+                  </AnimatePresence>
                 </>
               }
             />

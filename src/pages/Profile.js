@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { getUserByUid } from "../services/firebase";
+import Loading from "./Loading";
 
 const Profile = () => {
   const { uid } = useParams();
@@ -55,12 +56,16 @@ const Profile = () => {
     return () => unsubscribe();
   }, [numberOfPosts, uid, tab]);
 
-  if (!userData) return <></>;
+  if (!userData) return <Loading />;
 
   return (
     <div className="min-h-screen bg-slate-900">
       <ProfileHeader
-        profilePicture={userData.googleProfilePicture}
+        profilePicture={
+          !userData.profilePicture
+            ? userData.googleProfileImage
+            : userData.profilePicture
+        }
         account={userData.name}
         following={userData.following}
         followedBy={userData.followedBy}

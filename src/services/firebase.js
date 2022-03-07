@@ -8,7 +8,9 @@ import {
   updateDoc,
   doc,
   onSnapshot,
+  where,
   query,
+  setDoc,
   getDoc,
   orderBy,
   limit,
@@ -21,7 +23,12 @@ import {
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import { createResizedImage, createResizedImage200 } from "./resizeImage";
 import FastAverageColor from "fast-average-color";
 
@@ -41,6 +48,41 @@ export function signInWithGoogle() {
     .catch((error) => {
       console.log(error.code + error.message);
     });
+}
+
+export async function signUpWithEmail({ email, password, name }) {
+  console.log(name);
+  const auth = getAuth();
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    });
+
+  const user = await getCurrentUser();
+
+  setDoc(doc(db, "users", user.uid), {
+    lang: navigator.language.substring(0, 2),
+    name: name,
+    uid: user.uid,
+    email: user.email,
+    profilePicture:
+      "https://www.google.com/url?sa=i&url=https%3A%2F%2Fredro.pl%2Ffototapeta-default-profile-picture-avatar-photo-placeholder-vector-illustration%2C205664584&psig=AOvVaw34VSBW-PjGIBJNAhXjest9&ust=1646770748033000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCNi1u57ptPYCFQAAAAAdAAAAABAq",
+    darkTheme: true,
+    following: [user.uid],
+  });
+}
+
+export async function checkUserName(name) {
+  const q = query(collection(db, "users"), where("name", "==", name));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((user) => {
+    return true;
+  });
+  return false;
 }
 
 export function SignOut() {
@@ -315,9 +357,6 @@ export async function likePost({ id }) {
 // notifications
 export async function markReadNotification(id) {
   await deleteDoc(doc(db, "notifications", id));
-  // updateDoc(postRef, {
-  //   read: true,
-  // });
 }
 // follow
 export async function getFollowed() {

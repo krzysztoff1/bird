@@ -14,6 +14,7 @@ import {
   where,
   query,
 } from "firebase/firestore";
+import { AnimatePresence, motion } from "framer-motion";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useLocation, useParams } from "react-router";
 import { useEffect, useState } from "react";
@@ -29,18 +30,6 @@ const SinglePost = () => {
   const [posts, setPosts] = useState();
   const [numberOfPosts, setNumberOfPosts] = useState(7);
   const [isEmpty, setIsEmpty] = useState(false);
-
-  async function getProfileImage() {
-    const user = await getCurrentUser();
-    const postRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(postRef);
-    setProfileImage(
-      docSnap.data().profilePicture
-        ? docSnap.data().googleProfileImage
-        : docSnap.data().profilePicture
-    );
-  }
-  getProfileImage();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, "posts", id), (doc) => {
@@ -75,80 +64,100 @@ const SinglePost = () => {
     return () => unsubscribe();
   }, [numberOfPosts, id]);
 
+  async function getProfileImage() {
+    const user = await getCurrentUser();
+    const postRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(postRef);
+    setProfileImage(
+      !docSnap.data().profilePicture
+        ? docSnap.data().googleProfileImage
+        : docSnap.data().profilePicture
+    );
+  }
+  getProfileImage();
+
   return (
-    <article className="fixed top-0 bottom-0 min-h-screen min-w-[100vw] overflow-y-scroll bg-slate-900">
-      {/* <article className="min-h-screen min-w-[100vw] bg-slate-900"> */}
-      <div className="mb-12 overflow-scroll">
-        <button
-          onClick={() => window.history.go(-1)}
-          className="mx-4 rounded-full p-2 backdrop-blur-md transition-all hover:bg-white/25"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-slate-100"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth="2"
+    <AnimatePresence>
+      <motion.article
+        initial={{ x: 300 }}
+        exit={{ x: 300 }}
+        animate={{ x: 0 }}
+        transition={{ duration: 0.3 }}
+        className="fixed top-0 bottom-0 min-h-screen min-w-[100vw] overflow-y-scroll bg-slate-900"
+      >
+        {/* <article className="min-h-screen min-w-[100vw] bg-slate-900"> */}
+        <div className="mb-12 overflow-scroll">
+          <button
+            onClick={() => window.history.go(-1)}
+            className="mx-4 rounded-full p-2 backdrop-blur-md transition-all hover:bg-white/25"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M10 19l-7-7m0 0l7-7m-7 7h18"
-            />
-          </svg>
-        </button>
-        {post ? (
-          <HighlightedPost
-            parent
-            id={id}
-            uid={post.uid}
-            account={post.account}
-            time={post.timestamp}
-            text={post.text}
-            likedByUsers={post.likedByUsers}
-            imageUrl={post.imageUrl}
-            thumbnailUrl={post.thumbnailUrl}
-          />
-        ) : null}
-        <NewComment parentId={id} post={post} profileImage={profileImage} />
-        {!isEmpty ? (
-          <InfiniteScroll
-            dataLength={numberOfPosts}
-            next={() => setNumberOfPosts(numberOfPosts + 5)}
-            hasMore={true}
-            loader={Array(1)
-              .fill()
-              .map((item, i) => (
-                <PostSkeleton key={i} />
-              ))}
-            endMessage={
-              <p className="text-center font-bold text-slate-100">
-                Yay! You have seen it all
-              </p>
-            }
-          >
-            {posts?.map((post) => (
-              <Comments
-                key={post.id}
-                id={post.id}
-                uid={post.uid}
-                account={post.account}
-                time={post.timestamp}
-                text={post.text}
-                likedByUsers={post.likedByUsers}
-                imageUrl={post.imageUrl}
-                thumbnailUrl={post.thumbnailUrl}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 text-slate-100"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
-            ))}
-          </InfiniteScroll>
-        ) : (
-          <p className="mx-auto my-4 text-center text-slate-200">
-            {t("no_comments_yet")}
-          </p>
-        )}
-      </div>
-    </article>
+            </svg>
+          </button>
+          {post ? (
+            <HighlightedPost
+              parent
+              id={id}
+              uid={post.uid}
+              account={post.account}
+              time={post.timestamp}
+              text={post.text}
+              likedByUsers={post.likedByUsers}
+              imageUrl={post.imageUrl}
+              thumbnailUrl={post.thumbnailUrl}
+            />
+          ) : null}
+          <NewComment parentId={id} post={post} profileImage={profileImage} />
+          {!isEmpty ? (
+            <InfiniteScroll
+              dataLength={numberOfPosts}
+              next={() => setNumberOfPosts(numberOfPosts + 5)}
+              hasMore={true}
+              loader={Array(1)
+                .fill()
+                .map((item, i) => (
+                  <PostSkeleton key={i} />
+                ))}
+              endMessage={
+                <p className="text-center font-bold text-slate-100">
+                  Yay! You have seen it all
+                </p>
+              }
+            >
+              {posts?.map((post) => (
+                <Comments
+                  key={post.id}
+                  id={post.id}
+                  uid={post.uid}
+                  account={post.account}
+                  time={post.timestamp}
+                  text={post.text}
+                  likedByUsers={post.likedByUsers}
+                  imageUrl={post.imageUrl}
+                  thumbnailUrl={post.thumbnailUrl}
+                />
+              ))}
+            </InfiniteScroll>
+          ) : (
+            <p className="mx-auto my-4 text-center text-slate-200">
+              {t("no_comments_yet")}
+            </p>
+          )}
+        </div>
+      </motion.article>
+    </AnimatePresence>
   );
 };
 

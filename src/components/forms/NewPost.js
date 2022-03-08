@@ -6,6 +6,7 @@ import Modal from "../modals/Modal";
 import {
   saveWorkingCopy,
   getCurrentUser,
+  getUserByUid,
   uploadPost,
   uploadPostWithImage,
 } from "../../services/firebase";
@@ -27,7 +28,14 @@ const NewPost = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getCurrentUser().then((res) => setUser(res));
+    const getUserData = async () => {
+      const user = await getCurrentUser();
+      const userData = await getUserByUid(user.uid);
+      setUser(userData);
+      console.log(userData);
+    };
+
+    getUserData();
   }, []);
 
   useEffect(() => {
@@ -169,7 +177,11 @@ const NewPost = () => {
             <div className="mt-4 flex w-full px-3">
               <img
                 className="h-8 w-8 flex-none rounded-full"
-                src={user ? user.photoURL : null}
+                src={
+                  user
+                    ? user?.profilePicture
+                    : "https://img.redro.pl/plakaty/default-profile-picture-avatar-photo-placeholder-vector-illustration-400-205664584.jpg"
+                }
                 alt=""
                 srcSet=""
               />

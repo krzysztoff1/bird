@@ -36,9 +36,10 @@ const SignInEmail = () => {
   useEffect(() => {
     if (!email) return;
     setEmailIsCorrect(validateEmail(email));
+    console.log("====================================");
+    console.log(emailIsCorrect);
+    console.log("====================================");
   }, [email]);
-
-  console.log(nameIsAvailable);
 
   const handleNameChange = async (e) => {
     setName(e.target.value);
@@ -122,12 +123,16 @@ const SignInEmail = () => {
               <input
                 onChange={(e) => handleNameChange(e)}
                 type="name"
+                style={{
+                  borderColor:
+                    name?.length > 3 && !nameIsAvailable && "#22c55e",
+                }}
                 className="text-md block w-full rounded-lg border-2 border-slate-800 bg-slate-800 p-2.5 text-slate-100 placeholder-slate-300 outline-none"
                 placeholder="John Doe"
               />
               <label
                 htmlFor="email"
-                className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="my-1 mb-2 block text-sm font-medium text-white "
               >
                 {name?.length < 3 ? (
                   <span>Username must contain more than 3 characters </span>
@@ -160,11 +165,10 @@ const SignInEmail = () => {
                 <input
                   required
                   type="text"
+                  style={{ borderColor: emailIsCorrect && "#22c55e" }}
                   onChange={(e) => setEmail(e.target.value)}
-                  id="email-adress-icon"
-                  className={`${
-                    emailIsCorrect ? "border-green-400" : "border-slate-800"
-                  } block w-full rounded-lg border-2 bg-gray-50 p-2.5 pl-10 text-sm text-slate-800   dark:bg-slate-800 dark:text-white dark:placeholder-gray-400 `}
+                  className={`
+                  block w-full rounded-lg border-2   bg-slate-800 p-2.5 pl-10 text-sm  text-white dark:placeholder-gray-400 `}
                   placeholder="name@email.com"
                 />
               </div>
@@ -202,7 +206,8 @@ const SignInEmail = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 style={{ borderColor: label?.color }}
-                className="text-md block w-full rounded-lg border-2 border-slate-800 bg-slate-800 p-2.5 text-slate-100 placeholder-slate-300 outline-none"
+                className="text-md input[type='password']
+ block w-full rounded-lg border-2 border-slate-800 bg-slate-800 p-2.5 text-slate-100 placeholder-slate-300 outline-none"
                 placeholder="Strong password"
               />
             </section>

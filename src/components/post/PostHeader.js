@@ -8,16 +8,16 @@ const timeAgo = new TimeAgo("pl-PL");
 const PostHeader = ({ account, time, uid }) => {
   return (
     <div className="flex items-center justify-between">
-      <div className="flex flex-wrap items-baseline w-full">
+      <div className="flex w-full flex-wrap items-baseline">
         <Link to={`/profile/${uid}`}>
-          <p className="text-slate-900 font-bold dark:text-slate-200 mr-2 text-sm">
+          <p className="mr-2 text-sm font-bold text-slate-900 dark:text-slate-200">
             {account}
           </p>
         </Link>
-        <p className="text-slate-900 dark:text-slate-200 mr-2 text-xs">
-          @{account.toLowerCase().replace(/ /g, "")}
+        <p className="mr-2 text-xs text-slate-900 dark:text-slate-200">
+          {/* @{account.toLowerCase().replace(/ /g, "")} */}
         </p>
-        <p className="text-slate-900 dark:text-slate-200 mr-2 text-xs">
+        <p className="mr-2 text-xs text-slate-900 dark:text-slate-200">
           {time?.seconds
             ? timeAgo.format(new Date(time.seconds * 1000), "twitter")
             : Date.now().toString()}

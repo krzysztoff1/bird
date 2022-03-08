@@ -56,24 +56,22 @@ export async function signUpWithEmail({ email, password, name }) {
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
+
+      setDoc(doc(db, "users", user.uid), {
+        lang: navigator.language.substring(0, 2),
+        name: name,
+        uid: user.uid,
+        email: user.email,
+        profilePicture:
+          "https://img.redro.pl/plakaty/default-profile-picture-avatar-photo-placeholder-vector-illustration-400-205664584.jpg",
+        darkTheme: true,
+        following: [user.uid],
+      });
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
     });
-
-  const user = await getCurrentUser();
-
-  setDoc(doc(db, "users", user.uid), {
-    lang: navigator.language.substring(0, 2),
-    name: name,
-    uid: user.uid,
-    email: user.email,
-    profilePicture:
-      "https://www.google.com/url?sa=i&url=https%3A%2F%2Fredro.pl%2Ffototapeta-default-profile-picture-avatar-photo-placeholder-vector-illustration%2C205664584&psig=AOvVaw34VSBW-PjGIBJNAhXjest9&ust=1646770748033000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCNi1u57ptPYCFQAAAAAdAAAAABAq",
-    darkTheme: true,
-    following: [user.uid],
-  });
 }
 
 export async function checkUserName(name) {
@@ -99,13 +97,15 @@ export async function saveWorkingCopy(text) {
 }
 // upload posts and comments
 export async function uploadPost({ text, parentId, grandParentId }) {
-  const user = await getCurrentUser();
   let id = Math.random() * 1000;
+
+  const user = await getCurrentUser();
+  const userData = await getUserByUid(user.uid);
 
   if (!parentId && !grandParentId) {
     addDoc(collection(db, "posts"), {
       comment: false,
-      account: user.displayName,
+      account: userData.name,
       uid: user.uid,
       text: text,
       timestamp: serverTimestamp(),
@@ -120,15 +120,15 @@ export async function uploadPost({ text, parentId, grandParentId }) {
     addDoc(collection(db, "posts"), {
       comment: true,
       parentId: parentId,
-      account: user.displayName,
+      account: userData.name,
       uid: user.uid,
       text: text,
       timestamp: serverTimestamp(),
       likedByUsers: [],
     });
 
+    // send notification
     const parentPost = await getPostById(parentId);
-
     addDoc(collection(db, "notifications"), {
       timestamp: serverTimestamp(),
       typeOfNotification: "comment",
@@ -137,9 +137,8 @@ export async function uploadPost({ text, parentId, grandParentId }) {
       id: parentId,
       commentText: text,
       commentedByUid: user.uid,
-      commentedByName: user.displayName,
+      commentedByName: userData.name,
     });
-
     return;
   }
 
@@ -147,7 +146,7 @@ export async function uploadPost({ text, parentId, grandParentId }) {
     comment: true,
     parentId: parentId.parentId,
     grandParentId: grandParentId.id,
-    account: user.displayName,
+    account: userData.name,
     uid: user.uid,
     text: text,
     timestamp: serverTimestamp(),
@@ -165,6 +164,7 @@ export async function uploadPostWithImage({ text, file, id }) {
   const fac = new FastAverageColor();
 
   const user = await getCurrentUser();
+  const userData = await getUserByUid(user.uid);
 
   const storageRef = ref(storage, `postImages/full_${imageId}.jpg`);
   const uploadImage = uploadBytesResumable(storageRef, file);
@@ -218,7 +218,7 @@ export async function uploadPostWithImage({ text, file, id }) {
       try {
         addDoc(collection(db, "posts"), {
           comment: false,
-          account: user.displayName,
+          account: userData.name,
           uid: user.uid,
           text: text,
           timestamp: serverTimestamp(),
@@ -237,7 +237,7 @@ export async function uploadPostWithImage({ text, file, id }) {
       addDoc(collection(db, "posts"), {
         comment: true,
         parentId: id.id,
-        account: user.displayName,
+        account: userData.name,
         uid: user.uid,
         text: text,
         timestamp: serverTimestamp(),

@@ -9,7 +9,7 @@ const PostFooter = ({ likedByUsers, user, id, parent, numberOfComments }) => {
     <div className="z-10 mt-3 flex w-full justify-between">
       <div className="flex w-[55px] items-center">
         <div data-tip data-for="likeTip" className="w-[40px]">
-          <div
+          <button
             onClick={() => likePost({ id })}
             className="flex cursor-pointer items-center justify-center shadow-xl"
           >
@@ -35,7 +35,7 @@ const PostFooter = ({ likedByUsers, user, id, parent, numberOfComments }) => {
                 />
               )}
             </svg>
-          </div>
+          </button>
         </div>
         <p className="h-fit text-xs text-slate-800 dark:text-white">
           <span>{likedByUsers.length}</span>

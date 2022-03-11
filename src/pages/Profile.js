@@ -72,32 +72,6 @@ const Profile = () => {
         uid={uid}
         description={userData.description}
       />
-      <div className="mx-auto border-b border-gray-200 dark:border-gray-700 sm:max-w-md">
-        <ul className="-mb-px flex flex-wrap">
-          <li onClick={() => setTab("posts")} className="mr-2">
-            <p
-              className={`inline-block py-4 px-4 text-center text-sm font-medium ${
-                tab === "posts"
-                  ? "active rounded-t-lg border-b-2 border-blue-600 text-blue-600 dark:border-blue-500 dark:text-blue-500"
-                  : "rounded-t-lg border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300"
-              }`}
-            >
-              Posts
-            </p>
-          </li>
-          <li onClick={() => setTab("comments")} className="mr-2">
-            <p
-              className={`inline-block py-4 px-4 text-center text-sm font-medium ${
-                tab === "comments"
-                  ? "active rounded-t-lg border-b-2 border-blue-600 text-blue-600 dark:border-blue-500 dark:text-blue-500"
-                  : "rounded-t-lg border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300"
-              }`}
-            >
-              Comments and posts
-            </p>
-          </li>
-        </ul>
-      </div>
       <InfiniteScroll
         dataLength={numberOfPosts}
         next={() => setNumberOfPosts(numberOfPosts + 5)}

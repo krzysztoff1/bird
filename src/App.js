@@ -1,95 +1,57 @@
 import "./index.css";
+import AppLogo from "./components/loaders/AppLogo";
+import { BrowserView, MobileView } from "react-device-detect";
+import * as rdd from "react-device-detect";
 import Home from "./pages/Home";
-import Loading from "./pages/Loading";
 import Profile from "./pages/Profile";
 import SinglePost from "./pages/SinglePost";
 import NewPost from "./components/forms/NewPost";
 import Settings from "./pages/Settings";
 import Photo from "./pages/Photo";
-import SignIn from "./pages/SignIn";
+import AuthForm from "./pages/Auth";
 import Activity from "./pages/Activity";
-import { useState, useEffect, Suspense } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { db, auth } from "./lib/firebase";
-import { getCurrentUser } from "./services/firebase";
-import { getDoc, doc, setDoc, updateDoc } from "firebase/firestore";
-import { Link, Route, Routes, BrowserRouter } from "react-router-dom";
 import MobileNav from "./components/nav/MobileNav";
-import { useTranslation } from "react-i18next";
 import Header from "./components/header/Header";
-import { AnimatePresence } from "framer-motion";
+import { NavigationProvider } from "./context/NavigationContext";
+import { AuthContext } from "./context/auth-context";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { useContext } from "react";
 
 function App() {
-  const { i18n } = useTranslation();
-  const [currentUser, setCurrentUser] = useState(null);
-  const [pending, setPending] = useState(true);
-  const [user, setUser] = useState();
-  getCurrentUser().then((res) => setUser(res));
+  const AuthState = useContext(AuthContext);
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-      setPending(false);
-    });
-  }, [currentUser]);
-
-  useEffect(() => {
-    if (!user) return;
-  }, [user]);
-
-  // if (user) {
-  //   getDoc(doc(db, "users", user.uid)).then((docSnap) => {
-  //     if (docSnap.exists()) return;
-  //     setDoc(doc(db, "users", user.uid), {
-  //       lang: navigator.language.substring(0, 2),
-  //       name: user.displayName,
-  //       uid: user.uid,
-  //       email: user.email,
-  //       googleProfilePicture: user.photoURL,
-  //       darkTheme: true,
-  //       following: [user.uid],
-  //     });
-  //     console.log("Added User");
-  //   });
-  // }
-
-  //! temp
+  //! testing
   document.documentElement.classList.add("dark");
-  //! temp
+  //!
 
-  if (pending) {
-    return <Loading />;
-  }
+  if (!AuthState.currentUser) return <AuthForm />;
 
   return (
     <BrowserRouter>
-      {currentUser ? (
-        <>
+      <NavigationProvider>
+        <BrowserView></BrowserView>
+        <MobileView>
           <Header />
           <MobileNav />
-          <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route path="/profile/:uid" element={<Profile />} />
-            <Route path="/user/profile" element={<Settings />} />
-            <Route path="/activity" element={<Activity />} />
-            <Route
-              path="/post/:id"
-              element={
-                <>
-                  <Home />
-                  <AnimatePresence exitBeforeEnter>
-                    <SinglePost />
-                  </AnimatePresence>
-                </>
-              }
-            />
-            <Route path="/post/:id/photo" element={<Photo />} />
-            <Route path="/compose/post" element={<NewPost />} />
-          </Routes>
-        </>
-      ) : (
-        <SignIn />
-      )}
+        </MobileView>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/profile/:uid" element={<Profile />} />
+          <Route path="/user/profile" element={<Settings />} />
+          <Route path="/activity" element={<Activity />} />
+          <Route
+            path="/post/:id"
+            element={
+              <>
+                <Home />
+                <SinglePost />
+              </>
+            }
+          />
+          <Route path="/post/:id/photo" element={<Photo />} />
+          <Route path="/compose/post" element={<NewPost />} />
+        </Routes>
+      </NavigationProvider>
     </BrowserRouter>
   );
 }

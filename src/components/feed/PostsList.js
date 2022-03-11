@@ -123,14 +123,14 @@ const PostsList = () => {
   //   );
   //   return () => next();
   // };
-  window.onscroll = function (ev) {
-    if (
-      window.innerHeight + window.scrollY >=
-      document.body.offsetHeight - 200
-    ) {
-      setNumberOfPosts((state) => state + 5);
-    }
-  };
+  // window.onscroll = function (ev) {
+  //   if (
+  //     window.innerHeight + window.scrollY >=
+  //     document.body.offsetHeight - 200
+  //   ) {
+  //     setNumberOfPosts((state) => state + 5);
+  //   }
+  // };
 
   if (isEmpty) return <p className="text-white">No posts yet</p>;
   if (!posts)
@@ -139,9 +139,28 @@ const PostsList = () => {
       .map((item, i) => <PostSkeleton key={i} />);
 
   return (
-    <div>
-      <section>
+    <section>
+      <InfiniteScroll
+        dataLength={numberOfPosts}
+        next={() => setNumberOfPosts(numberOfPosts + 10)}
+        hasMore={hasMore}
+      >
         {posts.map((post) => (
+          <Post
+            key={post.id}
+            id={post.id}
+            averageColor={post.averageColor}
+            uid={post.uid}
+            account={post.account}
+            time={post.timestamp}
+            text={post.text}
+            likedByUsers={post.likedByUsers}
+            imageUrl={post.imageUrl}
+            thumbnailUrl={post.thumbnailUrl}
+          />
+        ))}
+      </InfiniteScroll>
+      {/* {posts.map((post) => (
           <Post
             averageColor={post.averageColor}
             key={post.id}
@@ -154,52 +173,11 @@ const PostsList = () => {
             imageUrl={post.imageUrl}
             thumbnailUrl={post.thumbnailUrl}
           />
-        ))}
-        <p className="font-xl my-5 text-center text-slate-50">
+        ))} */}
+      {/* <p className="font-xl my-5 text-center text-slate-50">
           Thats all folks
-        </p>
-      </section>
-      <nav aria-label="pagination" className="w-full pb-16">
-        <ul className="mx-auto inline-flex -space-x-px">
-          <li>
-            <button
-              type="button"
-              className="border border-gray-300 bg-white py-2 px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            >
-              1
-            </button>
-          </li>
-          <li>
-            <button
-              type="button"
-              // onClick={() => getMorePosts()}
-              className="border border-gray-300 bg-white py-2 px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            >
-              next
-            </button>
-          </li>
-        </ul>
-      </nav>
-      {/* <InfiniteScroll
-        dataLength={numberOfPosts}
-        next={() => getMorePosts()}
-        hasMore={hasMore}
-      >
-        {posts.map((post) => (
-          <Post
-            key={post.id}
-            id={post.id}
-            uid={post.uid}
-            account={post.account}
-            time={post.timestamp}
-            text={post.text}
-            likedByUsers={post.likedByUsers}
-            // imageUrl={post.imageUrl}
-            // thumbnailUrl={post.thumbnailUrl}
-          />
-        ))}
-      </InfiniteScroll> */}
-    </div>
+        </p> */}
+    </section>
   );
 };
 

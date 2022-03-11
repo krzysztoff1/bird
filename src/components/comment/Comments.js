@@ -67,7 +67,7 @@ const Comments = ({
   if (!posts) return <PostSkeleton />;
 
   return (
-    <div>
+    <div className="border-b-[1px] border-slate-700">
       <Post
         id={id}
         uid={uid}
@@ -94,7 +94,7 @@ const Comments = ({
       ))}
       {totalComments > 2 ? (
         <Link to={`/post/${id}`}>
-          <p className="hover:underline max-w-md mx-auto text-center text-blue-500">
+          <p className="mx-auto mb-4 max-w-md text-center text-blue-500 hover:underline">
             Show all comments ({totalComments})
           </p>
         </Link>

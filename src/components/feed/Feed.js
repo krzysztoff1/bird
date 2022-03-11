@@ -14,7 +14,7 @@ const Feed = () => {
 
   return (
     <div>
-      <div className="my-3 flex w-full justify-center bg-slate-700 py-4">
+      {/* <div className="my-3 flex w-full justify-center bg-slate-700 py-4">
         <div className="avatar-group mx-auto flex -space-x-4">
           {!users ? (
             <Skeleton />
@@ -28,8 +28,7 @@ const Feed = () => {
             ))
           )}
         </div>
-      </div>
-
+      </div> */}
       <PostsList />
     </div>
   );

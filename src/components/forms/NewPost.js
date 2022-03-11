@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, Suspense } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
 import { db } from "../../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import Modal from "../modals/Modal";
@@ -10,16 +9,20 @@ import {
   uploadPost,
   uploadPostWithImage,
 } from "../../services/firebase";
+import CircularProgress from "../../components/uiElements/CircularProgress";
+import BackButton from "./BackButtonNewPost.js/BackButton";
 import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
+import { useContext } from "react";
+import { AuthContext } from "../../context/auth-context";
 
 const NewPost = () => {
   const { t } = useTranslation();
+  const authState = useContext(AuthContext);
 
   const [open, toggleOpen] = useState(false);
   const [modal, toggleModal] = useState(false);
   const [draftsModal, toggleDraftsModal] = useState(false);
-  const [user, setUser] = useState();
   const [text, setText] = useState("");
   const [drafts, setDrafts] = useState();
   const [file, setFile] = useState();
@@ -27,16 +30,7 @@ const NewPost = () => {
   const fileRef = useRef();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const getUserData = async () => {
-      const user = await getCurrentUser();
-      const userData = await getUserByUid(user.uid);
-      setUser(userData);
-      console.log(userData);
-    };
-
-    getUserData();
-  }, []);
+  const user = authState.userData;
 
   useEffect(() => {
     if (!user) return;
@@ -75,7 +69,7 @@ const NewPost = () => {
   };
 
   return (
-    <Suspense fallback={<p>Loading</p>}>
+    <>
       <Modal
         modal={modal}
         toggleModal={toggleModal}
@@ -134,9 +128,9 @@ const NewPost = () => {
           }}
           className="z-50 mx-auto flex h-full w-full flex-col items-start justify-between "
         >
-          <div className="mt-6 w-full px-3">
-            <div className="flex w-full justify-between">
-              <button
+          <div className="mt-12 w-full  px-3">
+            <div className="flex w-full justify-end">
+              {/* <button
                 type="button"
                 onClick={() => (!text ? navigate("/") : toggleModal(true))}
                 className="p-3 font-bold text-slate-100"
@@ -153,7 +147,7 @@ const NewPost = () => {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-              </button>
+              </button> */}
               <div className="flex">
                 {drafts ? (
                   <button
@@ -178,7 +172,7 @@ const NewPost = () => {
               <img
                 className="h-8 w-8 flex-none rounded-full"
                 src={
-                  user
+                  user?.profilePicture
                     ? user?.profilePicture
                     : "https://img.redro.pl/plakaty/default-profile-picture-avatar-photo-placeholder-vector-illustration-400-205664584.jpg"
                 }
@@ -290,13 +284,10 @@ const NewPost = () => {
               </div>
               <div className="flex items-center gap-3">
                 <CircularProgress
-                  className="max-w-12"
-                  sx={{
-                    width: 150,
-                    color: "#4ade80",
-                  }}
-                  variant="determinate"
-                  value={Math.trunc((text.length / 280) * 100)}
+                  size={17}
+                  strokeWidth={3}
+                  percentage={(text.length / 280) * 100}
+                  color="#4ade80"
                 />
                 <svg
                   className="h-6 w-6"
@@ -308,14 +299,14 @@ const NewPost = () => {
                     fillRule="evenodd"
                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
                     clipRule="evenodd"
-                  ></path>
+                  />
                 </svg>
               </div>
             </div>
           </div>
         </form>
       </section>
-    </Suspense>
+    </>
   );
 };
 

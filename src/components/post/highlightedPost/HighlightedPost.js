@@ -83,14 +83,9 @@ const Post = ({
               {account}
             </p>
           </Link>
-          <Link to={`/profile/${uid}`}>
-            <p className="mr-2 text-xs font-light tracking-wider text-slate-500 dark:text-slate-500">
-              @{account.toLowerCase().replace(/ /g, "")}
-            </p>
-          </Link>
         </div>
       </div>
-      <p className="mt-4 mb-1 text-xl text-gray-700 dark:text-slate-200">
+      <p className="text-md mt-4 mb-1 text-xl text-white dark:text-slate-200">
         {text}
       </p>
       {imageUrl && thumbnailUrl ? (

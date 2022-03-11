@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { uploadPost, uploadPostWithImage } from "../../services/firebase";
 import { useTranslation } from "react-i18next";
+import CircularProgress from "../uiElements/CircularProgress";
 
 const NewComment = ({ post, profileImage, parentId }) => {
   const { t } = useTranslation();
@@ -23,19 +24,22 @@ const NewComment = ({ post, profileImage, parentId }) => {
       onClick={() => toggleOpen(true)}
       className="mx-auto max-w-md md:max-w-xl"
     >
-      {open ? (
-        <label className=" ml-16 text-slate-500">
+      {open && (
+        <label className=" ml-16 text-white/50">
           {t("in_response_to")}
-          <span className="text-teal-500"> @{post?.account.toLowerCase()}</span>
+          <span className="text-green-400">
+            {" "}
+            @{post?.account.toLowerCase()}
+          </span>
         </label>
-      ) : null}
-      <div className="flex sm:p-0 pr-3">
+      )}
+      <div className="flex pr-3 sm:p-0">
         <img
-          className="w-10 h-10 m-3 rounded-full"
+          className="m-3 h-10 w-10 rounded-full"
           src={profileImage}
           alt=" "
         />
-        <div className={`w-full ${open ? "" : "flex"}`}>
+        <div className={`w-full ${!open && "flex"}`}>
           <textarea
             ref={textArea}
             onChange={(e) => setText(e.target.value)}
@@ -43,16 +47,16 @@ const NewComment = ({ post, profileImage, parentId }) => {
             rows={2}
             className={`${
               open ? "" : "truncate"
-            } outline-none resize-none min-h-[70px] transition-all my-1 text-xl bg-transparent block py-2.5 w-full text-slate-100  bg-gray-50`}
+            } my-1 block min-h-[70px] w-full resize-none bg-transparent bg-gray-50 py-2.5 text-xl text-slate-100 outline-none  transition-all`}
             placeholder={t("send_post_in_response")}
           />
-          <div className="flex shadow-xl justify-between items-start">
+          <div className="flex items-start justify-between shadow-xl">
             {open ? (
               <>
                 <div>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 text-teal-500 w-6"
+                    className="h-6 w-6 text-green-500"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -65,18 +69,26 @@ const NewComment = ({ post, profileImage, parentId }) => {
                     />
                   </svg>
                 </div>
-                <button
-                  type="submit"
-                  className="rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  {t("post")}
-                </button>
+                <div className="flex items-center gap-3">
+                  <CircularProgress
+                    size={17}
+                    strokeWidth={3}
+                    percentage={(text.length / 280) * 100}
+                    color="#4ade80"
+                  />
+                  <button
+                    type="submit"
+                    className="rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    {t("post")}
+                  </button>
+                </div>
               </>
             ) : (
               <>
                 <button
                   type="submit"
-                  className="mt-3 shadow-2xl overflow-visible rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  className="mt-3 overflow-visible rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white shadow-2xl hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   {t("post")}
                 </button>

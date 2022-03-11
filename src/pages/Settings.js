@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { getCurrentUser, setUserDescription } from "../services/firebase";
 import { db } from "../lib/firebase";
 import Post from "../components/post/Post";
@@ -17,31 +17,22 @@ import {
   query,
 } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
+import { AuthContext } from "../context/auth-context";
 
 const Settings = () => {
   const { t } = useTranslation();
+  const authState = useContext(AuthContext);
+  const { toggleRefresher } = useContext(AuthContext);
   const [text, setText] = useState();
   const [user, setUser] = useState();
   const [file, setFile] = useState();
   const [posts, setPosts] = useState();
   const [numberOfPosts, setNumberOfPosts] = useState(7);
-  const [userData, setUserData] = useState();
   const [modal, toggleModal] = useState(false);
   const [profilePictureModal, toggleProfilePictureModal] = useState(false);
   const fileRef = useRef;
 
-  const setCookie = (locale) => {
-    document.cookie = `NEXT_LOCALE=${"pl"}; expires=Fri, 31 Dec 9999 23:59:59 GMT`;
-  };
-
-  useEffect(() => {
-    getCurrentUser().then((res) => setUser(res));
-  }, []);
-
-  useEffect(() => {
-    if (!user) return;
-    getData();
-  }, [user, modal, profilePictureModal]);
+  const userData = authState.userData;
 
   useEffect(() => {
     if (!userData) return;
@@ -69,15 +60,12 @@ const Settings = () => {
     return () => unsubscribe();
   }, [numberOfPosts, userData]);
 
-  async function getData() {
-    const postRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(postRef);
-
-    setUserData(docSnap.data());
-  }
-
   if (!userData)
-    return <div className="h-screen w-screen bg-slate-900">Loading</div>;
+    return (
+      <div className="flex h-screen w-screen items-center justify-center bg-slate-900 text-white">
+        Loading...
+      </div>
+    );
 
   return (
     <>
@@ -117,7 +105,13 @@ const Settings = () => {
         title="Change profile Picture"
         subTitle="description of Change profile Picture"
       >
-        <button type="button" onClick={() => toggleProfilePictureModal(false)}>
+        <button
+          type="button"
+          onClick={() => {
+            toggleProfilePictureModal(false);
+            toggleRefresher((state) => !state);
+          }}
+        >
           Close
         </button>
         <SetProfilePicture toggle={toggleProfilePictureModal} />

@@ -336,8 +336,10 @@ export async function getUserByUid(uid) {
 
 export async function likePost({ id }) {
   const user = await getCurrentUser();
+  const userData = await getUserByUid(user.uid);
+
   const postRef = doc(db, "posts", id);
-  const docSnap = await getDoc(postRef);
+  const docSnap = await getDoc(doc(db, "posts", id));
 
   if (docSnap.data().likedByUsers.includes(user.uid))
     return updateDoc(postRef, { likedByUsers: arrayRemove(user.uid) });
@@ -351,7 +353,7 @@ export async function likePost({ id }) {
     uid: docSnap.data().uid,
     likedPost: id,
     likedBy: user.uid,
-    likedByName: user.displayName,
+    likedByName: userData.name,
   });
 }
 // notifications

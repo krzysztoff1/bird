@@ -1,6 +1,5 @@
 import NewPost from "../forms/NewPost";
 import { useState, useEffect, useRef } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
 import { db } from "../../lib/firebase";
 import {
   saveWorkingCopy,
@@ -66,36 +65,29 @@ const FloatingButton = () => {
 
   return (
     <>
-      <AnimatePresence>
-        {!open ? (
-          <Link to="/compose/post">
-            <motion.div
-              exit={{ scale: 0.001, opacity: 0 }}
-              initial={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              onClick={() => toggleOpen((state) => !state)}
-              className="fixed bottom-20 right-8 z-50 overflow-hidden rounded-full bg-teal-400"
+      {!open ? (
+        <Link to="/compose/post">
+          <div
+            onClick={() => toggleOpen((state) => !state)}
+            className="fixed bottom-20 right-8 z-[10] overflow-hidden rounded-full bg-teal-400"
+          >
+            <svg
+              className={`h-12 w-12 transition-all ${open ? "rotate-45" : ""}`}
+              fill="none"
+              stroke="white"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <svg
-                className={`h-12 w-12 transition-all ${
-                  open ? "rotate-45" : ""
-                }`}
-                fill="none"
-                stroke="white"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                ></path>
-              </svg>
-            </motion.div>
-          </Link>
-        ) : null}
-      </AnimatePresence>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              />
+            </svg>
+          </div>
+        </Link>
+      ) : null}
       {/* <AnimatePresence>
         {open ? (
           <motion.div

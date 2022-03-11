@@ -1,9 +1,35 @@
+import { SignOut } from "../../services/firebase";
 import { useLocation } from "react-router";
-import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import BackButton from "../forms/BackButtonNewPost.js/BackButton";
+import { useContext } from "react";
+import { NavigationContext } from "../../context/NavigationContext";
 
 const Header = (children) => {
+  const { t } = useTranslation();
   let location = useLocation();
+  const navContext = useContext(NavigationContext);
+  const { setPosition } = useContext(NavigationContext);
+
   const renderHeader = () => {
+    if (location.pathname.includes("compose"))
+      return (
+        <>
+          <BackButton text={navContext.text} />
+          <h1 className="text-xl font-bold">New Post</h1>
+          <button className="mx-4 rounded-full p-2 transition-all hover:bg-white/25 hover:backdrop-blur-md">
+            <svg
+              className="h-6 w-6"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path>
+            </svg>
+          </button>
+        </>
+      );
+
     if (location.pathname.includes("post"))
       return (
         <>
@@ -43,7 +69,7 @@ const Header = (children) => {
     if (location.pathname.includes("activity"))
       return (
         <>
-          <h1 className="text-wider text-xl font-bold ">Activity</h1>
+          <h1 className="text-wider text-xl font-bold ">{t("activity")}</h1>
           <span></span>
         </>
       );
@@ -51,8 +77,8 @@ const Header = (children) => {
     if (location.pathname.includes("profile"))
       return (
         <>
-          <h1 className="text-wider text-xl font-bold ">Profile</h1>
-          <span></span>
+          <h1 className="text-wider text-xl font-bold ">{t("profile")}</h1>
+          <button onClick={() => SignOut()}>{t("sign_out")}</button>
         </>
       );
 

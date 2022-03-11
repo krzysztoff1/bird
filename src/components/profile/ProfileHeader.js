@@ -46,9 +46,11 @@ const ProfileHeader = ({
           {!followState ? t("follow") : t("following")}
         </button>
       </div>
-      <h3 className="mt-2 text-xl text-slate-200"> {account}</h3>
-      <p className="md mt-2 text-slate-200"> {description}</p>
-      <p className="text-slate-900 dark:text-slate-500">
+      <h3 className="mt-2 text-xl font-bold tracking-wide text-slate-200">
+        {account}
+      </h3>
+      <p className=" mt-1 text-slate-200"> {description}</p>
+      <p className="mt-1 text-slate-900 dark:text-slate-500">
         {followedBy?.length !== 0 && (
           <>
             <b className="font-bold text-slate-200"> {followedBy.length} </b>{" "}

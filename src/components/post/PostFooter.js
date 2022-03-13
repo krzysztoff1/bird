@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import { useTranslation } from "react-i18next";
 
-const PostFooter = ({ likedByUsers, user, id, parent, numberOfComments }) => {
+const PostFooter = ({ likedByUsers, user, id, parent, commentedByUsers }) => {
   const { t } = useTranslation();
   return (
     <div className="z-10 mt-3 flex w-full justify-between">
@@ -67,7 +67,7 @@ const PostFooter = ({ likedByUsers, user, id, parent, numberOfComments }) => {
           )}
         </div>
         <p className="h-fit text-xs text-slate-800 dark:text-white">
-          {numberOfComments ? numberOfComments : "0"}
+          {commentedByUsers ? commentedByUsers.length : "0"}
         </p>
       </div>
     </div>

@@ -39,10 +39,6 @@ const SinglePost = () => {
     return () => unsubscribe();
   }, [id]);
 
-  console.log("====================================");
-  console.log(authState);
-  console.log("====================================");
-
   useEffect(() => {
     const unsubscribe = onSnapshot(
       query(

@@ -18,13 +18,13 @@ const Post = ({
   id,
   uid,
   thumbnailUrl,
+  commentedByUsers,
   imageUrl,
   parent,
   inlineComment,
 }) => {
   const [user, setUser] = useState();
   const [profilePicture, setProfilePicture] = useState("");
-  const [numberOfComments, setNumberOfComments] = useState("");
 
   useEffect(() => {
     getCurrentUser().then((res) => setUser(res));
@@ -35,24 +35,6 @@ const Post = ({
           : userData.googleProfilePicture
       );
     });
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = onSnapshot(
-      query(
-        collection(db, "posts"),
-        where("comment", "==", true),
-        where("parentId", "==", id)
-      ),
-      (snapshot) => {
-        setNumberOfComments(snapshot.size);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-
-    return () => unsubscribe();
   }, []);
 
   return (
@@ -81,11 +63,12 @@ const Post = ({
           />
         ) : null}
         <PostFooter
+          commentedByUsers={commentedByUsers}
           likedByUsers={likedByUsers}
           user={user}
           id={id}
           parent={parent}
-          numberOfComments={numberOfComments}
+          numberOfComments={"2"}
         />
       </div>
     </article>

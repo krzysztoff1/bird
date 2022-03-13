@@ -16,6 +16,7 @@ import { NavigationProvider } from "./context/NavigationContext";
 import { AuthContext } from "./context/auth-context";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { useContext } from "react";
+import Messages from "./pages/Messages";
 
 function App() {
   const AuthState = useContext(AuthContext);
@@ -29,11 +30,10 @@ function App() {
   return (
     <BrowserRouter>
       <NavigationProvider>
-        <BrowserView></BrowserView>
-        <MobileView>
-          <Header />
-          <MobileNav />
-        </MobileView>
+        {/* <BrowserView></BrowserView> */}
+        {/* <MobileView></MobileView> */}
+        <Header />
+        <MobileNav />
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/profile/:uid" element={<Profile />} />
@@ -48,8 +48,9 @@ function App() {
               </>
             }
           />
-          <Route path="/post/:id/photo" element={<Photo />} />
+          {/* <Route path="/post/:id/photo" element={<Photo />} /> */}
           <Route path="/compose/post" element={<NewPost />} />
+          <Route path="/messages" element={<Messages />} />
         </Routes>
       </NavigationProvider>
     </BrowserRouter>

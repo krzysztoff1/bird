@@ -1,25 +1,20 @@
-import { useState, useEffect, useRef, Suspense } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { db } from "../../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import Modal from "../modals/Modal";
 import {
   saveWorkingCopy,
-  getCurrentUser,
-  getUserByUid,
   uploadPost,
   uploadPostWithImage,
 } from "../../services/firebase";
 import CircularProgress from "../../components/uiElements/CircularProgress";
-import BackButton from "./BackButtonNewPost.js/BackButton";
 import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
-import { useContext } from "react";
 import { AuthContext } from "../../context/auth-context";
 
 const NewPost = () => {
   const { t } = useTranslation();
   const authState = useContext(AuthContext);
-
   const [open, toggleOpen] = useState(false);
   const [modal, toggleModal] = useState(false);
   const [draftsModal, toggleDraftsModal] = useState(false);
@@ -29,7 +24,6 @@ const NewPost = () => {
   const textField = useRef();
   const fileRef = useRef();
   const navigate = useNavigate();
-
   const user = authState.userData;
 
   useEffect(() => {
@@ -120,17 +114,17 @@ const NewPost = () => {
             : null}
         </ul>
       </Modal>
-      <section className="z-50 h-screen w-screen overflow-hidden bg-slate-900 pb-[60px]">
+      <section className="fixed top-0 h-screen w-screen overflow-hidden bg-slate-900 ">
         <form
           onSubmit={(e) => {
             handleSubmit(e);
             toggleOpen((state) => !state);
           }}
-          className="z-50 mx-auto flex h-full w-full flex-col items-start justify-between "
+          className="z-51 mx-auto flex h-full w-full flex-col items-start justify-between "
         >
-          <div className="mt-12 w-full  px-3">
-            <div className="flex w-full justify-end">
-              {/* <button
+          <div className="w-full px-3">
+            <div className="flex w-full justify-between">
+              <button
                 type="button"
                 onClick={() => (!text ? navigate("/") : toggleModal(true))}
                 className="p-3 font-bold text-slate-100"
@@ -145,9 +139,9 @@ const NewPost = () => {
                     fillRule="evenodd"
                     d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
                     clipRule="evenodd"
-                  ></path>
+                  />
                 </svg>
-              </button> */}
+              </button>
               <div className="flex">
                 {drafts ? (
                   <button
@@ -203,7 +197,7 @@ const NewPost = () => {
               ) : null}
             </div>
           </div>
-          <div className="w-full">
+          <div className="fixed bottom-0 w-full">
             <div className="m-1 flex w-full border-b-2 border-slate-700 pb-1">
               <svg
                 className="mr-2 h-6 w-6"

@@ -1,8 +1,7 @@
-import { useState, useRef, useEffect } from "react";
-import Zoom from "react-img-zoom";
+import "./index.css";
+import { useState, useRef } from "react";
 import { AnimatePresence, motion, useDomEvent } from "framer-motion";
-import ProgressiveImage from "react-progressive-image-loading";
-import "./photo.css";
+import ProgressiveImage from "react-progressive-graceful-image";
 
 const PostImage = ({ averageColor, imageUrl, thumbnailUrl, id }) => {
   const [isOpen, setOpen] = useState(false);
@@ -23,29 +22,16 @@ const PostImage = ({ averageColor, imageUrl, thumbnailUrl, id }) => {
         style={{ backgroundColor: averageColor?.hex }}
         className={`image-container ${isOpen && "open"}`}
       >
-        {/* <ProgressiveImage src={imageUrl} placeholder={thumbnailUrl}>
+        <ProgressiveImage src={imageUrl} placeholder={thumbnailUrl}>
           {(src) => (
-            <> */}
-        {/* <motion.img
-          className="image-zoom"
-          layout
-          src={imageUrl}
-          alt="Post photo"
-        /> */}
-        <ProgressiveImage
-          className="image-zoom overflow-hidden"
-          preview={thumbnailUrl}
-          src={imageUrl}
-          render={(src, style) => (
             <motion.img
               layout
               className="image-zoom"
               src={src}
-              alt="Post pic"
-              style={style}
+              alt="an image"
             />
           )}
-        />
+        </ProgressiveImage>
         <AnimatePresence>
           {isOpen && (
             <motion.header
@@ -96,35 +82,8 @@ const PostImage = ({ averageColor, imageUrl, thumbnailUrl, id }) => {
             </motion.header>
           )}
         </AnimatePresence>
-        {/* </> */}
-        {/* )} */}
-        {/* </ProgressiveImage> */}
       </motion.div>
     </>
-
-    // <section>
-    //   <motion.div
-    //     onClick={() => setOpen(!isOpen)}
-    //     layout
-    //     transition={transition}
-    //     style={{ backgroundColor: averageColor }}
-    //     className={`
-    //       relative w-full overflow-hidden rounded-xl`}
-    //   >
-    //     <ProgressiveImage src={imageUrl} placeholder={thumbnailUrl}>
-    //       {(src) => (
-    //         <motion.img
-    //           className={`${
-    //             isOpen &&
-    //             "fixed top-0 left-0 right-0 bottom-0 max-h-screen w-screen"
-    //           }`}
-    //           src={src}
-    //           alt=""
-    //         />
-    //       )}
-    //     </ProgressiveImage>
-    //   </motion.div>
-    // </section>
   );
 };
 

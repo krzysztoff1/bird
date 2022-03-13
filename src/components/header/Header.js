@@ -2,20 +2,21 @@ import { SignOut } from "../../services/firebase";
 import { useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
 import BackButton from "../forms/BackButtonNewPost.js/BackButton";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { NavigationContext } from "../../context/NavigationContext";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Header = (children) => {
+  const [isOpen, toggleIsOpen] = useState(true);
   const { t } = useTranslation();
   let location = useLocation();
   const navContext = useContext(NavigationContext);
-  const { setPosition } = useContext(NavigationContext);
 
   const renderHeader = () => {
     if (location.pathname.includes("compose"))
       return (
         <>
-          <BackButton text={navContext.text} />
+          {/* <BackButton text={navContext.text} />
           <h1 className="text-xl font-bold">New Post</h1>
           <button className="mx-4 rounded-full p-2 transition-all hover:bg-white/25 hover:backdrop-blur-md">
             <svg
@@ -26,7 +27,7 @@ const Header = (children) => {
             >
               <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path>
             </svg>
-          </button>
+          </button> */}
         </>
       );
 
@@ -95,12 +96,25 @@ const Header = (children) => {
     );
   };
 
+  const variants = {
+    open: { y: 0 },
+    closed: { y: "-100%" },
+  };
+
+  if (location.pathname.includes("compose")) return <div></div>;
+
   return (
-    <header className="fixed top-0 z-50 mx-auto  h-[50px] w-full bg-slate-900/70 px-4 py-2 text-slate-100 backdrop-blur-md">
-      <div className="min-w-sm mx-auto flex max-w-xl items-center justify-between">
-        {renderHeader()}
-      </div>
-    </header>
+    <AnimatePresence>
+      <motion.header
+        variants={variants}
+        animate={isOpen ? "open" : "closed"}
+        className="fixed top-0 z-50 mx-auto  h-[50px] w-full bg-slate-900/70 px-4 py-2 text-slate-100 backdrop-blur-md"
+      >
+        <div className="min-w-sm mx-auto flex max-w-xl items-center justify-between">
+          {renderHeader()}
+        </div>
+      </motion.header>
+    </AnimatePresence>
   );
 };
 

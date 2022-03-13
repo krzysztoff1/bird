@@ -31,6 +31,7 @@ import {
 } from "firebase/auth";
 import { createResizedImage, createResizedImage200 } from "./resizeImage";
 import FastAverageColor from "fast-average-color";
+import { update } from "firebase/database";
 
 // authentication
 export async function getCurrentUser() {
@@ -96,13 +97,14 @@ export async function saveWorkingCopy(text) {
   });
 }
 // upload posts and comments
-export async function uploadPost({ text, parentId, grandParentId }) {
+export async function uploadPost({ text, parentId }) {
   let id = Math.random() * 1000;
 
   const user = await getCurrentUser();
   const userData = await getUserByUid(user.uid);
 
-  if (!parentId && !grandParentId) {
+  // add post
+  if (!parentId) {
     addDoc(collection(db, "posts"), {
       comment: false,
       account: userData.name,
@@ -110,49 +112,41 @@ export async function uploadPost({ text, parentId, grandParentId }) {
       text: text,
       timestamp: serverTimestamp(),
       likedByUsers: [],
+      commentedByUsers: [],
     });
     return;
   }
 
-  if (parentId && !grandParentId) {
-    console.log(parentId);
-
-    addDoc(collection(db, "posts"), {
-      comment: true,
-      parentId: parentId,
-      account: userData.name,
-      uid: user.uid,
-      text: text,
-      timestamp: serverTimestamp(),
-      likedByUsers: [],
-    });
-
-    // send notification
-    const parentPost = await getPostById(parentId);
-    addDoc(collection(db, "notifications"), {
-      timestamp: serverTimestamp(),
-      typeOfNotification: "comment",
-      read: false,
-      uid: parentPost.uid,
-      id: parentId,
-      commentText: text,
-      commentedByUid: user.uid,
-      commentedByName: userData.name,
-    });
-    return;
-  }
-
+  // add comment to post
   addDoc(collection(db, "posts"), {
     comment: true,
-    parentId: parentId.parentId,
-    grandParentId: grandParentId.id,
+    parentId: parentId,
     account: userData.name,
     uid: user.uid,
     text: text,
     timestamp: serverTimestamp(),
     likedByUsers: [],
   });
+
+  // update list of comments
+  updateDoc(doc(db, "posts", parentId), {
+    commentedByUsers: arrayUnion(user.uid),
+  });
+
+  // send notification
+  const parentPost = await getPostById(parentId);
+  addDoc(collection(db, "notifications"), {
+    timestamp: serverTimestamp(),
+    typeOfNotification: "comment",
+    read: false,
+    uid: parentPost.uid,
+    id: parentId,
+    commentText: text,
+    commentedByUid: user.uid,
+    commentedByName: userData.name,
+  });
 }
+
 
 export async function uploadPostWithImage({ text, file, id }) {
   let progress = "";

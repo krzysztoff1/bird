@@ -15,6 +15,7 @@ import {
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router";
+import LaunguageDropdown from "../i18n/LaunguageDropdown";
 
 const PostsList = () => {
   const location = useLocation();
@@ -44,7 +45,21 @@ const PostsList = () => {
     getTotalPosts();
   }, [following]);
 
+  //
+  const q = query(collection(db, "cities"), where("state", "==", "CA"));
+  onSnapshot(q, { includeMetadataChanges: true }, (snapshot) => {
+    snapshot.docChanges().forEach((change) => {
+      if (change.type === "added") {
+        console.log("New city: ", change.doc.data());
+      }
+
+      const source = snapshot.metadata.fromCache ? "local cache" : "server";
+    });
+  });
+  //
   useEffect(() => {
+    // if (localStorage["feed"] != null) console.log("is");
+    const feedFromCache = localStorage.getItem("feed");
     if (!following.length) return;
     if (posts && totalPosts === posts?.length) return toggleHasMore(false);
     const unsubscribe = onSnapshot(
@@ -55,6 +70,7 @@ const PostsList = () => {
         limit(numberOfPosts),
         orderBy("timestamp", "desc")
       ),
+      { includeMetadataChanges: true },
       (snapshot) => {
         if (snapshot.size === 0) return setIsEmpty(true);
         if (snapshot.size !== 0) setIsEmpty(false);
@@ -71,6 +87,13 @@ const PostsList = () => {
     );
     return () => unsubscribe();
   }, [following, numberOfPosts]);
+
+  useEffect(() => {
+    // console.log(posts);
+    // console.log(JSON.stringify(posts));
+    // console.log(localStorage);
+    // console.table(localStorage.getItem("feed"));
+  }, [posts]);
 
   useEffect(() => {
     // if (!following.length) return;
@@ -155,6 +178,7 @@ const PostsList = () => {
             time={post.timestamp}
             text={post.text}
             likedByUsers={post.likedByUsers}
+            commentedByUsers={post?.commentedByUsers}
             imageUrl={post.imageUrl}
             thumbnailUrl={post.thumbnailUrl}
           />

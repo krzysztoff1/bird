@@ -23,6 +23,7 @@ module.exports = {
     "./src/components/feed/Feed.js",
     "./src/components/PostsList.js",
     "./src/components/header/Header.js",
+    "./src/components/sidebar/SideBar.js",
     "./src/components/post/PostSkeleton.js",
     "./src/components/post/PostAside.js",
     "./src/components/post/PostHeader.js",

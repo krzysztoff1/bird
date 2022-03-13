@@ -162,46 +162,27 @@ const PostsList = () => {
       .map((item, i) => <PostSkeleton key={i} />);
 
   return (
-    <section>
-      <InfiniteScroll
-        dataLength={numberOfPosts}
-        next={() => setNumberOfPosts(numberOfPosts + 10)}
-        hasMore={hasMore}
-      >
-        {posts.map((post) => (
-          <Post
-            key={post.id}
-            id={post.id}
-            averageColor={post.averageColor}
-            uid={post.uid}
-            account={post.account}
-            time={post.timestamp}
-            text={post.text}
-            likedByUsers={post.likedByUsers}
-            commentedByUsers={post?.commentedByUsers}
-            imageUrl={post.imageUrl}
-            thumbnailUrl={post.thumbnailUrl}
-          />
-        ))}
-      </InfiniteScroll>
-      {/* {posts.map((post) => (
-          <Post
-            averageColor={post.averageColor}
-            key={post.id}
-            id={post.id}
-            uid={post.uid}
-            account={post.account}
-            time={post.timestamp}
-            text={post.text}
-            likedByUsers={post.likedByUsers}
-            imageUrl={post.imageUrl}
-            thumbnailUrl={post.thumbnailUrl}
-          />
-        ))} */}
-      {/* <p className="font-xl my-5 text-center text-slate-50">
-          Thats all folks
-        </p> */}
-    </section>
+    <InfiniteScroll
+      dataLength={numberOfPosts}
+      next={() => setNumberOfPosts(numberOfPosts + 10)}
+      hasMore={hasMore}
+    >
+      {posts.map((post) => (
+        <Post
+          key={post.id}
+          id={post.id}
+          averageColor={post.averageColor}
+          uid={post.uid}
+          account={post.account}
+          time={post.timestamp}
+          text={post.text}
+          likedByUsers={post.likedByUsers}
+          commentedByUsers={post?.commentedByUsers}
+          imageUrl={post.imageUrl}
+          thumbnailUrl={post.thumbnailUrl}
+        />
+      ))}
+    </InfiniteScroll>
   );
 };
 

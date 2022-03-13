@@ -67,7 +67,7 @@ const PostFooter = ({ likedByUsers, user, id, parent, commentedByUsers }) => {
           )}
         </div>
         <p className="h-fit text-xs text-slate-800 dark:text-white">
-          {commentedByUsers ? commentedByUsers.length : "0"}
+          {commentedByUsers ? commentedByUsers : "0"}
         </p>
       </div>
     </div>

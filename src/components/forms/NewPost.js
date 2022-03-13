@@ -114,7 +114,7 @@ const NewPost = () => {
             : null}
         </ul>
       </Modal>
-      <section className="fixed top-0 h-screen w-screen overflow-hidden bg-slate-900 ">
+      <section className="fixed top-0 h-screen w-full bg-slate-900 ">
         <form
           onSubmit={(e) => {
             handleSubmit(e);
@@ -174,6 +174,7 @@ const NewPost = () => {
                 srcSet=""
               />
               <textarea
+                maxLength="280"
                 ref={textField}
                 rows="8"
                 onChange={(e) => setText(e.target.value)}
@@ -181,24 +182,37 @@ const NewPost = () => {
                 placeholder="Whaazzzaz Upppp"
               />
             </div>
-            <div className="my-2 px-4">
-              {file ? (
-                <>
-                  <label className="text-slate-100">
-                    {t("attached_files")}
-                  </label>
+          </div>
+          <div className="fixed bottom-0 w-full border-t-[1px] border-slate-700 ">
+            {file && (
+              <section className="my-2 px-2">
+                <div className="mb-1 flex w-full justify-between text-slate-100">
+                  {t("attached_photo")}
+                </div>
+                <div className="relative">
+                  <svg
+                    onClick={() => setFile("")}
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="absolute m-1 h-5 w-5 rounded-full bg-slate-50 p-[3px] shadow"
+                    viewBox="0 0 20 20"
+                    fill="black"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
                   <img
                     className="h-28 w-28 rounded-md"
                     src={URL.createObjectURL(file)}
-                    alt=""
-                    srcset=""
+                    alt="Preview"
+                    srcSet=""
                   />
-                </>
-              ) : null}
-            </div>
-          </div>
-          <div className="fixed bottom-0 w-full">
-            <div className="m-1 flex w-full border-b-2 border-slate-700 pb-1">
+                </div>
+              </section>
+            )}
+            <div className="m-1 flex w-full pb-1">
               <svg
                 className="mr-2 h-6 w-6"
                 fill="#4ade80"

@@ -2,21 +2,11 @@ import NewPost from "../forms/NewPost";
 import { useState, useEffect, useRef } from "react";
 import { db } from "../../lib/firebase";
 import {
-  saveWorkingCopy,
   getCurrentUser,
   uploadPost,
   uploadPostWithImage,
 } from "../../services/firebase";
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  limit,
-  where,
-  query,
-} from "firebase/firestore";
-import { AnimatePresence, motion } from "framer-motion";
-import BottomModal from "../modals/BottomModal";
+import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { Link } from "react-router-dom";
 
 const FloatingButton = () => {

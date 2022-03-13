@@ -7,13 +7,11 @@ import {
   getDocs,
   updateDoc,
   doc,
-  onSnapshot,
+  increment,
   where,
   query,
   setDoc,
   getDoc,
-  orderBy,
-  limit,
   arrayRemove,
   arrayUnion,
 } from "firebase/firestore";
@@ -112,7 +110,7 @@ export async function uploadPost({ text, parentId }) {
       text: text,
       timestamp: serverTimestamp(),
       likedByUsers: [],
-      commentedByUsers: [],
+      commentedByUsers: 0,
     });
     return;
   }
@@ -130,7 +128,7 @@ export async function uploadPost({ text, parentId }) {
 
   // update list of comments
   updateDoc(doc(db, "posts", parentId), {
-    commentedByUsers: arrayUnion(user.uid),
+    commentedByUsers: increment(1),
   });
 
   // send notification

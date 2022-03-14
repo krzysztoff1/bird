@@ -18,8 +18,8 @@ const SideBar = () => {
   ];
 
   return (
-    <aside className="hidden min-h-screen border-l-[1px] border-slate-800/50 bg-slate-900 p-4 lg:block">
-      <div className="sticky top-0 left-0 z-50 mb-2 h-fit overflow-hidden overflow-y-scroll">
+    <aside className="hidden border-l-[1px] border-slate-800/50 bg-slate-900 p-4 lg:block">
+      <div className="sticky top-0 left-0 z-50 mb-2 h-screen overflow-hidden overflow-y-scroll py-2">
         <section>
           <label htmlFor="table-search" className="sr-only">
             Search

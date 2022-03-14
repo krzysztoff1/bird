@@ -1,7 +1,6 @@
 import FloatingButton from "../components/buttons/FloatingButton";
 import SmallNewPost from "../components/forms/NewComment";
 import Header from "../components/header/Header";
-import LaunguageDropdown from "../components/i18n/LaunguageDropdown";
 import { isMobile } from "react-device-detect";
 import { useLocation } from "react-router";
 import { lazy, Suspense } from "react";
@@ -13,7 +12,7 @@ const Home = () => {
   return (
     <div
       className={`${
-        location.pathname.includes("post") && "overflow-hidden"
+        location.pathname.includes("post") && "hidden"
       } min-h-screen bg-slate-100 dark:bg-slate-900`}
     >
       {isMobile && <FloatingButton />}

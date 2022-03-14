@@ -57,10 +57,18 @@ function App() {
             <main className="flex-grow-1 w-full">
               <Routes>
                 <Route exact path="/" element={<Home />} />
+                <Route
+                  path="/post/:id"
+                  element={
+                    <>
+                      <Home />
+                      <SinglePost />
+                    </>
+                  }
+                />
                 <Route path="/profile/:uid" element={<Profile />} />
                 <Route path="/user/profile" element={<EditProfile />} />
                 <Route path="/activity" element={<Activity />} />
-                <Route path="/post/:id" element={<SinglePost />} />
                 <Route path="/compose/post" element={<SmallNewPost />} />
                 <Route path="/messages" element={<Messages />} />
                 <Route path="/settings" element={<Settings />} />

@@ -21,6 +21,7 @@ import { useContext, useEffect, useState } from "react";
 import { getCurrentUser } from "../services/firebase";
 import { useTranslation } from "react-i18next";
 import { AuthContext } from "../context/auth-context";
+import Header from "../components/header/Header";
 
 const SinglePost = () => {
   const { t } = useTranslation();
@@ -31,6 +32,10 @@ const SinglePost = () => {
   const [posts, setPosts] = useState();
   const [numberOfPosts, setNumberOfPosts] = useState(7);
   const [isEmpty, setIsEmpty] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, "posts", id), (doc) => {
@@ -68,10 +73,10 @@ const SinglePost = () => {
   return (
     // <article className="fixed top-0 bottom-0 min-h-screen min-w-[100vw] overflow-y-scroll bg-slate-900">
     <article className="h-full min-h-screen ">
-      <div className="mb-12 overflow-scroll">
+      <Header>
         <button
           onClick={() => window.history.go(-1)}
-          className="mx-4 rounded-full p-2 backdrop-blur-md transition-all hover:bg-white/25"
+          className="rounded-full p-1 transition-all hover:bg-white/5"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -88,6 +93,8 @@ const SinglePost = () => {
             />
           </svg>
         </button>
+      </Header>
+      <div className="mb-12 overflow-scroll">
         {post ? (
           <HighlightedPost
             parent

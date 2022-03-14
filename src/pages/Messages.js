@@ -1,21 +1,14 @@
 import { getDatabase, ref, set } from "firebase/database";
 import { FieldValue, serverTimestamp } from "firebase/firestore";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "../context/auth-context";
 
 const Messages = () => {
-  const db = getDatabase();
-  const authState = useContext(AuthContext);
+  console.log("====================================");
+  console.log(this);
+  console.log("====================================");
 
-  function writeUserData() {
-    set(ref(db, "messages/" + "userone" + "/" + "usertwo/" + "m0/"), {
-      name: "name",
-      text: "text",
-      timestamp: serverTimestamp(),
-    });
-  }
-  writeUserData();
-  return <div>Messages</div>;
+  return <div className="text-white">Messages</div>;
 };
 
 export default Messages;

@@ -12,7 +12,7 @@ import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
 import { AuthContext } from "../../context/auth-context";
 
-const NewPost = () => {
+const SmallNewPost = ({ post, comment }) => {
   const { t } = useTranslation();
   const authState = useContext(AuthContext);
   const [open, toggleOpen] = useState(false);
@@ -114,13 +114,13 @@ const NewPost = () => {
             : null}
         </ul>
       </Modal>
-      <section className="fixed top-0 h-screen w-full bg-slate-900 ">
+      <section className="h-full min-h-screen w-full bg-slate-900 ">
         <form
           onSubmit={(e) => {
             handleSubmit(e);
             toggleOpen((state) => !state);
           }}
-          className="z-51 mx-auto flex h-full w-full flex-col items-start justify-between "
+          className="relative z-20 mx-auto flex h-screen w-full flex-col items-start justify-between "
         >
           <div className="w-full px-3">
             <div className="flex w-full justify-between">
@@ -171,7 +171,6 @@ const NewPost = () => {
                     : "https://img.redro.pl/plakaty/default-profile-picture-avatar-photo-placeholder-vector-illustration-400-205664584.jpg"
                 }
                 alt=""
-                srcSet=""
               />
               <textarea
                 maxLength="280"
@@ -183,7 +182,7 @@ const NewPost = () => {
               />
             </div>
           </div>
-          <div className="fixed bottom-0 w-full border-t-[1px] border-slate-700 ">
+          <div className="absolute bottom-0 inline-block w-full border-t-[1px] border-slate-700 ">
             {file && (
               <section className="my-2 px-2">
                 <div className="mb-1 flex w-full justify-between text-slate-100">
@@ -207,7 +206,6 @@ const NewPost = () => {
                     className="h-28 w-28 rounded-md"
                     src={URL.createObjectURL(file)}
                     alt="Preview"
-                    srcSet=""
                   />
                 </div>
               </section>
@@ -318,7 +316,7 @@ const NewPost = () => {
   );
 };
 
-export default NewPost;
+export default SmallNewPost;
 
 {
   /* <div className="mr-3 flex w-full">

@@ -1,6 +1,5 @@
 import TimeAgo from "javascript-time-ago";
 import { Link } from "react-router-dom";
-
 import pl from "javascript-time-ago/locale/en.json";
 TimeAgo.addDefaultLocale(pl);
 const timeAgo = new TimeAgo("pl-PL");
@@ -20,7 +19,7 @@ const PostHeader = ({ account, time, uid }) => {
         <p className="mr-2 text-xs text-slate-900 dark:text-slate-200">
           {time?.seconds
             ? timeAgo.format(new Date(time.seconds * 1000), "twitter")
-            : Date.now().toString()}
+            : ""}
         </p>
       </div>
     </div>

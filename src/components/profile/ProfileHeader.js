@@ -18,7 +18,7 @@ const ProfileHeader = ({
   }, [uid]);
 
   return (
-    <div className="mx-auto max-w-md px-3 pt-24">
+    <div className="mx-auto max-w-md px-3 pt-24 sm:max-w-full">
       <div className="flex justify-between">
         <img
           src={profilePicture}

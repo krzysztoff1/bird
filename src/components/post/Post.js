@@ -41,8 +41,8 @@ const Post = ({
     <article
       className={`${
         inlineComment ? "border-t-0 p-3" : "mt-2"
-      } inlineComment shadow-slate-500" z-0 mx-auto flex
-          w-full max-w-full flex-grow rounded-md bg-slate-900 p-3 px-6 sm:max-w-md sm:p-3 sm:hover:shadow-xl md:max-w-xl`}
+      } inlineComment z-0 mx-auto flex
+          w-full max-w-full flex-grow rounded-md bg-slate-900 p-3 px-6 sm:p-3 md:max-w-xl`}
     >
       <PostAside
         inlineComment={inlineComment}
@@ -54,14 +54,14 @@ const Post = ({
         <Link to={`/post/${id}`}>
           <PostContent text={text} />
         </Link>
-        {imageUrl && thumbnailUrl ? (
+        {/* {imageUrl && thumbnailUrl && (
           <PostImage
             averageColor={averageColor}
             id={id}
             imageUrl={imageUrl}
             thumbnailUrl={thumbnailUrl}
           />
-        ) : null}
+        )} */}
         <PostFooter
           commentedByUsers={commentedByUsers}
           likedByUsers={likedByUsers}

@@ -1,10 +1,9 @@
 import Loading from "../pages/Loading";
-import { db } from "../lib/firebase";
+import { db, auth } from "../lib/firebase";
 import { onSnapshot, doc } from "firebase/firestore";
 import { getUserByUid } from "../services/firebase";
 import { useEffect, useState, createContext } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../lib/firebase";
 import AppLogo from "../components/loaders/AppLogo";
 
 export const AuthContext = createContext();

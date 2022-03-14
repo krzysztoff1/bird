@@ -112,7 +112,7 @@ const SignInEmail = () => {
             }}
             className="mb-6 px-2"
           >
-            <section class="my-2">
+            <section className="my-2">
               <label
                 htmlFor="email"
                 className="font-mediu mb-2 block font-medium text-white"

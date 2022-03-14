@@ -1,18 +1,19 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { uploadPost, uploadPostWithImage } from "../../services/firebase";
 import { useTranslation } from "react-i18next";
 import CircularProgress from "../uiElements/CircularProgress";
+import { AuthContext } from "../../context/auth-context";
 
-const NewComment = ({ post, profileImage, parentId }) => {
+const SmallNewPost = ({ post, parentId, comment }) => {
   const { t } = useTranslation();
+  const authState = useContext(AuthContext);
   const [text, setText] = useState("");
-  const [open, toggleOpen] = useState(false);
+  const [open, toggleOpen] = useState(post ? true : false);
   const [file, setFile] = useState();
   const textArea = useRef();
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!parentId) return;
     if (!file) return uploadPost({ text, parentId });
     uploadPostWithImage({ text, file, parentId });
     setText("");
@@ -22,21 +23,18 @@ const NewComment = ({ post, profileImage, parentId }) => {
     <form
       onSubmit={(e) => handleSubmit(e)}
       onClick={() => toggleOpen(true)}
-      className="mx-auto max-w-md md:max-w-xl"
+      className="mx-auto max-w-md sm:p-3 md:max-w-xl"
     >
-      {open && (
+      {open && comment && (
         <label className=" ml-16 text-white/50">
           {t("in_response_to")}
-          <span className="text-green-400">
-            {" "}
-            @{post?.account.toLowerCase()}
-          </span>
+          <span className="text-green-400">@{post?.account.toLowerCase()}</span>
         </label>
       )}
       <div className="flex pr-3 sm:p-0">
         <img
+          src={authState.userData?.profilePicture}
           className="m-3 h-10 w-10 rounded-full"
-          src={profileImage}
           alt=" "
         />
         <div className={`w-full ${!open && "flex"}`}>
@@ -47,8 +45,8 @@ const NewComment = ({ post, profileImage, parentId }) => {
             rows={2}
             className={`${
               open ? "" : "truncate"
-            } my-1 block min-h-[70px] w-full resize-none bg-transparent bg-gray-50 py-2.5 text-xl text-slate-100 outline-none  transition-all`}
-            placeholder={t("send_post_in_response")}
+            } my-1 block min-h-[70px] w-full resize-none bg-transparent py-2.5 text-xl text-slate-100 outline-none  transition-all`}
+            placeholder={comment ? t("send_post_in_response") : t("tweet")}
           />
           <div className="flex items-start justify-between shadow-xl">
             {open ? (
@@ -102,4 +100,4 @@ const NewComment = ({ post, profileImage, parentId }) => {
   );
 };
 
-export default NewComment;
+export default SmallNewPost;

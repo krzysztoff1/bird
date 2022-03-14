@@ -1,7 +1,7 @@
 import Post from "../components/post/Post";
 import PostSkeleton from "../components/post/PostSkeleton";
 import HighlightedPost from "../components/post/highlightedPost/HighlightedPost";
-import NewComment from "../components/forms/NewComment";
+import SmallNewPost from "../components/forms/NewComment";
 import Comments from "../components/comment/Comments";
 import { db } from "../lib/firebase";
 import {
@@ -66,8 +66,8 @@ const SinglePost = () => {
   }, [numberOfPosts, id]);
 
   return (
-    <article className="fixed top-0 bottom-0 min-h-screen min-w-[100vw] overflow-y-scroll bg-slate-900">
-      {/* <article className="min-h-screen min-w-[100vw] bg-slate-900"> */}
+    // <article className="fixed top-0 bottom-0 min-h-screen min-w-[100vw] overflow-y-scroll bg-slate-900">
+    <article className="h-full min-h-screen ">
       <div className="mb-12 overflow-scroll">
         <button
           onClick={() => window.history.go(-1)}
@@ -101,7 +101,8 @@ const SinglePost = () => {
             thumbnailUrl={post.thumbnailUrl}
           />
         ) : null}
-        <NewComment
+        <SmallNewPost
+          comment
           parentId={id}
           post={post}
           profileImage={

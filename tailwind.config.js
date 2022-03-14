@@ -6,6 +6,7 @@ module.exports = {
     "./src/pages/Auth.js",
     "./src/pages/Home.js",
     "./src/pages/Profile.js",
+    "./src/pages/EditProfile.js",
     "./src/pages/Loading.js",
     "./src/pages/SinglePost.js",
     "./src/pages/Settings.js",

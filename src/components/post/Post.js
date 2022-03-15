@@ -8,6 +8,7 @@ import { db } from "../../lib/firebase";
 import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import PostSkeleton from "./PostSkeleton";
 
 const Post = ({
   averageColor,
@@ -24,7 +25,7 @@ const Post = ({
   inlineComment,
 }) => {
   const [user, setUser] = useState();
-  const [profilePicture, setProfilePicture] = useState("");
+  const [profilePicture, setProfilePicture] = useState();
 
   useEffect(() => {
     getCurrentUser().then((res) => setUser(res));
@@ -36,6 +37,8 @@ const Post = ({
       );
     });
   }, []);
+
+  if (!profilePicture) return <PostSkeleton />;
 
   return (
     <article

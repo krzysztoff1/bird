@@ -124,7 +124,7 @@ const Nav = () => {
                   <ul className="w-full py-1">
                     {moreItems.map((item, i) => (
                       <NavLink
-                        key={item.name}
+                        key={i}
                         to={item.url}
                         className="block w-full py-2 px-4 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                       >

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getFollowed } from "../services/firebase";
 
-export default function useFeed() {
+export default function useFollowing() {
   const [users, setUsers] = useState(null);
   const [pending, togglePending] = useState(true);
 

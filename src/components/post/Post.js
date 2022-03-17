@@ -43,10 +43,8 @@ const Post = ({
 
   return (
     <article
-      className={`${
-        inlineComment ? "border-t-0 p-3" : "mt-2"
-      } inlineComment z-0 mx-auto flex
-          w-full max-w-full flex-grow rounded-md bg-slate-900 p-3 px-6 sm:p-3`}
+      className={`${inlineComment ? "p-3" : "mt-2"} z-0 mx-auto flex w-full
+          max-w-full flex-grow border-t-[1px] border-slate-200 p-3 px-6 dark:border-slate-800 sm:p-3`}
     >
       <PostAside
         inlineComment={inlineComment}

@@ -27,6 +27,7 @@ import { useContext } from "react";
 import Messages from "./pages/Messages";
 import Nav from "./components/nav/Nav";
 import Layout from "./components/Layout";
+import Alert from "./components/alerts/Alert";
 
 const SideBar = lazy(() => import("./components/sidebar/SideBar"));
 

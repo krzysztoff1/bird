@@ -8,12 +8,6 @@ import { useEffect } from "react";
 const PostFooter = ({ likedByUsers, user, id, parent, commentedByUsers }) => {
   const { t } = useTranslation();
 
-  useEffect(() => {
-    console.log("====================================");
-    console.log("change");
-    console.log("====================================");
-  }, [likedByUsers]);
-
   return (
     <div className="z-10 mt-3 flex w-full justify-between">
       <div className="flex w-[55px] items-center">

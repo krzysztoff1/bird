@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { db } from "../../lib/firebase";
 import {
   collection,
@@ -8,11 +8,8 @@ import {
   query,
   orderBy,
 } from "firebase/firestore";
-import { FaKiwiBird } from "react-icons/fa";
-import { useLocation } from "react-router";
-import { AnimatePresence, motion } from "framer-motion";
 import { AuthContext } from "../../context/auth-context";
-import ThemeButton from "../buttons/themeButton/ThemeButton";
+import { motion } from "framer-motion";
 
 const Nav = () => {
   const authState = useContext(AuthContext);
@@ -103,8 +100,8 @@ const Nav = () => {
 
   return (
     <nav className="border-r-[1px] border-slate-200 dark:border-slate-800">
-      <div className="sticky top-0 mx-0 flex h-screen flex-col items-center justify-between sm:items-start md:mx-4 xl:mx-6">
-        <header className="left-0 z-50 flex w-full flex-col items-center justify-around gap-3 overflow-y-auto px-4 py-3 backdrop-blur-xl dark:bg-slate-900/30 md:items-start">
+      <div className="sticky top-0 mx-0 flex h-screen flex-col items-center justify-between sm:items-start md:mx-6">
+        <header className="left-0 z-50 mx-1 flex w-full flex-col items-center justify-around gap-3 overflow-y-auto  px-0 py-3 backdrop-blur-xl dark:bg-slate-900/30 sm:px-4 md:items-start">
           <NavLink className="mb-6 w-fit p-2" to="/">
             <img className="h-6 w-6" src="./assets/svg/logo.svg" alt="logo" />
           </NavLink>
@@ -142,23 +139,24 @@ const Nav = () => {
               </svg>
               <p className="ml-3 hidden text-xl md:block">Więcej</p>
             </button>
-            <div
-              className={`${
-                !settings && "hidden"
-              } absolute z-[150] w-44 list-none divide-y divide-gray-100 rounded-md bg-white text-left text-base shadow shadow-white/20 dark:bg-slate-800`}
-            >
+            <motion.div layout className={`${!settings && "hidden"} absolute md:block list-none`}>
               <ul className="w-full py-1">
                 {menuItems.map((item, i) => (
                   <NavLink
-                    key={i}
+                    key={item.name}
+                    style={({ isActive }) => {
+                      return {
+                        color: isActive ? "#34d399" : "",
+                      };
+                    }}
+                    className="flex items-center rounded-full p-2 text-slate-800 transition-all hover:bg-emerald-500/30 dark:text-slate-100 md:pr-4"
                     to={item.url}
-                    className="text-md block w-full py-2 px-4 text-left text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                   >
-                    {item.name}
+                    <p className="ml-3 hidden md:block">{item.name}</p>
                   </NavLink>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           </div>
           <NavLink
             className="m-2 flex scale-110 items-center justify-center rounded-full bg-emerald-500 p-2 transition-all hover:bg-emerald-600 dark:text-slate-100 sm:px-4"
@@ -177,12 +175,12 @@ const Nav = () => {
         </header>
         <footer>
           <NavLink
-            className="my-4 mx-2 flex items-center rounded-full p-2  text-slate-800 hover:bg-teal-200/20 dark:text-slate-100 sm:hover:text-teal-500"
+            className="m-2 flex items-center rounded-full p-2  text-slate-800 hover:bg-teal-200/20 dark:text-slate-100 sm:hover:text-teal-500"
             to="/user/profile"
           >
             <div className="flex items-center">
               <img
-                className="h-12 w-12 rounded-full"
+                className="h-8 w-8 rounded-full object-cover md:h-12 md:w-12"
                 src={authState.userData?.profilePicture}
                 alt=" "
               />

@@ -11,6 +11,7 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
+import Header from "../components/header/Header";
 
 const Activity = () => {
   const { t } = useTranslation();
@@ -55,10 +56,8 @@ const Activity = () => {
     );
 
   return (
-    <section className="min-h-screen bg-slate-900 py-4">
-      <h1 className="mb-2 px-5 text-2xl font-bold tracking-wider text-slate-100">
-        {t("activity")}
-      </h1>
+    <section className="min-h-screen bg-slate-900">
+      <Header text={t("activity")} />
       <div className="overflow-y-scroll">
         {notifications ? (
           notifications.map((notification) =>

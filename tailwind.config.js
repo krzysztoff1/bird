@@ -36,7 +36,7 @@ module.exports = {
     "./src/components/notifications/Notification.js",
     "./src/components/notifications/CommentNotification.js",
     "./src/components/floatingButton/FloatingButton.js",
-    "./src/components/alerts/AlertPositive.js",
+    "./src/components/alerts/Alert.js",
     "./src/components/modals/BottomModal.js",
     "./src/components/modals/Modal.js",
     "./src/components/nav/Nav.js",

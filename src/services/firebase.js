@@ -32,6 +32,7 @@ import { createResizedImage, createResizedImage200 } from "./resizeImage";
 import FastAverageColor from "fast-average-color";
 import { AuthContext } from "../context/auth-context";
 import { useState } from "react";
+import Alert from "../components/alerts/Alert";
 
 // authentication
 export async function getCurrentUser() {
@@ -114,7 +115,7 @@ export async function uploadPost({ text, parentId }) {
       likedByUsers: [],
       commentedByUsers: 0,
     });
-    return;
+    return true;
   }
 
   // add comment to post
@@ -240,7 +241,7 @@ export async function uploadPostWithImage({ text, file, id }) {
         thumbnailUrl: thumbnailUrl,
       });
       console.log("Added post with image");
-      return;
+      return true;
     } catch (error) {
       console.error("Error adding post: ", error);
     }

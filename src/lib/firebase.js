@@ -28,7 +28,6 @@ const firebaseConfig = {
   const db = initializeFirestore(app, {
     cacheSizeBytes: CACHE_SIZE_UNLIMITED,
   });
-  // const db = getFirestore(app);
   enableIndexedDbPersistence(db);
   const storage = getStorage(app);
 

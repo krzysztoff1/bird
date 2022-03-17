@@ -41,9 +41,7 @@ const styles = {
 function App() {
   const AuthState = useContext(AuthContext);
 
-  if (localStorage.theme === "dark") {
-    document.documentElement.classList.add("dark");
-  }
+  document.documentElement.classList.add("dark");
 
   if (!AuthState.currentUser) return <AuthForm />;
 
@@ -51,10 +49,10 @@ function App() {
     <div className="bg-white dark:bg-slate-900">
       <BrowserRouter>
         <NavigationProvider>
-          <div className="mx-auto flex max-w-7xl">
+          <div className="mx-auto flex max-w-6xl">
             {isBrowser && <Nav />}
             {isMobile && <MobileNav />}
-            <main className="flex-grow-1 w-full">
+            <main className="flex-grow-1 mx-auto w-full">
               <Routes>
                 <Route exact path="/" element={<Home />} />
                 <Route

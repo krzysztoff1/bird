@@ -17,7 +17,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useLocation, useParams } from "react-router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { getCurrentUser } from "../services/firebase";
 import { useTranslation } from "react-i18next";
 import { AuthContext } from "../context/auth-context";
@@ -74,7 +74,7 @@ const SinglePost = () => {
     // <article className="fixed top-0 bottom-0 min-h-screen min-w-[100vw] overflow-y-scroll bg-slate-900">
     <article className="h-full min-h-screen ">
       <Header>
-        <button
+        <motion.button
           onClick={() => window.history.go(-1)}
           className="rounded-full p-1 transition-all hover:bg-white/5"
         >
@@ -92,7 +92,7 @@ const SinglePost = () => {
               d="M10 19l-7-7m0 0l7-7m-7 7h18"
             />
           </svg>
-        </button>
+        </motion.button>
       </Header>
       <div className="mb-12 overflow-scroll">
         {post ? (
@@ -104,6 +104,7 @@ const SinglePost = () => {
             time={post.timestamp}
             text={post.text}
             likedByUsers={post.likedByUsers}
+            averageColor={post.averageColor}
             imageUrl={post.imageUrl}
             thumbnailUrl={post.thumbnailUrl}
           />

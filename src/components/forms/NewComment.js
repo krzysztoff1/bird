@@ -23,7 +23,7 @@ const SmallNewPost = ({ post, parentId, comment }) => {
     <form
       onSubmit={(e) => handleSubmit(e)}
       onClick={() => toggleOpen(true)}
-      className="mx-auto max-w-md sm:p-3 md:max-w-xl"
+      className="w-full sm:p-3"
     >
       {open && comment && (
         <label className=" ml-16 text-white/50">

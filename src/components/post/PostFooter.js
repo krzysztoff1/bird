@@ -2,9 +2,18 @@ import { likePost } from "../../services/firebase";
 import { Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 const PostFooter = ({ likedByUsers, user, id, parent, commentedByUsers }) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    console.log("====================================");
+    console.log("change");
+    console.log("====================================");
+  }, [likedByUsers]);
+
   return (
     <div className="z-10 mt-3 flex w-full justify-between">
       <div className="flex w-[55px] items-center">
@@ -38,7 +47,7 @@ const PostFooter = ({ likedByUsers, user, id, parent, commentedByUsers }) => {
           </button>
         </div>
         <p className="h-fit text-xs text-slate-800 dark:text-white">
-          <span>{likedByUsers.length}</span>
+          <motion.span>{likedByUsers.length}</motion.span>
         </p>
         <ReactTooltip delayShow={500} id="likeTip" place="top" effect="solid">
           {t("like_post")}
@@ -55,14 +64,36 @@ const PostFooter = ({ likedByUsers, user, id, parent, commentedByUsers }) => {
       <div className="flex w-[55px] items-center">
         <div className="w-[40px]">
           {parent ? (
-            <span className="h-[34px] w-[34px] flex-shrink-0 rounded-full p-[8px] text-slate-800 transition dark:text-white sm:hover:bg-blue-200  sm:hover:text-blue-400 dark:sm:hover:text-blue-400">
-              <i className="far fa-comment"></i>
-            </span>
+            <svg
+              className="h-6 w-6 text-white opacity-70"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+              />
+            </svg>
           ) : (
             <Link to={`/post/${id}`}>
-              <span className="h-[34px] w-[34px] flex-shrink-0 rounded-full p-[8px] text-slate-800 transition dark:text-white sm:hover:bg-blue-200  sm:hover:text-blue-400 dark:sm:hover:text-blue-400">
-                <i className="far fa-comment"></i>
-              </span>
+              <svg
+                className="h-6 w-6 text-white opacity-70"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                />
+              </svg>
             </Link>
           )}
         </div>

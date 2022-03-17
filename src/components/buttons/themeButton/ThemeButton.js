@@ -21,7 +21,7 @@ const ThemeButton = () => {
       id="toggle"
       className="toggle"
       type="checkbox"
-      checked={dark}
+      defaultChecked={dark}
     />
   );
 };

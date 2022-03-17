@@ -1,5 +1,13 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { db } from "../../lib/firebase";
+import {
+  collection,
+  onSnapshot,
+  where,
+  query,
+  orderBy,
+} from "firebase/firestore";
 import { FaKiwiBird } from "react-icons/fa";
 import { useLocation } from "react-router";
 import { AnimatePresence, motion } from "framer-motion";
@@ -9,7 +17,29 @@ import ThemeButton from "../buttons/themeButton/ThemeButton";
 const Nav = () => {
   const authState = useContext(AuthContext);
 
+  const [notifications, setNotifications] = useState(false);
   const [settings, toggleSettings] = useState();
+
+  useEffect(() => {
+    if (!authState.currentUser) return;
+    const unsubscribe = onSnapshot(
+      query(
+        collection(db, "notifications"),
+        where("uid", "==", authState.currentUser.uid),
+        where("read", "==", false),
+        orderBy("timestamp", "desc")
+      ),
+      (snapshot) => {
+        if (snapshot.size !== 0) return setNotifications(true);
+        setNotifications(false);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    return () => unsubscribe();
+  }, [authState]);
+
   const items = [
     {
       name: "Home",
@@ -29,14 +59,19 @@ const Nav = () => {
       name: "Activity",
       url: "/activity",
       icon: (
-        <svg
-          className="h-6 w-6"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path>
-        </svg>
+        <>
+          <svg
+            className="h-6 w-6"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path>
+          </svg>
+          {notifications ? (
+            <div className="absolute h-3 w-3 -translate-y-2 rounded-full border-2 border-slate-900 bg-green-400"></div>
+          ) : null}
+        </>
       ),
     },
     {
@@ -57,27 +92,9 @@ const Nav = () => {
         </svg>
       ),
     },
-    {
-      name: "Więcej",
-      type: "dropdown",
-      icon: (
-        <svg
-          className="h-6 w-6"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fillRule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
-            clipRule="evenodd"
-          />
-        </svg>
-      ),
-    },
   ];
 
-  const moreItems = [
+  const menuItems = [
     { name: "theme", url: "/" },
     { name: "language", url: "/" },
     { name: "Settings", url: "/settings" },
@@ -85,57 +102,64 @@ const Nav = () => {
   ];
 
   return (
-    <nav className="border-r-[1px] border-slate-200 dark:border-slate-800 ">
-      <div className="sticky top-0 flex h-screen flex-col items-center justify-between sm:items-start">
-        <header className="left-0 z-50 flex flex-col items-center justify-around gap-3 overflow-y-auto px-4 py-3 backdrop-blur-xl dark:bg-slate-900/30 md:w-48 md:items-start">
+    <nav className="border-r-[1px] border-slate-200 dark:border-slate-800">
+      <div className="sticky top-0 mx-0 flex h-screen flex-col items-center justify-between sm:items-start md:mx-4 xl:mx-6">
+        <header className="left-0 z-50 flex w-full flex-col items-center justify-around gap-3 overflow-y-auto px-4 py-3 backdrop-blur-xl dark:bg-slate-900/30 md:items-start">
           <NavLink className="mb-6 w-fit p-2" to="/">
             <img className="h-6 w-6" src="./assets/svg/logo.svg" alt="logo" />
           </NavLink>
-          {items.map((item, i) =>
-            item.url ? (
-              <NavLink
-                key={i}
-                style={({ isActive }) => {
-                  return {
-                    color: isActive ? "#34d399" : "",
-                  };
-                }}
-                className="flex items-center rounded-full p-2 text-slate-800 transition-all hover:bg-emerald-500/30 dark:text-slate-100 md:pr-4"
-                to={item.url}
+          {items.map((item) => (
+            <NavLink
+              key={item.name}
+              style={({ isActive }) => {
+                return {
+                  color: isActive ? "#34d399" : "",
+                };
+              }}
+              className="flex items-center rounded-full p-2 text-slate-800 transition-all hover:bg-emerald-500/30 dark:text-slate-100 md:pr-4"
+              to={item.url}
+            >
+              {item.icon}
+              <p className="ml-3 hidden md:block">{item.name}</p>
+            </NavLink>
+          ))}
+          <div>
+            <button
+              onClick={() => toggleSettings(!settings)}
+              className="flex items-center rounded-full p-2 text-slate-800 transition-all hover:bg-emerald-500/30 dark:text-slate-100 md:pr-4"
+            >
+              <svg
+                className="h-6 w-6"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                {item.icon}
-                <p className="ml-3 hidden md:block">{item.name}</p>
-              </NavLink>
-            ) : (
-              <>
-                <button
-                  key={item.name}
-                  onClick={() => toggleSettings(!settings)}
-                  className="flex items-center rounded-full p-2 text-slate-800 transition-all hover:bg-emerald-500/30 dark:text-slate-100 md:pr-4"
-                >
-                  {item.icon}
-                  <p className="ml-3 hidden md:block">{item.name}</p>
-                </button>
-                <div
-                  className={`${
-                    !settings && "hidden"
-                  } z-80 absolute w-44 list-none divide-y divide-gray-100 rounded-md bg-white text-left text-base shadow shadow-white/20 dark:bg-slate-800`}
-                >
-                  <ul className="w-full py-1">
-                    {moreItems.map((item, i) => (
-                      <NavLink
-                        key={i}
-                        to={item.url}
-                        className="block w-full py-2 px-4 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
-                        {item.name}
-                      </NavLink>
-                    ))}
-                  </ul>
-                </div>
-              </>
-            )
-          )}
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <p className="ml-3 hidden text-xl md:block">Więcej</p>
+            </button>
+            <div
+              className={`${
+                !settings && "hidden"
+              } absolute z-[150] w-44 list-none divide-y divide-gray-100 rounded-md bg-white text-left text-base shadow shadow-white/20 dark:bg-slate-800`}
+            >
+              <ul className="w-full py-1">
+                {menuItems.map((item, i) => (
+                  <NavLink
+                    key={i}
+                    to={item.url}
+                    className="text-md block w-full py-2 px-4 text-left text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    {item.name}
+                  </NavLink>
+                ))}
+              </ul>
+            </div>
+          </div>
           <NavLink
             className="m-2 flex scale-110 items-center justify-center rounded-full bg-emerald-500 p-2 transition-all hover:bg-emerald-600 dark:text-slate-100 sm:px-4"
             to="/compose/post"

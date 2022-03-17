@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { db } from "../../../lib/firebase";
+import PostImage from "../PostImage";
 import {
   likePost,
   getCurrentUser,
@@ -9,8 +9,8 @@ import Spinner from "../../loaders/Spinner";
 import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { monthsShort } from "../../../constans/date";
-import PostImage from "../PostImage/PostImage";
 
 const Post = ({
   account,
@@ -21,6 +21,7 @@ const Post = ({
   uid,
   thumbnailUrl,
   imageUrl,
+  averageColor,
   parent,
   inlineComment,
 }) => {
@@ -89,7 +90,12 @@ const Post = ({
         {text}
       </p>
       {imageUrl && thumbnailUrl ? (
-        <PostImage id={id} imageUrl={imageUrl} thumbnailUrl={thumbnailUrl} />
+        <PostImage
+          id={id}
+          averageColor={averageColor}
+          imageUrl={imageUrl}
+          thumbnailUrl={thumbnailUrl}
+        />
       ) : null}
       <p className="mr-2 mt-4 text-slate-900 dark:text-slate-500">
         {monthsShort[new Date().getMonth(time?.seconds * 1000)]}

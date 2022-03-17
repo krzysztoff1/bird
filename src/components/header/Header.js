@@ -1,10 +1,4 @@
-import { SignOut } from "../../services/firebase";
-import { useLocation } from "react-router";
-import { useTranslation } from "react-i18next";
-import BackButton from "../forms/BackButtonNewPost.js/BackButton";
-import { Children, useContext, useState } from "react";
-import { NavigationContext } from "../../context/NavigationContext";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 const Header = ({ text, children }) => {
   // const [isOpen, toggleIsOpen] = useState(true);
@@ -104,7 +98,7 @@ const Header = ({ text, children }) => {
   // if (location.pathname.includes("compose")) return <div></div>;
 
   return (
-    <header className="sticky top-0 z-50 bg-slate-900/50 py-2 px-4 font-bold tracking-wide text-white backdrop-blur-md">
+    <header className="sticky top-0 z-50 flex items-center justify-between bg-slate-900/50 py-2 px-4 font-bold tracking-wide text-white backdrop-blur-md">
       {text}
       {children}
     </header>

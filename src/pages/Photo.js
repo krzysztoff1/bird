@@ -57,7 +57,7 @@ const Photo = ({ toggle }) => {
       </header>
       <section
         style={{ backgroundColor: photo.averageColor?.hex }}
-        className="fixed flex h-screen w-screen items-center justify-center"
+        className="fixed flex h-screen w-screen items-center justify-center bg-slate-900"
       >
         <ProgressiveImage src={photo.imageUrl} placeholder={photo.thumbnailUrl}>
           {(src) => <img className="w-full" src={src} alt="" />}

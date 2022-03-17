@@ -6,11 +6,13 @@ import {
   saveWorkingCopy,
   uploadPost,
   uploadPostWithImage,
+  usePostImageUpload,
 } from "../../services/firebase";
 import CircularProgress from "../../components/uiElements/CircularProgress";
 import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
 import { AuthContext } from "../../context/auth-context";
+import { uploadPostWithImageBetter } from "../../services/firebase";
 
 const SmallNewPost = ({ post, comment }) => {
   const { t } = useTranslation();
@@ -49,13 +51,18 @@ const SmallNewPost = ({ post, comment }) => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!file) {
-      uploadPost({ text });
-      navigate("/");
-      return;
-    }
-    uploadPostWithImage({ text, file });
-    navigate("/");
+    const upload = async () => {
+      const state = await uploadPostWithImageBetter();
+      console.log(state);
+    };
+    upload();
+    // if (!file) {
+    //   uploadPost({ text });
+    //   navigate("/");
+    //   return;
+    // }
+    // uploadPostWithImage({ text, file });
+    // navigate("/");
   }
 
   const handleFileChange = (e) => {

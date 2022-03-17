@@ -18,15 +18,11 @@ const reducer = (state, action) => {
     case "loading":
       return { status: "loading", data: undefined, error: undefined };
     case "success":
-      return {
-        status: "success",
-        data: action.payload,
-        error: undefined,
-      };
+      return { status: "success", data: action.payload, error: undefined };
     case "error":
       return { status: "error", data: undefined, error: action.payload };
     default:
-      throw new Warning("invalid action");
+      throw new Error("invalid action");
   }
 };
 

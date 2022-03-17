@@ -4,13 +4,16 @@ import pl from "javascript-time-ago/locale/en.json";
 TimeAgo.addDefaultLocale(pl);
 const timeAgo = new TimeAgo("pl-PL");
 
-const PostHeader = ({ account, time, uid }) => {
+const PostHeader = ({ account, time, uid, accountName }) => {
+  console.log("====================================");
+  console.log(accountName);
+  console.log("====================================");
   return (
     <div className="flex items-center justify-between">
       <div className="flex w-full flex-wrap items-baseline">
         <Link to={`/profile/${uid}`}>
           <p className="mr-2 text-sm font-bold text-slate-900 dark:text-slate-200">
-            {account}
+            {account} @{accountName}
           </p>
         </Link>
         <p className="mr-2 text-xs text-slate-900 dark:text-slate-200">

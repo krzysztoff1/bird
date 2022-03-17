@@ -1,3 +1,4 @@
+import { useReducer, useContext } from "react";
 import { db, auth, provider, storage } from "../lib/firebase";
 import {
   serverTimestamp,
@@ -29,7 +30,8 @@ import {
 } from "firebase/auth";
 import { createResizedImage, createResizedImage200 } from "./resizeImage";
 import FastAverageColor from "fast-average-color";
-import { update } from "firebase/database";
+import { AuthContext } from "../context/auth-context";
+import { useState } from "react";
 
 // authentication
 export async function getCurrentUser() {
@@ -145,7 +147,6 @@ export async function uploadPost({ text, parentId }) {
   });
 }
 
-
 export async function uploadPostWithImage({ text, file, id }) {
   let progress = "";
   let progressT = "";
@@ -246,6 +247,47 @@ export async function uploadPostWithImage({ text, file, id }) {
   }
   return progress;
 }
+
+export async function uploadPostWithImageBetter() {
+  let state = { status: "loading" };
+  const imageId = Math.floor(Math.random() * 1000);
+
+  const fac = new FastAverageColor();
+
+  // if (!file) return;
+
+  // const thumbnail = await createResizedImage(file);
+  // const image = await createResizedImage(file);
+
+  // // upload tasks
+  // const storageRef = ref(storage, `postImages/full_${imageId}.jpg`);
+  // const uploadImage = uploadBytesResumable(storageRef, image);
+  // uploadImage.on(
+  //   "state_changed",
+  //   (snapshot) => {
+  //     let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+  //     console.log(progress);
+  //   },
+  //   (error) => {
+  //     console.log(error);
+  //   },
+  //   () => {
+  //     getDownloadURL(uploadImage.snapshot.ref).then((downloadURL) => {
+  //       const setAverageColor = async () => {
+  //         let averageColor = await fac.getColorAsync(downloadURL);
+  //         state = { status: "success" };
+  //       };
+  //       setAverageColor();
+  //     });
+  //   }
+  // );
+  setTimeout(() => {
+    state = { status: "success" };
+  }, 10);
+
+  return state;
+}
+
 // get
 export async function getPosts() {
   const postsRef = collection(db, "posts");
@@ -272,6 +314,16 @@ export async function setUserDescription(text) {
 
   updateDoc(postRef, {
     description: text,
+  });
+}
+
+export async function setUserName(text) {
+  const user = await getCurrentUser();
+  const postRef = doc(db, "users", user.uid);
+  console.log('upload');
+
+  updateDoc(postRef, {
+    userName: text,
   });
 }
 

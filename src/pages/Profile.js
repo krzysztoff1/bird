@@ -16,6 +16,9 @@ import {
 import InfiniteScroll from "react-infinite-scroll-component";
 import { getUserByUid } from "../services/firebase";
 import Loading from "./Loading";
+import Header from "../components/header/Header";
+import { useInView } from "react-intersection-observer";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Profile = () => {
   const { uid } = useParams();
@@ -23,6 +26,7 @@ const Profile = () => {
   const [posts, setPosts] = useState();
   const [numberOfPosts, setNumberOfPosts] = useState(7);
   const [tab, setTab] = useState("posts");
+  const { ref, inView, entry } = useInView();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, "users", uid), (doc) => {
@@ -56,10 +60,51 @@ const Profile = () => {
     return () => unsubscribe();
   }, [numberOfPosts, uid, tab]);
 
+  const profileHeaderVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 100,
+    },
+    transition: {
+      duration: 0.5,
+    },
+  };
+
   if (!userData) return <Loading />;
 
   return (
     <div className="min-h-screen bg-slate-900">
+      <Header>
+        <button
+          onClick={() => window.history.go(-1)}
+          className="w-6 rounded-full p-1 transition-all hover:bg-white/5"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 text-slate-100"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
+          </svg>
+        </button>
+        <motion.p
+          animate={{
+            opacity: inView ? 0 : 1,
+          }}
+          initial={{ opacity: 0 }}
+          transition={{ type: "spring", bounce: 0.1 }}
+        >
+          {userData.name}
+        </motion.p>
+        <span className="w-6" />
+      </Header>
       <ProfileHeader
         profilePicture={
           !userData.profilePicture
@@ -72,6 +117,7 @@ const Profile = () => {
         uid={uid}
         description={userData.description}
       />
+      <span ref={ref}></span>
       <InfiniteScroll
         dataLength={numberOfPosts}
         next={() => setNumberOfPosts(numberOfPosts + 5)}
@@ -94,6 +140,7 @@ const Profile = () => {
             uid={post.uid}
             account={post.account}
             time={post.timestamp}
+            averageColor={post.averageColor}
             text={post.text}
             likedByUsers={post.likedByUsers}
             imageUrl={post.imageUrl}

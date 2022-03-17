@@ -14,15 +14,14 @@ import {
   import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBKprVhAz0z2MDIpzky-15LHhmbSPb8xaE",
-  authDomain: "socialmediaapp-758f7.firebaseapp.com",
-  databaseURL:
-    "https://socialmediaapp-758f7-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "socialmediaapp-758f7",
-  storageBucket: "socialmediaapp-758f7.appspot.com",
-  messagingSenderId: "629836977165",
-  appId: "1:629836977165:web:bc8c51e89bd6a19f8a7144",
-  measurementId: "G-D1LZZ9YRDH",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASE_URL,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
   const app = initializeApp(firebaseConfig);

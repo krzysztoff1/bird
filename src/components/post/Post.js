@@ -1,6 +1,6 @@
 import PostAside from "./PostAside";
 import PostHeader from "./PostHeader";
-import PostImage from "./PostImage/PostImage";
+import PostImage from "./PostImage";
 import PostContent from "./PostContent";
 import PostFooter from "./PostFooter";
 import { getCurrentUser, getUserByUid } from "../../services/firebase";
@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import PostSkeleton from "./PostSkeleton";
 
 const Post = ({
+  accountName,
   averageColor,
   account,
   text,
@@ -45,7 +46,7 @@ const Post = ({
       className={`${
         inlineComment ? "border-t-0 p-3" : "mt-2"
       } inlineComment z-0 mx-auto flex
-          w-full max-w-full flex-grow rounded-md bg-slate-900 p-3 px-6 sm:p-3 md:max-w-xl`}
+          w-full max-w-full flex-grow rounded-md bg-slate-900 p-3 px-6 sm:p-3`}
     >
       <PostAside
         inlineComment={inlineComment}
@@ -53,18 +54,23 @@ const Post = ({
         profilePicture={profilePicture}
       />
       <div className="w-full">
-        <PostHeader account={account} time={time} uid={uid} />
+        <PostHeader
+          accountName={accountName}
+          account={account}
+          time={time}
+          uid={uid}
+        />
         <Link to={`/post/${id}`}>
           <PostContent text={text} />
         </Link>
-        {/* {imageUrl && thumbnailUrl && (
+        {imageUrl && thumbnailUrl && (
           <PostImage
             averageColor={averageColor}
             id={id}
             imageUrl={imageUrl}
             thumbnailUrl={thumbnailUrl}
           />
-        )} */}
+        )}
         <PostFooter
           commentedByUsers={commentedByUsers}
           likedByUsers={likedByUsers}

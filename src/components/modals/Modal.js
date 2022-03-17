@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-const Modal = ({ md, modal, toggleModal, title, subTitle, children }) => {
+const Modal = ({ modal, toggleModal, title, subTitle, children }) => {
   const modalRef = useRef();
 
   function closeModal(e) {
@@ -9,12 +9,12 @@ const Modal = ({ md, modal, toggleModal, title, subTitle, children }) => {
 
   return (
     <>
-      {modal ? (
+      {modal && (
         <>
           <div
             ref={modalRef}
             onClick={(e) => closeModal(e)}
-            className={`fixed z-[1000] flex h-screen w-screen items-center justify-center bg-slate-700/30 align-middle backdrop-blur-sm`}
+            className={`fixed top-0 left-0 right-0 bottom-0 z-[1000] flex h-screen w-screen items-center justify-center bg-slate-900/30 align-middle backdrop-blur-md`}
           >
             <div className="z-50 mx-auto items-center justify-center overflow-y-auto overflow-x-hidden sm:h-full md:inset-0">
               <div className={`relative h-full w-[80vw] px-4`}>
@@ -55,9 +55,9 @@ const Modal = ({ md, modal, toggleModal, title, subTitle, children }) => {
           <section
             ref={modalRef}
             onClick={(e) => closeModal(e)}
-            className="fixed z-[1001] mx-auto flex h-screen w-screen items-center justify-center"
+            className="fixed top-0 left-0 right-0 bottom-0 z-[1001] mx-auto flex h-screen w-screen items-center justify-center shadow"
           >
-            <div className="relative  max-w-xs rounded-2xl bg-white shadow dark:bg-slate-900 sm:max-w-md">
+            <div className="relative max-w-xs rounded-2xl border border-slate-800 bg-white shadow dark:bg-slate-900 sm:max-w-md md:max-w-md">
               <div className="flex justify-end p-2">
                 <button
                   onClick={() => toggleModal(false)}
@@ -88,7 +88,7 @@ const Modal = ({ md, modal, toggleModal, title, subTitle, children }) => {
             </div>
           </section>
         </>
-      ) : null}
+      )}
     </>
   );
 };

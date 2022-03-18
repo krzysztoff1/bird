@@ -3,36 +3,44 @@ import { uploadPost, uploadPostWithImage } from "../../services/firebase";
 import { useTranslation } from "react-i18next";
 import CircularProgress from "../uiElements/CircularProgress";
 import { AuthContext } from "../../context/auth-context";
-import Alert from "../alerts/Alert";
+import { ToastPortal } from "../toast/ToastPortal";
 
 const SmallNewPost = ({ post, parentId, comment }) => {
   const { t } = useTranslation();
   const authState = useContext(AuthContext);
   const [text, setText] = useState("");
-  const [success, toggleSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [open, toggleOpen] = useState(post ? true : false);
   const [file, setFile] = useState();
   const textArea = useRef();
+  const toastRef = useRef();
+
+  const addToast = () => {
+    toastRef.current.addMessage({
+      mode: "success",
+      message: "Post successfully Added",
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    toggleSuccess(false);
-    if (!text.length) return;
+    if (!text.length)
+      return toastRef.current.addMessage({
+        mode: "info",
+        message: "Add text to the post",
+      });
     if (!file) {
-      let isUploaded = await uploadPost({ text, parentId });
-      if (isUploaded) return toggleSuccess(true);
-      return;
+      let uploadState = await uploadPost({ text, parentId });
+      console.log(uploadState);
+      if (uploadState) return addToast();
+      return console.log("test");
     }
     let isUploaded = await uploadPostWithImage({ text, file, parentId });
-    if (isUploaded) return toggleSuccess(true);
+    if (isUploaded) return addToast();
   };
 
   return (
     <>
-      {success && (
-        <Alert success title={"Success"} text={"Successfully added post"} />
-      )}
+      <ToastPortal ref={toastRef} />
       <form
         onSubmit={(e) => handleSubmit(e)}
         onClick={() => toggleOpen(true)}
@@ -59,7 +67,7 @@ const SmallNewPost = ({ post, parentId, comment }) => {
               id="message"
               rows={2}
               className={`${
-                open ? "" : "truncate"
+                !open && "truncate"
               } my-1 block min-h-[70px] w-full resize-none bg-transparent py-2.5 text-xl text-slate-100 outline-none  transition-all`}
               placeholder={comment ? t("send_post_in_response") : t("tweet")}
             />

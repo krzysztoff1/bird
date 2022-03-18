@@ -1,43 +1,23 @@
 import "./index.css";
 import AppLogo from "./components/loaders/AppLogo";
-import {
-  BrowserView,
-  MobileView,
-  isMobile,
-  isBrowser,
-} from "react-device-detect";
-import * as rdd from "react-device-detect";
-import Home from "./pages/Home";
-import { lazy, Suspense } from "react";
-import Profile from "./pages/Profile";
-import Settings from "./pages/Settings";
-import SinglePost from "./pages/SinglePost";
-import SmallNewPost from "./components/forms/NewPost";
-import EditProfile from "./pages/EditProfile";
-import Photo from "./pages/Photo";
-import NotFound from "./pages/NotFound";
 import AuthForm from "./pages/Auth";
-import Activity from "./pages/Activity";
-import MobileNav from "./components/nav/MobileNav";
-import Header from "./components/header/Header";
-import { NavigationProvider } from "./context/NavigationContext";
-import { AuthContext } from "./context/auth-context";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
-import { useContext } from "react";
-import Messages from "./pages/Messages";
-import Nav from "./components/nav/Nav";
-import Layout from "./components/Layout";
-import Alert from "./components/alerts/Alert";
+import { isBrowser } from "react-device-detect";
+import { lazy, Suspense, useContext } from "react";
+import { AuthContext } from "./context/auth-context";
+import { DataProvider } from "./context/data-context";
 
+const Home = lazy(() => import("./pages/Home"));
+const Activity = lazy(() => import("./pages/Activity"));
+const SmallNewPost = lazy(() => import("./components/forms/NewPost"));
 const SideBar = lazy(() => import("./components/sidebar/SideBar"));
-
-const styles = {
-  background: "#000",
-  width: "2px",
-  cursor: "col-resize",
-  margin: "0 5px",
-  height: "100%",
-};
+const Nav = lazy(() => import("./components/nav/Nav"));
+const MobileNav = lazy(() => import("./components/nav/MobileNav"));
+const SinglePost = lazy(() => import("./pages/SinglePost"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Messages = lazy(() => import("./pages/Messages"));
+const Settings = lazy(() => import("./pages/Settings"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 function App() {
   const AuthState = useContext(AuthContext);
@@ -47,42 +27,38 @@ function App() {
   if (!AuthState.currentUser) return <AuthForm />;
 
   return (
-    <div className="bg-white dark:bg-slate-900">
-      <BrowserRouter>
-        <NavigationProvider>
+    <Suspense fallback={<AppLogo />}>
+      <div className="bg-white dark:bg-slate-900">
+        <BrowserRouter>
           <div className="mx-auto flex max-w-6xl">
-            {isBrowser && <Nav />}
-            {isMobile && <MobileNav />}
+            {isBrowser ? <Nav /> : <MobileNav />}
             <main className="flex-grow-1 mx-auto w-full">
-              <Routes>
-                <Route exact path="/" element={<Home />} />
-                <Route
-                  path="/post/:id"
-                  element={
-                    <>
-                      <Home />
-                      <SinglePost />
-                    </>
-                  }
-                />
-                <Route path="/profile/:uid" element={<Profile />} />
-                <Route path="/user/profile" element={<EditProfile />} />
-                <Route path="/activity" element={<Activity />} />
-                <Route path="/compose/post" element={<SmallNewPost />} />
-                <Route path="/messages" element={<Messages />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route element={<NotFound />} />
-              </Routes>
+              <DataProvider>
+                <Routes>
+                  <Route exact path="/" element={<Home />} />
+                  <Route
+                    path="/post/:id"
+                    element={
+                      <>
+                        <Home />
+                        <SinglePost />
+                      </>
+                    }
+                  />
+                  <Route path="/profile/:uid" element={<Profile />} />
+                  <Route path="/activity" element={<Activity />} />
+                  <Route path="/compose/post" element={<SmallNewPost />} />
+                  <Route path="/messages" element={<Messages />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route element={<NotFound />} />
+                </Routes>
+              </DataProvider>
             </main>
-            {isBrowser && (
-              <Suspense fallback={<>Loading...</>}>
-                <SideBar />
-              </Suspense>
-            )}
+            {isBrowser && <SideBar />}
           </div>
-        </NavigationProvider>
-      </BrowserRouter>
-    </div>
+        </BrowserRouter>
+      </div>
+    </Suspense>
   );
 }
 

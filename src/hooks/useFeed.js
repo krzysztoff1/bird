@@ -9,7 +9,6 @@ import {
   where,
   query,
 } from "firebase/firestore";
-import { Warning } from "postcss";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -68,7 +67,7 @@ export default function useFeed() {
   }, [users, pending, numberOfPosts]);
 
   const fetchMoreData = () => {
-    setNumberOfPosts((state) => state + 10);
+    setNumberOfPosts((n) => n + 10);
   };
 
   return { state, fetchMoreData };

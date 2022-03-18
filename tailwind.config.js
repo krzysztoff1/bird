@@ -37,6 +37,8 @@ module.exports = {
     "./src/components/notifications/CommentNotification.js",
     "./src/components/floatingButton/FloatingButton.js",
     "./src/components/alerts/Alert.js",
+    "./src/components/toast/Toast.js",
+    "./src/components/toast/ToastPortal.js",
     "./src/components/modals/BottomModal.js",
     "./src/components/modals/Modal.js",
     "./src/components/nav/Nav.js",

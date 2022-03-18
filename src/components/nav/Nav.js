@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { db } from "../../lib/firebase";
 import {
   collection,
@@ -9,13 +9,14 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { AuthContext } from "../../context/auth-context";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { SignOut } from "../../services/firebase";
 
 const Nav = () => {
   const authState = useContext(AuthContext);
-
   const [notifications, setNotifications] = useState(false);
-  const [settings, toggleSettings] = useState();
+  const [settings, toggleSettings] = useState(false);
+  const [isOpenFooter, toggleIsOpenFooter] = useState(false);
 
   useEffect(() => {
     if (!authState.currentUser) return;
@@ -139,9 +140,9 @@ const Nav = () => {
               </svg>
               <p className="ml-3 hidden text-xl md:block">Więcej</p>
             </button>
-            <motion.div layout className={`${!settings && "hidden"} absolute md:block list-none`}>
+            <motion.div className={`${!settings && "hidden"} list-none`}>
               <ul className="w-full py-1">
-                {menuItems.map((item, i) => (
+                {menuItems.map((item) => (
                   <NavLink
                     key={item.name}
                     style={({ isActive }) => {
@@ -149,7 +150,7 @@ const Nav = () => {
                         color: isActive ? "#34d399" : "",
                       };
                     }}
-                    className="flex items-center rounded-full p-2 text-slate-800 transition-all hover:bg-emerald-500/30 dark:text-slate-100 md:pr-4"
+                    className="flex items-center rounded-full p-2 text-xl text-slate-800 transition-all hover:bg-emerald-500/30 dark:text-slate-100 md:pr-4"
                     to={item.url}
                   >
                     <p className="ml-3 hidden md:block">{item.name}</p>
@@ -173,10 +174,71 @@ const Nav = () => {
             <p className="hidden text-center md:block">Tweetnij</p>
           </NavLink>
         </header>
-        <footer>
-          <NavLink
+        <footer className="relative">
+          <AnimatePresence>
+            {isOpenFooter && (
+              <motion.section
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.1 }}
+                className="absolute -top-44 z-[100] ml-2 w-64 rounded-md border border-slate-700 bg-slate-800 text-white shadow"
+              >
+                <header
+                  className="w-full p-2"
+                  onClick={() => toggleIsOpenFooter(false)}
+                >
+                  <svg
+                    className="h-8 w-8 rounded-full p-1 transition hover:bg-slate-700"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </header>
+                <hr className="border-t border-slate-600" />
+                <Link to={`/profile/${authState.currentUser.uid}`}>
+                  <div className="flex items-center justify-between px-2 py-3 font-medium transition hover:bg-slate-700">
+                    {authState.userData?.name}
+                    <svg
+                      className="h-8 w-8 text-emerald-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </div>
+                </Link>
+                <hr className="border-t border-slate-600" />
+                <form onSubmit={() => SignOut()}>
+                  <button
+                    type="Submit"
+                    className="w-full px-2 py-3 text-left transition hover:bg-slate-700"
+                  >
+                    Sign out from account {authState.userData.name}
+                  </button>
+                </form>
+              </motion.section>
+            )}
+          </AnimatePresence>
+          <section
+            onClick={() => toggleIsOpenFooter((isOpen) => !isOpen)}
             className="m-2 flex items-center rounded-full p-2  text-slate-800 hover:bg-teal-200/20 dark:text-slate-100 sm:hover:text-teal-500"
-            to="/user/profile"
+            // to={`/profile/${authState.currentUser.uid}`}
           >
             <div className="flex items-center">
               <img
@@ -184,17 +246,11 @@ const Nav = () => {
                 src={authState.userData?.profilePicture}
                 alt=" "
               />
-              <p className="ml-3 hidden md:block">{authState.userData?.name}</p>
+              <p className="ml-3 hidden pr-4 md:block">
+                {authState.userData?.name}
+              </p>
             </div>
-            <svg
-              className="ml-4 hidden h-6 w-6 md:block"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-            </svg>
-          </NavLink>
+          </section>
         </footer>
       </div>
     </nav>

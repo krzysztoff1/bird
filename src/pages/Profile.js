@@ -14,11 +14,10 @@ import {
   query,
 } from "firebase/firestore";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { getUserByUid } from "../services/firebase";
 import Loading from "./Loading";
 import Header from "../components/header/Header";
 import { useInView } from "react-intersection-observer";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 const Profile = () => {
   const { uid } = useParams();
@@ -60,20 +59,10 @@ const Profile = () => {
     return () => unsubscribe();
   }, [numberOfPosts, uid, tab]);
 
-  const profileHeaderVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 100,
-    },
-    transition: {
-      duration: 0.5,
-    },
-  };
-
   if (!userData) return <Loading />;
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen">
       <Header>
         <button
           onClick={() => window.history.go(-1)}

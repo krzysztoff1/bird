@@ -28,11 +28,8 @@ import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import { createResizedImage, createResizedImage200 } from "./resizeImage";
+import { createResizedImage } from "./resizeImage";
 import FastAverageColor from "fast-average-color";
-import { AuthContext } from "../context/auth-context";
-import { useState } from "react";
-import Alert from "../components/alerts/Alert";
 
 // authentication
 export async function getCurrentUser() {
@@ -104,7 +101,14 @@ export async function uploadPost({ text, parentId }) {
   const user = await getCurrentUser();
   const userData = await getUserByUid(user.uid);
 
-  // add post
+  if (
+    /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#/%=~_|$])/gim.test(
+      text
+    )
+  ) {
+    console.log("url is not yet supported");
+    return;
+  }
   if (!parentId) {
     addDoc(collection(db, "posts"), {
       comment: false,
@@ -146,6 +150,7 @@ export async function uploadPost({ text, parentId }) {
     commentedByUid: user.uid,
     commentedByName: userData.name,
   });
+  return true;
 }
 
 export async function uploadPostWithImage({ text, file, id }) {
@@ -341,7 +346,7 @@ export async function setUserPhoto(file) {
       console.log("no photo to delete" + error);
     });
 
-  const resizedProfileImage = await createResizedImage200(file);
+  const resizedProfileImage = await createResizedImage(200, file);
   const storageRef = ref(storage, `profilePictures/uid_${user.uid}.jpg`);
   const uploadImage = uploadBytesResumable(storageRef, resizedProfileImage);
   uploadImage.on(

@@ -12,7 +12,7 @@ const PostsList = () => {
         <Spinner />;
       </div>
     );
-  
+
   if (!state.data.length) return <p className="text-white">No posts yet</p>;
 
   return (
@@ -25,6 +25,7 @@ const PostsList = () => {
         <Post
           key={post.id}
           id={post.id}
+          link={post?.link}
           averageColor={post.averageColor}
           uid={post.uid}
           accountName={post.userName}

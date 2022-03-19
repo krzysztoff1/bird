@@ -11,8 +11,10 @@ const AuthForm = () => {
   const [logIn, toggleLogIn] = useState(0);
 
   return (
-    <div className="flex h-[100vh] w-[100vw] flex-col items-center justify-center bg-slate-200 text-slate-100 dark:bg-slate-900">
-      <h1 className="mb-4 px-3 text-3xl font-bold ">{t("hello")}</h1>
+    <div className="flex h-[100vh] w-[100vw] flex-col items-center justify-center bg-white text-slate-100 dark:bg-slate-900">
+      <h1 className="mb-4 px-3 text-3xl font-bold text-black dark:text-white">
+        {t("hello")}
+      </h1>
       <AnimatePresence exitBeforeEnter>
         {signIn && (
           <>

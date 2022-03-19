@@ -14,8 +14,8 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
-      setPending(false);
       getUserData();
+      setPending(false);
     });
     return () => unsub();
   }, [currentUser]);

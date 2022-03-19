@@ -1,6 +1,6 @@
 import { db } from "../lib/firebase";
 import useFollowing from "./useFollowing";
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer, useContext } from "react";
 import {
   collection,
   onSnapshot,
@@ -65,6 +65,10 @@ export default function useFeed() {
     );
     return () => unsubscribe();
   }, [users, pending, numberOfPosts]);
+
+  // useEffect(() => {
+  //   if (state.data) return setFeedData(state.data);
+  // }, [state, dispatch]);
 
   const fetchMoreData = () => {
     setNumberOfPosts((n) => n + 10);

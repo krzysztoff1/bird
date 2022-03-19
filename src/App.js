@@ -5,7 +5,10 @@ import { Route, BrowserRouter, Routes } from "react-router-dom";
 import { isBrowser } from "react-device-detect";
 import { lazy, Suspense, useContext } from "react";
 import { AuthContext } from "./context/auth-context";
-import { DataProvider } from "./context/data-context";
+import ProfileSetup from "./pages/ProfileSetup";
+import { ProfileFlowProvider } from "./context/profileFlow-context";
+import TimeAgo from "javascript-time-ago";
+import pl from "javascript-time-ago/locale/en.json";
 
 const Home = lazy(() => import("./pages/Home"));
 const Activity = lazy(() => import("./pages/Activity"));
@@ -18,6 +21,8 @@ const Profile = lazy(() => import("./pages/Profile"));
 const Messages = lazy(() => import("./pages/Messages"));
 const Settings = lazy(() => import("./pages/Settings"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+
+TimeAgo.addDefaultLocale(pl);
 
 function App() {
   const AuthState = useContext(AuthContext);
@@ -32,27 +37,36 @@ function App() {
         <BrowserRouter>
           <div className="mx-auto flex max-w-6xl">
             {isBrowser ? <Nav /> : <MobileNav />}
-            <main className="flex-grow-1 mx-auto w-full">
-              <DataProvider>
-                <Routes>
-                  <Route exact path="/" element={<Home />} />
-                  <Route
-                    path="/post/:id"
-                    element={
-                      <>
-                        <Home />
-                        <SinglePost />
-                      </>
-                    }
-                  />
-                  <Route path="/profile/:uid" element={<Profile />} />
-                  <Route path="/activity" element={<Activity />} />
-                  <Route path="/compose/post" element={<SmallNewPost />} />
-                  <Route path="/messages" element={<Messages />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route element={<NotFound />} />
-                </Routes>
-              </DataProvider>
+            <main className="flex-grow-1  mr-0 w-full max-w-full justify-center border-r-[1px] border-slate-100 dark:border-slate-200/30  sm:mr-0 md:mr-12 md:max-w-lg">
+              <Routes>
+                <Route exact path="/" element={<Home />} />
+                <Route
+                  path="/post/:id"
+                  element={
+                    <>
+                      <Home />
+                      <SinglePost />
+                    </>
+                  }
+                />
+                <Route path="/profile/:uid" element={<Profile />} />
+                <Route path="/activity" element={<Activity />} />
+                <Route path="/compose/post" element={<SmallNewPost />} />
+                <Route path="/messages" element={<Messages />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route
+                  path="/flow/profile_setup"
+                  element={
+                    <>
+                      <ProfileFlowProvider>
+                        <ProfileSetup />
+                      </ProfileFlowProvider>
+                      <Profile />
+                    </>
+                  }
+                />
+                <Route element={<NotFound />} />
+              </Routes>
             </main>
             {isBrowser && <SideBar />}
           </div>

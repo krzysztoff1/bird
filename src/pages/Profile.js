@@ -1,9 +1,9 @@
-import ProfileHeader from "../components/profile/ProfileHeader";
 import { useParams } from "react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useInView } from "react-intersection-observer";
+import { motion } from "framer-motion";
+import { AuthContext } from "../context/auth-context";
 import { db } from "../lib/firebase";
-import Post from "../components/post/Post";
-import PostSkeleton from "../components/post/PostSkeleton";
 import {
   collection,
   onSnapshot,
@@ -14,32 +14,26 @@ import {
   query,
 } from "firebase/firestore";
 import InfiniteScroll from "react-infinite-scroll-component";
+import ProfileHeader from "../components/profile/ProfileHeader";
+import Post from "../components/post/Post";
+import PostSkeleton from "../components/post/PostSkeleton";
 import Loading from "./Loading";
 import Header from "../components/header/Header";
-import { useInView } from "react-intersection-observer";
-import { motion } from "framer-motion";
 
 const Profile = () => {
   const { uid } = useParams();
-  const [userData, setUserData] = useState();
+  const authState = useContext(AuthContext);
   const [posts, setPosts] = useState();
   const [numberOfPosts, setNumberOfPosts] = useState(7);
   const [tab, setTab] = useState("posts");
-  const { ref, inView, entry } = useInView();
-
-  useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, "users", uid), (doc) => {
-      setUserData(doc.data());
-    });
-    return () => unsubscribe();
-  }, [uid]);
+  const { ref, inView } = useInView();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
       query(
         collection(db, "posts"),
         where("comment", "==", false),
-        where("uid", "==", uid),
+        where("uid", "==", authState.currentUser.uid),
         limit(numberOfPosts),
         orderBy("timestamp", "desc")
       ),
@@ -59,7 +53,11 @@ const Profile = () => {
     return () => unsubscribe();
   }, [numberOfPosts, uid, tab]);
 
-  if (!userData) return <Loading />;
+  useEffect(() => {
+    document.body.style.overflow = "visible";
+  }, []);
+
+  if (!authState.userData) return <Loading />;
 
   return (
     <div className="min-h-screen">
@@ -70,8 +68,7 @@ const Profile = () => {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-slate-100"
-            fill="none"
+            className="h-6 w-6 text-black dark:text-white"
             viewBox="0 0 24 24"
             stroke="currentColor"
             strokeWidth="2"
@@ -90,21 +87,17 @@ const Profile = () => {
           initial={{ opacity: 0 }}
           transition={{ type: "spring", bounce: 0.1 }}
         >
-          {userData.name}
+          {authState.userData.name}
         </motion.p>
         <span className="w-6" />
       </Header>
       <ProfileHeader
-        profilePicture={
-          !userData.profilePicture
-            ? userData.googleProfileImage
-            : userData.profilePicture
-        }
-        account={userData.name}
-        following={userData.following}
-        followedBy={userData.followedBy}
+        profilePicture={authState.userData.profilePicture}
+        account={authState.userData.name}
+        following={authState.userData.following}
+        followedBy={authState.userData.followedBy}
         uid={uid}
-        description={userData.description}
+        description={authState.userData.description}
       />
       <span ref={ref}></span>
       <InfiniteScroll

@@ -121,7 +121,7 @@ const SmallNewPost = ({ post, comment }) => {
             : null}
         </ul>
       </Modal>
-      <section className="h-full min-h-screen w-full bg-slate-900 ">
+      <section className="h-full min-h-screen w-full">
         <form
           onSubmit={(e) => {
             handleSubmit(e);
@@ -184,7 +184,7 @@ const SmallNewPost = ({ post, comment }) => {
                 ref={textField}
                 rows="8"
                 onChange={(e) => setText(e.target.value)}
-                className="text-md flex-grow-2 block w-full rounded-lg bg-transparent px-5 py-8 pt-0 text-slate-100 outline-none"
+                className="text-md flex-grow-2 block w-full rounded-lg bg-transparent px-5 py-8 pt-0 text-black outline-none dark:text-white"
                 placeholder="Whaazzzaz Upppp"
               />
             </div>
@@ -199,7 +199,7 @@ const SmallNewPost = ({ post, comment }) => {
                   <svg
                     onClick={() => setFile("")}
                     xmlns="http://www.w3.org/2000/svg"
-                    className="absolute m-1 h-5 w-5 rounded-full bg-slate-50 p-[3px] shadow"
+                    className="absolute m-1 h-5 w-5 rounded-full bg-slate-50 p-[3px]"
                     viewBox="0 0 20 20"
                     fill="black"
                   >
@@ -324,25 +324,3 @@ const SmallNewPost = ({ post, comment }) => {
 };
 
 export default SmallNewPost;
-
-{
-  /* <div className="mr-3 flex w-full">
-  <textarea
-    rows="1"
-    onChange={(e) => setText(e.target.value)}
-    className="block w-full rounded-lg border border-gray-300 bg-gray-50/20 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700/25 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-    placeholder="Whaazzzaz Upppp"
-  />
-  <CircularProgress
-    variant="determinate"
-    value={Math.trunc((text.length / 280) * 100)}
-  />
-</div>
-<input onChange={(e) => setFile(e.target.files[0])} type="file" />
-<button
-  type="submit"
-  className="mr-2 mb-2 rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
->
-  Post
-</button> */
-}

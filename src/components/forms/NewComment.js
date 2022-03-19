@@ -30,9 +30,8 @@ const SmallNewPost = ({ post, parentId, comment }) => {
       });
     if (!file) {
       let uploadState = await uploadPost({ text, parentId });
-      console.log(uploadState);
       if (uploadState) return addToast();
-      return console.log("test");
+      return;
     }
     let isUploaded = await uploadPostWithImage({ text, file, parentId });
     if (isUploaded) return addToast();
@@ -58,7 +57,7 @@ const SmallNewPost = ({ post, parentId, comment }) => {
           <img
             src={authState.userData?.profilePicture}
             className="m-3 h-10 w-10 rounded-full"
-            alt=" "
+            alt="User avatar"
           />
           <div className={`w-full ${!open && "flex"}`}>
             <textarea
@@ -68,10 +67,10 @@ const SmallNewPost = ({ post, parentId, comment }) => {
               rows={2}
               className={`${
                 !open && "truncate"
-              } my-1 block min-h-[70px] w-full resize-none bg-transparent py-2.5 text-xl text-slate-100 outline-none  transition-all`}
+              } my-1 block min-h-[70px] w-full resize-none bg-transparent py-2.5 text-xl text-black outline-none transition-all  dark:text-white`}
               placeholder={comment ? t("send_post_in_response") : t("tweet")}
             />
-            <div className="flex items-start justify-between shadow-xl">
+            <div className="flex items-start justify-between">
               {open ? (
                 <>
                   <div>
@@ -118,7 +117,6 @@ const SmallNewPost = ({ post, parentId, comment }) => {
             </div>
           </div>
         </div>
-        <hr className="my-2 border-t-[0.5px] border-slate-600" />
       </form>
     </>
   );

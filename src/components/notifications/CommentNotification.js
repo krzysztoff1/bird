@@ -2,6 +2,8 @@ import { markReadNotification } from "../../services/firebase";
 import TimeAgo from "javascript-time-ago";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import pl from "javascript-time-ago/locale/en.json";
+TimeAgo.addDefaultLocale(pl);
 const timeAgo = new TimeAgo("pl-PL");
 
 const CommentNotification = ({ docId, id, name, timestamp, commentText }) => {

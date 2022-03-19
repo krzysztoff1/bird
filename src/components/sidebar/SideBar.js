@@ -18,7 +18,7 @@ const SideBar = () => {
   ];
 
   return (
-    <aside className="hidden border-l-[1px] border-slate-800/50 bg-slate-900 p-4 lg:block">
+    <aside className="hidden  p-4 dark:border-slate-800/50 lg:block">
       <div className="sticky top-0 left-0 z-50 mb-2 h-screen overflow-hidden overflow-y-scroll py-2">
         <section>
           <label htmlFor="table-search" className="sr-only">
@@ -47,15 +47,14 @@ const SideBar = () => {
             />
           </div>
         </section>
-        <section className="my-4 rounded-xl bg-slate-800/50 pt-3">
+        <section className="my-4 overflow-hidden rounded-xl bg-neutral-100 pt-3 dark:bg-slate-800/50">
           <header className="mb-3 flex justify-between px-3">
-            <h3 className="text-xl font-bold text-white">
+            <h3 className="text-xl font-bold text-black dark:text-white">
               Najpopularnijsze w polsce
             </h3>
             <button>
               <svg
-                className="h-6 w-6"
-                fill="white"
+                className="h-6 w-6 text-black dark:text-white"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -71,19 +70,20 @@ const SideBar = () => {
             {topics.map((topic, i) => (
               <li
                 key={i}
-                className="flex items-start justify-between py-2 px-3 transition hover:bg-slate-700/50"
+                className="flex items-start justify-between py-2 px-3 transition hover:bg-neutral-200 dark:hover:bg-slate-700/50"
               >
                 <div>
-                  <p className="text-xs text-white/50">
+                  <p className="text-xs text-black/50 dark:text-white/50">
                     Najpopularniejsze w poslce
                   </p>
-                  <b className="text-white ">{topic.title}</b>
-                  <p className="text-xs text-white/50">Tweety: {topic.no}</p>
+                  <b className="text-black dark:text-white ">{topic.title}</b>
+                  <p className="text-xs text-black/50 dark:text-white/50">
+                    Tweety: {topic.no}
+                  </p>
                 </div>
                 <button>
                   <svg
-                    className="h-4 w-4 opacity-50"
-                    fill="white"
+                    className="h-4 w-4 text-black/50 opacity-50 dark:text-white/50"
                     viewBox="0 0 20 5"
                     xmlns="http://www.w3.org/2000/svg"
                   >
@@ -93,7 +93,7 @@ const SideBar = () => {
               </li>
             ))}
           </ul>
-          <button className="w-full p-3 text-left text-blue-400 hover:bg-slate-700/50">
+          <button className="w-full overflow-clip p-3 text-left text-blue-400 hover:bg-neutral-200 dark:hover:bg-slate-700/50">
             Show more
           </button>
         </section>

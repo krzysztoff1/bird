@@ -4,11 +4,10 @@ import PostImage from "./PostImage";
 import PostContent from "./PostContent";
 import PostFooter from "./PostFooter";
 import { getCurrentUser, getUserByUid } from "../../services/firebase";
-import { db } from "../../lib/firebase";
-import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PostSkeleton from "./PostSkeleton";
+import PostLink from "../post/PostLink";
 
 const Post = ({
   accountName,
@@ -23,6 +22,7 @@ const Post = ({
   commentedByUsers,
   imageUrl,
   parent,
+  link,
   inlineComment,
 }) => {
   const [user, setUser] = useState();
@@ -43,8 +43,8 @@ const Post = ({
 
   return (
     <article
-      className={`${inlineComment ? "p-3" : "mt-2"} z-0 mx-auto flex w-full
-          max-w-full flex-grow border-t-[1px] border-slate-200 p-3 px-6 dark:border-slate-800 sm:p-3`}
+      className={`${inlineComment ? "p-3" : ""} z-0 mx-auto flex w-full
+       max-w-full flex-grow  border-t-[1px] border-slate-200 p-3 px-6 transition hover:bg-neutral-100/30 dark:border-slate-800 dark:hover:bg-slate-800/30 sm:p-3`}
     >
       <PostAside
         inlineComment={inlineComment}
@@ -61,6 +61,7 @@ const Post = ({
         <Link to={`/post/${id}`}>
           <PostContent text={text} />
         </Link>
+        {link && <PostLink />}
         {imageUrl && thumbnailUrl && (
           <PostImage
             averageColor={averageColor}

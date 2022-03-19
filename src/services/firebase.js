@@ -102,9 +102,9 @@ export async function uploadPost({ text, parentId }) {
   const userData = await getUserByUid(user.uid);
 
   if (
-    /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#/%=~_|$])/gim.test(
-      text
-    )
+    new RegExp(
+      /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#/%=~_|$])/gim
+    ).test(text)
   ) {
     console.log("url is not yet supported");
     return;
@@ -326,7 +326,7 @@ export async function setUserDescription(text) {
 export async function setUserName(text) {
   const user = await getCurrentUser();
   const postRef = doc(db, "users", user.uid);
-  console.log('upload');
+  console.log("upload");
 
   updateDoc(postRef, {
     userName: text,
@@ -346,9 +346,10 @@ export async function setUserPhoto(file) {
       console.log("no photo to delete" + error);
     });
 
-  const resizedProfileImage = await createResizedImage(200, file);
+  const resizedProfileImage = await createResizedImage({ file });
   const storageRef = ref(storage, `profilePictures/uid_${user.uid}.jpg`);
   const uploadImage = uploadBytesResumable(storageRef, resizedProfileImage);
+
   uploadImage.on(
     "state_changed",
     (snapshot) => {
@@ -363,6 +364,7 @@ export async function setUserPhoto(file) {
         updateDoc(postRef, {
           profilePicture: downloadURL,
         });
+        return true;
       });
     }
   );

@@ -4,6 +4,7 @@ import Header from "../components/header/Header";
 import { isMobile } from "react-device-detect";
 import { useLocation } from "react-router";
 import { lazy, Suspense } from "react";
+
 const PostsList = lazy(() => import("../components/feed/PostsList"));
 
 const Home = () => {
@@ -13,7 +14,7 @@ const Home = () => {
     <div
       className={`${
         location.pathname.includes("post") && "hidden"
-      } min-h-screen bg-slate-100 dark:bg-slate-900`}
+      } min-h-screen `}
     >
       {isMobile && <FloatingButton />}
       <Header text="Główna" />

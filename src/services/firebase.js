@@ -30,6 +30,7 @@ import {
 } from "firebase/auth";
 import { createResizedImage } from "./resizeImage";
 import FastAverageColor from "fast-average-color";
+import { fetchLinkData } from "./linkPreview";
 
 // authentication
 export async function getCurrentUser() {
@@ -106,7 +107,18 @@ export async function uploadPost({ text, parentId }) {
       /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#/%=~_|$])/gim
     ).test(text)
   ) {
-    console.log("url is not yet supported");
+    const link = text.match(/\bhttps?:\/\/\S+/gi);
+    const linkData = await fetchLinkData(link);
+    addDoc(collection(db, "posts"), {
+      comment: false,
+      account: userData.name,
+      uid: user.uid,
+      text: text.replace(link, ""),
+      timestamp: serverTimestamp(),
+      likedByUsers: [],
+      commentedByUsers: 0,
+      linkData: linkData,
+    });
     return;
   }
   if (!parentId) {

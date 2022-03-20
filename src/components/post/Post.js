@@ -22,7 +22,7 @@ const Post = ({
   commentedByUsers,
   imageUrl,
   parent,
-  link,
+  linkData,
   inlineComment,
 }) => {
   const [user, setUser] = useState();
@@ -61,7 +61,7 @@ const Post = ({
         <Link to={`/post/${id}`}>
           <PostContent text={text} />
         </Link>
-        {link && <PostLink />}
+        {linkData && <PostLink linkData={linkData} />}
         {imageUrl && thumbnailUrl && (
           <PostImage
             averageColor={averageColor}

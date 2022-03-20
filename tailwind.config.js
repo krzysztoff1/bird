@@ -32,6 +32,7 @@ module.exports = {
     "./src/components/post/PostHeader.js",
     "./src/components/post/PostContent.js",
     "./src/components/post/PostImage.js",
+    "./src/components/post/PostLink.js",
     "./src/components/post/PostFooter.js",
     "./src/components/post/Post.js",
     "./src/components/post/highlightedPost/HighlightedPost.js",
@@ -52,4 +53,5 @@ module.exports = {
   theme: {
     extend: {},
   },
+  plugins: [require("@tailwindcss/line-clamp")],
 };

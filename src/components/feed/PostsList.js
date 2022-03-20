@@ -25,7 +25,7 @@ const PostsList = () => {
         <Post
           key={post.id}
           id={post.id}
-          link={post?.link}
+          linkData={post?.linkData}
           averageColor={post.averageColor}
           uid={post.uid}
           accountName={post.userName}

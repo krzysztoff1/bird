@@ -24,6 +24,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 TimeAgo.addDefaultLocale(pl);
 
+
 function App() {
   const AuthState = useContext(AuthContext);
 

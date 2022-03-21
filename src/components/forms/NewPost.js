@@ -51,18 +51,13 @@ const SmallNewPost = ({ post, comment }) => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const upload = async () => {
-      const state = await uploadPostWithImageBetter();
-      console.log(state);
-    };
-    upload();
-    // if (!file) {
-    //   uploadPost({ text });
-    //   navigate("/");
-    //   return;
-    // }
-    // uploadPostWithImage({ text, file });
-    // navigate("/");
+    if (!file) {
+      uploadPost({ text });
+      navigate("/");
+      return;
+    }
+    uploadPostWithImage({ text, file });
+    navigate("/");
   }
 
   const handleFileChange = (e) => {

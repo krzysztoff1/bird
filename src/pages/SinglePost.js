@@ -22,6 +22,7 @@ import { getCurrentUser } from "../services/firebase";
 import { useTranslation } from "react-i18next";
 import { AuthContext } from "../context/auth-context";
 import Header from "../components/header/Header";
+import { UploadPostProvider } from "../context/upload-context";
 
 const SinglePost = () => {
   const { t } = useTranslation();
@@ -72,6 +73,7 @@ const SinglePost = () => {
 
   return (
     // <article className="fixed top-0 bottom-0 min-h-screen min-w-[100vw] overflow-y-scroll bg-slate-900">
+
     <article className="h-full min-h-screen ">
       <Header>
         <motion.button
@@ -107,18 +109,21 @@ const SinglePost = () => {
             averageColor={post.averageColor}
             imageUrl={post.imageUrl}
             thumbnailUrl={post.thumbnailUrl}
+            linkData={post.linkData}
           />
         ) : null}
-        <SmallNewPost
-          comment
-          parentId={id}
-          post={post}
-          profileImage={
-            authState.userData?.profilePicture
-              ? authState.userData?.profilePicture
-              : "https://apiprod7ga8u.tubadzin.pl/media/original_images/PS-Colour-Black_31R41tz.jpg"
-          }
-        />
+        <UploadPostProvider>
+          <SmallNewPost
+            comment
+            parentId={id}
+            post={post}
+            profileImage={
+              authState.userData?.profilePicture
+                ? authState.userData?.profilePicture
+                : "https://apiprod7ga8u.tubadzin.pl/media/original_images/PS-Colour-Black_31R41tz.jpg"
+            }
+          />
+        </UploadPostProvider>
         {!isEmpty ? (
           <InfiniteScroll
             dataLength={numberOfPosts}
@@ -146,6 +151,7 @@ const SinglePost = () => {
                 likedByUsers={post.likedByUsers}
                 imageUrl={post.imageUrl}
                 thumbnailUrl={post.thumbnailUrl}
+                linkData={post.linkData}
               />
             ))}
           </InfiniteScroll>

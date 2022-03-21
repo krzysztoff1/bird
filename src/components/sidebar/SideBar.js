@@ -1,6 +1,7 @@
 import React from "react";
 
 const SideBar = () => {
+  //TODO get topics from firebase
   const topics = [
     { title: "fjaisoifsaniofafs", no: 2414 },
     { title: "gds", no: 634 },
@@ -10,13 +11,14 @@ const SideBar = () => {
     { title: "gsd", no: 63 },
     { title: "fjaisoifsaniofafs", no: 463 },
   ];
-     
+
   const people = [
     { title: "Okoń", no: 2414 },
     { title: "Sarna", no: 634 },
     { title: "Łoś", no: 43 },
   ];
 
+  //TODO make each section a component
   return (
     <aside className="hidden  p-4 dark:border-slate-800/50 lg:block">
       <div className="sticky top-0 left-0 z-50 mb-2 h-screen overflow-hidden overflow-y-scroll py-2">
@@ -42,7 +44,7 @@ const SideBar = () => {
             <input
               type="text"
               id="table-search"
-              className="block w-80 rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+              className="block w-80 rounded-full border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               placeholder="Search for items"
             />
           </div>
@@ -54,7 +56,8 @@ const SideBar = () => {
             </h3>
             <button>
               <svg
-                className="h-6 w-6 text-black dark:text-white"
+                className="h-6 w-6 text-black/50 dark:text-white/50"
+                fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -74,7 +77,7 @@ const SideBar = () => {
               >
                 <div>
                   <p className="text-xs text-black/50 dark:text-white/50">
-                    Najpopularniejsze w poslce
+                    Najpopularniejsze w polsce
                   </p>
                   <b className="text-black dark:text-white ">{topic.title}</b>
                   <p className="text-xs text-black/50 dark:text-white/50">
@@ -83,7 +86,8 @@ const SideBar = () => {
                 </div>
                 <button>
                   <svg
-                    className="h-4 w-4 text-black/50 opacity-50 dark:text-white/50"
+                    className="h-4 w-4 text-black/50 dark:text-white/50"
+                    fill="currentColor"
                     viewBox="0 0 20 5"
                     xmlns="http://www.w3.org/2000/svg"
                   >
@@ -97,15 +101,17 @@ const SideBar = () => {
             Show more
           </button>
         </section>
-        <section className="my-4 rounded-xl bg-slate-800/50 pt-3">
+        <section className="my-4 rounded-xl bg-neutral-100 pt-3 dark:bg-slate-800/50">
           <header className="mb-3 flex justify-between px-3">
-            <h3 className="text-xl font-bold text-white">Warci obserwowania</h3>
+            <h3 className="text-xl font-bold text-black dark:text-white">
+              Warci obserwowania
+            </h3>
           </header>
           <ul>
             {people.map((person, i) => (
               <li
                 key={i}
-                className="flex items-start justify-between py-2 px-3 transition hover:bg-slate-700/50"
+                className="flex items-start justify-between overflow-hidden py-2 px-3 transition hover:bg-neutral-200 dark:hover:bg-slate-700/50"
               >
                 <div className="flex items-center">
                   <img
@@ -114,14 +120,16 @@ const SideBar = () => {
                     alt=" "
                   />
                   <div className="ml-3">
-                    <p className="text-white">{person.title}</p>
-                    <p className="text-white/50">@{person.title}</p>
+                    <p className="text-black dark:text-white">{person.title}</p>
+                    <p className="text-black/50 dark:text-white/50">
+                      @{person.title}
+                    </p>
                   </div>
                 </div>
                 <button>
                   <svg
-                    className="h-4 w-4 opacity-50"
-                    fill="white"
+                    className="h-4 w-4 text-black/50 dark:text-white/50"
+                    fill="currentColor"
                     viewBox="0 0 20 5"
                     xmlns="http://www.w3.org/2000/svg"
                   >
@@ -131,7 +139,7 @@ const SideBar = () => {
               </li>
             ))}
           </ul>
-          <button className="w-full overflow-hidden p-3 text-left text-blue-400 hover:bg-slate-700/50">
+          <button className="w-full overflow-clip p-3 text-left text-blue-400 transition hover:bg-neutral-200 dark:hover:bg-slate-700/50">
             Show more
           </button>
         </section>

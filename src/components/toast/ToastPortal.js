@@ -31,7 +31,6 @@ export const ToastPortal = forwardRef(
     useImperativeHandle(ref, () => ({
       addMessage(toast) {
         setToasts([...toasts, { ...toast, id: uuid() }]);
-        console.log(toasts);
       },
     }));
 

@@ -1,16 +1,16 @@
-import { useRef, useContext, useState, useEffect } from "react";
-import { AuthContext } from "../context/auth-context";
-import SetProfilePicture from "../components/forms/profile/SetProfilePicture";
-import { ProfileFlowContext } from "../context/profileFlow-context";
-import SetDescription from "../components/forms/profile/SetDescription";
-import { motion } from "framer-motion";
 import ProfileFlowEnd from "../components/flow/ProfileFlowEnd";
+import SetProfilePicture from "../components/forms/profile/SetProfilePicture";
+import SetDescription from "../components/forms/profile/SetDescription";
+import { ProfileFlowContext } from "../context/profileFlow-context";
+import { motion } from "framer-motion";
+import { useContext, useEffect } from "react";
 
 const ProfileSetup = () => {
   const { state, dispatch, prev, next } = useContext(ProfileFlowContext);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
+    return () => (document.body.style.overflow = "visible");
   }, []);
 
   const renderComponent = () => {
@@ -26,8 +26,6 @@ const ProfileSetup = () => {
     }
   };
 
-  console.log(state);
-
   return (
     <section className="fixed left-0 right-0 bottom-0 top-0 z-[5000] flex items-center justify-center bg-slate-400/30 backdrop-blur-sm">
       <main className="flex h-screen w-screen flex-col justify-between rounded-lg border border-slate-200/30 bg-slate-900 px-4 py-4 text-white md:m-4 md:max-h-[750px] md:max-w-xl">
@@ -41,7 +39,6 @@ const ProfileSetup = () => {
               style={{ width: state.data.progress + "%" }}
             />
           </div>
-
           <div className="mt-4 flex justify-between">
             <svg
               onClick={() => window.history.go(-1)}

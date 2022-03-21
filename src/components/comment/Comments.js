@@ -21,6 +21,7 @@ const Comments = ({
   uid,
   thumbnailUrl,
   imageUrl,
+  linkData,
 }) => {
   const [posts, setPosts] = useState();
   const [totalComments, setTotalComments] = useState();
@@ -77,6 +78,7 @@ const Comments = ({
         likedByUsers={likedByUsers}
         imageUrl={imageUrl}
         thumbnailUrl={thumbnailUrl}
+        linkData={linkData}
       />
       {posts.map((post) => (
         <Post
@@ -90,6 +92,7 @@ const Comments = ({
           likedByUsers={post.likedByUsers}
           imageUrl={post.imageUrl}
           thumbnailUrl={post.thumbnailUrl}
+          linkData={post.linkData}
         />
       ))}
       {totalComments > 2 ? (

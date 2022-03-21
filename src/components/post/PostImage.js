@@ -12,9 +12,10 @@ const PostImage = ({ averageColor, imageUrl, thumbnailUrl, id }) => {
   return (
     <div
       className={`${
-        isOpen &&
-        "fixed top-0 right-0 bottom-0 left-0 z-[1000] mt-0 h-screen w-screen"
-      } mt-3 w-full bg-slate-900 object-cover`}
+        isOpen
+          ? "fixed top-0 right-0 bottom-0 left-0 z-[1000] mt-0 h-screen w-screen"
+          : "mt-3"
+      } w-full bg-slate-900 object-cover`}
       style={{ background: averageColor?.hex }}
     >
       {isOpen && (
@@ -47,7 +48,9 @@ const PostImage = ({ averageColor, imageUrl, thumbnailUrl, id }) => {
       <ProgressiveImage src={imageUrl} placeholder={thumbnailUrl}>
         {(src) => (
           <img
-            className={`${isOpen && "object-contain"} h-full w-full rounded-xl`}
+            className={`${
+              isOpen && "object-contain"
+            } h-full w-full overflow-hidden rounded-xl`}
             onClick={() => setOpen(!isOpen)}
             src={src}
             alt="post"

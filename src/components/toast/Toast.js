@@ -1,8 +1,6 @@
 import { motion } from "framer-motion";
 
 export const Toast = ({ mode, onClose, message }) => {
-  console.log(mode);
-
   return (
     <motion.section
       initial={{ opacity: 0, x: 300 }}

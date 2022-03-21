@@ -25,11 +25,9 @@ const Post = ({
   linkData,
   inlineComment,
 }) => {
-  const [user, setUser] = useState();
   const [profilePicture, setProfilePicture] = useState();
 
   useEffect(() => {
-    getCurrentUser().then((res) => setUser(res));
     getUserByUid(uid).then((userData) => {
       setProfilePicture(
         userData.profilePicture
@@ -44,7 +42,7 @@ const Post = ({
   return (
     <article
       className={`${inlineComment ? "p-3" : ""} z-0 mx-auto flex w-full
-       max-w-full flex-grow  border-t-[1px] border-slate-200 p-3 px-6 transition hover:bg-neutral-100/30 dark:border-slate-800 dark:hover:bg-slate-800/30 sm:p-3`}
+       max-w-full flex-grow  border-t-[1px] border-slate-200 p-3 transition hover:bg-neutral-100/30 dark:border-slate-800 dark:hover:bg-slate-800/30 md:p-4`}
     >
       <PostAside
         inlineComment={inlineComment}
@@ -73,10 +71,8 @@ const Post = ({
         <PostFooter
           commentedByUsers={commentedByUsers}
           likedByUsers={likedByUsers}
-          user={user}
           id={id}
           parent={parent}
-          numberOfComments={"2"}
         />
       </div>
     </article>

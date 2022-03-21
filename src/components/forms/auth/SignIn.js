@@ -218,7 +218,7 @@ const SignIn = ({ toggle }) => {
         </section>
         <section className="my-2 flex items-center justify-center">
           <button
-            disabled={formReady}
+            // disabled={formReady}
             onClick={() => toggleSignIn(1)}
             type="submit"
             className="rounded-full border-2 border-slate-800 px-5 py-3 font-bold disabled:bg-slate-800"

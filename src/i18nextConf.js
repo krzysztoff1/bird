@@ -10,10 +10,12 @@ const resources = {
   },
 };
 
+ 
+
 i18n.use(initReactI18next).init({
   resources,
   fallbackLng: "en",
-  debug: true,
+  debug: false,
   keySeparator: false,
   interpolation: {
     escapeValue: false,
@@ -21,5 +23,9 @@ i18n.use(initReactI18next).init({
   ns: ["translations"],
   defaultNS: "translations",
 });
+
+// let lng = localStorage.getItem("lng");
+// console.log(lng);
+// if (lng) localStorage.setItem("lng", lng);
 
 export default i18n;

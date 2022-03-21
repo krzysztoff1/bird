@@ -17,6 +17,7 @@ const ProfileHeader = ({
   const [followState, setFollowState] = useState(false);
 
   useEffect(() => {
+    if (uid !== authState.currentUser.uid) return;
     isFollowed(uid).then((res) => setFollowState(res));
   }, [uid]);
 
@@ -24,10 +25,10 @@ const ProfileHeader = ({
     <div className="relative mx-auto max-w-md px-3 pt-24 sm:max-w-full">
       <img
         src="https://images.unsplash.com/photo-1647587085908-1b88c44bcdd0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1887&q=80"
-        alt=" "
+        alt="temporary cover"
         className="absolute top-0 right-0 left-0 z-0 h-28 w-full object-cover"
       />
-      <div className="z-10 flex justify-between">
+      <div className="z-30 flex justify-between">
         <img
           src={profilePicture}
           width="60"
@@ -41,7 +42,7 @@ const ProfileHeader = ({
             type="button"
             className={`
          text-md  z-20 h-min w-[8rem] 
-        rounded-full border-[1px] border-black/20 border-slate-50/30 bg-white p-2 px-4 text-center font-medium text-black transition-all hover:bg-neutral-100 dark:border-black dark:bg-slate-900 dark:text-white
+        rounded-full border-[1px] border-slate-50/30 bg-white p-2 px-4 text-center font-medium text-black transition-all hover:bg-neutral-100 dark:border-black dark:bg-slate-900 dark:text-white
         `}
           >
             {t("fill_profile")}
@@ -56,9 +57,9 @@ const ProfileHeader = ({
             type="button"
             className={`${
               followState
-                ? " border-slate-50/30  text-slate-50"
+                ? " border-slate-50/30 bg-slate-800  text-slate-50"
                 : " border-white bg-white hover:bg-slate-200 dark:border-black"
-            } text-md h-min w-[8rem] rounded-full border-[1px] p-2 px-4 font-medium transition-all
+            } text-md z-50 h-min w-[8rem] rounded-full border-[1px] p-2 px-4 font-medium transition-all
         `}
           >
             {!followState ? t("follow") : t("following")}
@@ -70,13 +71,13 @@ const ProfileHeader = ({
       </h3>
       <p className=" mt-1 text-black dark:text-white"> {description}</p>
       <p className="mt-1 mb-4 text-black dark:text-white/50">
-        {followedBy?.length !== 0 && (
+        {followedBy && followedBy?.length !== 0 && (
           <>
             <b className="font-bold "> {followedBy.length} </b> {t("followers")}{" "}
             •{" "}
           </>
         )}
-        {following?.length && (
+        {following && following?.length && (
           <>
             <b className="font-bold ">{following.length} </b> {t("following")}
           </>

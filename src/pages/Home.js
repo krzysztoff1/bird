@@ -4,6 +4,7 @@ import Header from "../components/header/Header";
 import { isMobile } from "react-device-detect";
 import { useLocation } from "react-router";
 import { lazy, Suspense } from "react";
+import { UploadPostProvider } from "../context/upload-context";
 
 const PostsList = lazy(() => import("../components/feed/PostsList"));
 
@@ -18,7 +19,11 @@ const Home = () => {
     >
       {isMobile && <FloatingButton />}
       <Header text="Główna" />
-      {!isMobile && <SmallNewPost post />}
+      {!isMobile && (
+        <UploadPostProvider>
+          <SmallNewPost post />
+        </UploadPostProvider>
+      )}
       <Suspense fallback={<>Loading...</>}>
         <PostsList />
       </Suspense>

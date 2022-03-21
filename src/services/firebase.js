@@ -31,6 +31,7 @@ import {
 import { createResizedImage } from "./resizeImage";
 import FastAverageColor from "fast-average-color";
 import { fetchLinkData } from "./linkPreview";
+import { UploadPostContext } from "../context/upload-context";
 
 // authentication
 export async function getCurrentUser() {
@@ -56,7 +57,6 @@ export async function signUpWithEmail({ email, password, name }) {
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
-
       setDoc(doc(db, "users", user.uid), {
         lang: navigator.language.substring(0, 2),
         name: name,
@@ -86,6 +86,7 @@ export async function checkUserName(name) {
 export function SignOut() {
   auth.signOut();
 }
+
 // drafts
 export async function saveWorkingCopy(text) {
   const user = await getCurrentUser();
@@ -95,76 +96,77 @@ export async function saveWorkingCopy(text) {
     text: text,
   });
 }
-// upload posts and comments
-export async function uploadPost({ text, parentId }) {
-  let id = Math.random() * 1000;
+
+//! upload posts and comments
+//TODO make uploadPost one function (both with photo and without)
+export const uploadPost = async ({
+  text,
+  parentId,
+  dispatch,
+  addToast = console.log("success"),
+}) => {
+  dispatch({
+    type: "uploading",
+  });
 
   const user = await getCurrentUser();
   const userData = await getUserByUid(user.uid);
+  const hasLink = new RegExp(
+    /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#/%=~_|$])/gim
+  ).test(text);
 
-  if (
-    new RegExp(
-      /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#/%=~_|$])/gim
-    ).test(text)
-  ) {
-    const link = text.match(/\bhttps?:\/\/\S+/gi);
-    const linkData = await fetchLinkData(link);
-    addDoc(collection(db, "posts"), {
-      comment: false,
-      account: userData.name,
-      uid: user.uid,
-      text: text.replace(link, ""),
-      timestamp: serverTimestamp(),
-      likedByUsers: [],
-      commentedByUsers: 0,
-      linkData: linkData,
-    });
-    return;
-  }
-  if (!parentId) {
-    addDoc(collection(db, "posts"), {
-      comment: false,
-      account: userData.name,
-      uid: user.uid,
-      text: text,
-      timestamp: serverTimestamp(),
-      likedByUsers: [],
-      commentedByUsers: 0,
-    });
-    return true;
-  }
-
-  // add comment to post
-  addDoc(collection(db, "posts"), {
-    comment: true,
-    parentId: parentId,
+  let postTemplate = {
+    comment: false,
     account: userData.name,
     uid: user.uid,
     text: text,
     timestamp: serverTimestamp(),
     likedByUsers: [],
+    commentedByUsers: 0,
+  };
+
+  if (hasLink) {
+    const link = text.match(/\bhttps?:\/\/\S+/gi);
+    const linkData = await fetchLinkData(link);
+
+    postTemplate.text = text.replace(link, "");
+    postTemplate.linkData = linkData;
+  }
+
+  if (parentId) {
+    const parentPost = await getPostById(parentId);
+
+    postTemplate.comment = true;
+    postTemplate.parentId = parentId;
+
+    // send notification about comment to author
+    addDoc(collection(db, "notifications"), {
+      timestamp: serverTimestamp(),
+      typeOfNotification: "comment",
+      read: false,
+      uid: parentPost.uid,
+      id: parentId,
+      commentText: text,
+      commentedByUid: user.uid,
+      commentedByName: userData.name,
+    });
+
+    // ?
+    updateDoc(doc(db, "posts", parentId), {
+      commentedByUsers: increment(1),
+    });
+  }
+
+  addDoc(collection(db, "posts"), postTemplate);
+
+  dispatch({
+    type: "success",
   });
 
-  // update list of comments
-  updateDoc(doc(db, "posts", parentId), {
-    commentedByUsers: increment(1),
-  });
+  addToast();
+};
 
-  // send notification
-  const parentPost = await getPostById(parentId);
-  addDoc(collection(db, "notifications"), {
-    timestamp: serverTimestamp(),
-    typeOfNotification: "comment",
-    read: false,
-    uid: parentPost.uid,
-    id: parentId,
-    commentText: text,
-    commentedByUid: user.uid,
-    commentedByName: userData.name,
-  });
-  return true;
-}
-
+//TODO Needs total rewrite its total mess (like func uploadPost())
 export async function uploadPostWithImage({ text, file, id }) {
   let progress = "";
   let progressT = "";
@@ -200,7 +202,7 @@ export async function uploadPostWithImage({ text, file, id }) {
     }
   );
 
-  const thumbnail = await createResizedImage(file);
+  const thumbnail = await createResizedImage({ file });
 
   let thumbnailUrl = "";
   const storageRefThumbnail = ref(
@@ -264,46 +266,6 @@ export async function uploadPostWithImage({ text, file, id }) {
     }
   }
   return progress;
-}
-
-export async function uploadPostWithImageBetter() {
-  let state = { status: "loading" };
-  const imageId = Math.floor(Math.random() * 1000);
-
-  const fac = new FastAverageColor();
-
-  // if (!file) return;
-
-  // const thumbnail = await createResizedImage(file);
-  // const image = await createResizedImage(file);
-
-  // // upload tasks
-  // const storageRef = ref(storage, `postImages/full_${imageId}.jpg`);
-  // const uploadImage = uploadBytesResumable(storageRef, image);
-  // uploadImage.on(
-  //   "state_changed",
-  //   (snapshot) => {
-  //     let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-  //     console.log(progress);
-  //   },
-  //   (error) => {
-  //     console.log(error);
-  //   },
-  //   () => {
-  //     getDownloadURL(uploadImage.snapshot.ref).then((downloadURL) => {
-  //       const setAverageColor = async () => {
-  //         let averageColor = await fac.getColorAsync(downloadURL);
-  //         state = { status: "success" };
-  //       };
-  //       setAverageColor();
-  //     });
-  //   }
-  // );
-  setTimeout(() => {
-    state = { status: "success" };
-  }, 10);
-
-  return state;
 }
 
 // get

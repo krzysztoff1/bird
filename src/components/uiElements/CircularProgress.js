@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 const CircularProgress = ({ size, strokeWidth, percentage, color }) => {
   const [progress, setProgress] = useState(0);
+
   useEffect(() => {
     setProgress(percentage);
   }, [percentage]);

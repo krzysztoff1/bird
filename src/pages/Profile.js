@@ -19,21 +19,31 @@ import Post from "../components/post/Post";
 import PostSkeleton from "../components/post/PostSkeleton";
 import Loading from "./Loading";
 import Header from "../components/header/Header";
+import { getUserByUid } from "../services/firebase";
 
 const Profile = () => {
   const { uid } = useParams();
   const authState = useContext(AuthContext);
   const [posts, setPosts] = useState();
+  const [userData, setUserData] = useState();
   const [numberOfPosts, setNumberOfPosts] = useState(7);
   const [tab, setTab] = useState("posts");
   const { ref, inView } = useInView();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const res = await getUserByUid(uid);
+      setUserData(res);
+    };
+    fetchUserData();
+  }, [uid]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
       query(
         collection(db, "posts"),
         where("comment", "==", false),
-        where("uid", "==", authState.currentUser.uid),
+        where("uid", "==", uid),
         limit(numberOfPosts),
         orderBy("timestamp", "desc")
       ),
@@ -51,13 +61,13 @@ const Profile = () => {
     );
 
     return () => unsubscribe();
-  }, [numberOfPosts, uid, tab]);
+  }, [numberOfPosts, uid, tab, authState]);
 
   useEffect(() => {
     document.body.style.overflow = "visible";
   }, []);
 
-  if (!authState.userData) return <Loading />;
+  if (!userData) return <Loading />;
 
   return (
     <div className="min-h-screen">
@@ -92,12 +102,12 @@ const Profile = () => {
         <span className="w-6" />
       </Header>
       <ProfileHeader
-        profilePicture={authState.userData.profilePicture}
-        account={authState.userData.name}
-        following={authState.userData.following}
-        followedBy={authState.userData.followedBy}
+        profilePicture={userData?.profilePicture}
+        account={userData?.name}
+        following={userData?.following}
+        followedBy={userData?.followedBy}
+        description={userData?.description}
         uid={uid}
-        description={authState.userData.description}
       />
       <span ref={ref}></span>
       <InfiniteScroll

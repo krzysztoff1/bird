@@ -14,5 +14,10 @@
     "follow": "Follow",
     "following": "Following",
     "posts": "Posts",
-    "sign_out": "Sign out"
+    "home": "Home",
+    "messages": "Messages",
+    "settings": "Settings",
+    "about": "About",
+    "tweet": "Tweet",
+    "fill_profile": "Fill profile"
 }

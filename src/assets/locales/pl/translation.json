@@ -14,5 +14,10 @@
     "follow": "Obserwuj",
     "following": "Obserwuje",
     "posts": "Posty",
-    "sign_out": "Wyloguj się"
+    "sign_out": "Wyloguj się",
+    "home": "Główna",
+    "messages": "Wiadomości",
+    "settings": "Ustawienia",
+    "about": "O stronie",
+    "fill_profile": "Uzupełnij profil"
 }

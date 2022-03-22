@@ -9,6 +9,7 @@ import { ProfileFlowProvider } from "./context/profileFlow-context";
 import TimeAgo from "javascript-time-ago";
 import pl from "javascript-time-ago/locale/en.json";
 import ProfileSetup from "./pages/ProfileSetup";
+import { UploadPostProvider } from "./context/upload-context";
 
 const Home = lazy(() => import("./pages/Home"));
 const Activity = lazy(() => import("./pages/Activity"));
@@ -26,8 +27,6 @@ TimeAgo.addDefaultLocale(pl);
 
 function App() {
   const AuthState = useContext(AuthContext);
-
-  document.documentElement.classList.add("dark");
 
   if (!AuthState.currentUser) return <AuthForm />;
 
@@ -51,7 +50,14 @@ function App() {
                 />
                 <Route path="/profile/:uid" element={<Profile />} />
                 <Route path="/activity" element={<Activity />} />
-                <Route path="/compose/post" element={<SmallNewPost />} />
+                <Route
+                  path="/compose/post"
+                  element={
+                    <UploadPostProvider>
+                      <SmallNewPost />
+                    </UploadPostProvider>
+                  }
+                />
                 <Route path="/messages" element={<Messages />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route

@@ -12,8 +12,10 @@ import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { AuthContext } from "../../context/auth-context";
+import { useTranslation } from "react-i18next";
 
 const Nav = () => {
+  const { t } = useTranslation();
   const authContext = useContext(AuthContext);
   const [isOpen, toggleIsOpen] = useState();
   const [user, setUser] = useState();
@@ -56,13 +58,13 @@ const Nav = () => {
 
   const list = [
     {
-      title: "home",
+      name: t("home"),
       url: "/",
       icon: (
         <svg
-          className="h-6 w-6"
-          fill="currentColor"
+          className="h-6 w-6 "
           viewBox="0 0 20 20"
+          fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
@@ -70,32 +72,14 @@ const Nav = () => {
       ),
     },
     {
-      title: "discover",
-      url: "/discover",
-      icon: (
-        <svg
-          className="h-6 w-6"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fillRule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z"
-            clipRule="evenodd"
-          />
-        </svg>
-      ),
-    },
-    {
-      title: "activity",
+      name: t("activity"),
       url: "/activity",
       icon: (
         <>
           <svg
-            className="h-6 w-6"
-            fill="currentColor"
+            className="h-6 w-6 "
             viewBox="0 0 20 20"
+            fill="currentColor"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path>
@@ -107,22 +91,48 @@ const Nav = () => {
       ),
     },
     {
-      title: "profile",
-      url: "/user/profile",
+      name: t("messages"),
+      url: "/messages",
       icon: (
         <svg
           className="h-6 w-6"
-          fill="currentColor"
           viewBox="0 0 20 20"
+          fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
             fillRule="evenodd"
-            d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+            d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
             clipRule="evenodd"
           />
         </svg>
       ),
+    },
+    {
+      name: t("settings"),
+      icon: (
+        <svg
+          className="h-6 w-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+        </svg>
+      ),
+      url: "/settings",
     },
   ];
 

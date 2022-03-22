@@ -32,6 +32,7 @@ import { createResizedImage } from "./resizeImage";
 import FastAverageColor from "fast-average-color";
 import { fetchLinkData } from "./linkPreview";
 import { UploadPostContext } from "../context/upload-context";
+import { async } from "@firebase/util";
 
 // authentication
 export async function getCurrentUser() {
@@ -103,6 +104,7 @@ export const uploadPost = async ({
   text,
   parentId,
   dispatch,
+  file,
   addToast = console.log("success"),
 }) => {
   dispatch({
@@ -157,7 +159,80 @@ export const uploadPost = async ({
     });
   }
 
+  if (file) {
+    const handleUploads = async () => {
+      return new Promise(async function (resolve, reject) {
+        const fac = new FastAverageColor();
+        const imageId = Math.floor(Math.random() * 1000);
+        const thumbnail = await createResizedImage({ file });
+
+        const uploadImage = () => {
+          return new Promise(function (resolve, reject) {
+            const storageRef = ref(storage, `postImages/full_${imageId}.jpg`);
+            const uploadImage = uploadBytesResumable(storageRef, file);
+            uploadImage.on(
+              "state_changed",
+              (snapshot) => {
+                console.log(
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+              },
+              (error) => {
+                reject(new Error(error));
+              },
+              () => {
+                getDownloadURL(uploadImage.snapshot.ref).then((downloadURL) => {
+                  resolve(downloadURL);
+                });
+              }
+            );
+          });
+        };
+        const uploadThumbnail = () => {
+          return new Promise(function (resolve, reject) {
+            const storageRefThumbnail = ref(
+              storage,
+              `postImages/thumbnail_${imageId}.jpg`
+            );
+            const uploadThumbnail = uploadBytesResumable(
+              storageRefThumbnail,
+              thumbnail
+            );
+            uploadThumbnail.on(
+              "state_changed",
+              (snapshot) => {
+                console.log(
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+              },
+              (error) => {
+                reject(new Error(error));
+              },
+              () => {
+                getDownloadURL(uploadThumbnail.snapshot.ref).then(
+                  (downloadURL) => {
+                    resolve(downloadURL);
+                  }
+                );
+              }
+            );
+          });
+        };
+
+        let thumbnailUrl = await uploadThumbnail();
+        postTemplate.averageColor = await fac.getColorAsync(thumbnailUrl);
+        postTemplate.thumbnailUrl = thumbnailUrl;
+
+        let imageUrl = await uploadImage();
+        postTemplate.imageUrl = imageUrl;
+        resolve();
+      });
+    };
+    await handleUploads();
+  }
+
   addDoc(collection(db, "posts"), postTemplate);
+  console.log(postTemplate);
 
   dispatch({
     type: "success",
@@ -165,108 +240,6 @@ export const uploadPost = async ({
 
   addToast();
 };
-
-//TODO Needs total rewrite its total mess (like func uploadPost())
-export async function uploadPostWithImage({ text, file, id }) {
-  let progress = "";
-  let progressT = "";
-  let fullImageUrl = "";
-  let averageColor;
-  let imageId = Math.floor(Math.random() * 1000);
-
-  const fac = new FastAverageColor();
-
-  const user = await getCurrentUser();
-  const userData = await getUserByUid(user.uid);
-
-  const storageRef = ref(storage, `postImages/full_${imageId}.jpg`);
-  const uploadImage = uploadBytesResumable(storageRef, file);
-  uploadImage.on(
-    "state_changed",
-    (snapshot) => {
-      progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log(progress);
-    },
-    (error) => {
-      console.log(error);
-    },
-    () => {
-      getDownloadURL(uploadImage.snapshot.ref).then((downloadURL) => {
-        fullImageUrl = downloadURL;
-        const setAverageColor = async () => {
-          averageColor = await fac.getColorAsync(thumbnailUrl);
-          uploadPost();
-        };
-        setAverageColor();
-      });
-    }
-  );
-
-  const thumbnail = await createResizedImage({ file });
-
-  let thumbnailUrl = "";
-  const storageRefThumbnail = ref(
-    storage,
-    `postImages/thumbnail_${imageId}.jpg`
-  );
-  const uploadThumbnail = uploadBytesResumable(storageRefThumbnail, thumbnail);
-  uploadThumbnail.on(
-    "state_changed",
-    (snapshot) => {
-      progressT = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log(progressT);
-    },
-    (error) => {
-      console.log(error);
-    },
-    () => {
-      getDownloadURL(uploadThumbnail.snapshot.ref).then((downloadURL) => {
-        thumbnailUrl = downloadURL;
-      });
-    }
-  );
-
-  function uploadPost() {
-    if (!id) {
-      try {
-        addDoc(collection(db, "posts"), {
-          comment: false,
-          account: userData.name,
-          uid: user.uid,
-          text: text,
-          timestamp: serverTimestamp(),
-          likedByUsers: [],
-          averageColor: averageColor,
-          imageUrl: fullImageUrl,
-          thumbnailUrl: thumbnailUrl,
-        });
-        console.log("Added post with image");
-        return;
-      } catch (error) {
-        console.error("Error adding post: ", error);
-      }
-    }
-    try {
-      addDoc(collection(db, "posts"), {
-        comment: true,
-        parentId: id.id,
-        account: userData.name,
-        uid: user.uid,
-        text: text,
-        timestamp: serverTimestamp(),
-        likedByUsers: [],
-        averageColor: averageColor,
-        imageUrl: fullImageUrl,
-        thumbnailUrl: thumbnailUrl,
-      });
-      console.log("Added post with image");
-      return true;
-    } catch (error) {
-      console.error("Error adding post: ", error);
-    }
-  }
-  return progress;
-}
 
 // get
 export async function getPosts() {

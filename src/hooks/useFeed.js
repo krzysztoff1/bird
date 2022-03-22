@@ -66,10 +66,6 @@ export default function useFeed() {
     return () => unsubscribe();
   }, [users, pending, numberOfPosts]);
 
-  // useEffect(() => {
-  //   if (state.data) return setFeedData(state.data);
-  // }, [state, dispatch]);
-
   const fetchMoreData = () => {
     setNumberOfPosts((n) => n + 10);
   };

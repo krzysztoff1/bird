@@ -1,7 +1,7 @@
+import CircularProgress from "../status/CircularProgress";
 import { useState, useRef, useContext, useEffect } from "react";
-import { uploadPost,  uploadPostWithImage } from "../../services/firebase";
+import { uploadPost, uploadPostWithImage } from "../../services/firebase";
 import { useTranslation } from "react-i18next";
-import CircularProgress from "../uiElements/CircularProgress";
 import { AuthContext } from "../../context/auth-context";
 import { ToastPortal } from "../toast/ToastPortal";
 import { UploadPostContext } from "../../context/upload-context";
@@ -12,10 +12,12 @@ const SmallNewPost = ({ post, parentId, comment }) => {
   const authState = useContext(AuthContext);
   const { state, dispatch } = useContext(UploadPostContext);
   const [text, setText] = useState("");
+  const [rows, setRows] = useState(2);
   const [open, toggleOpen] = useState(post ? true : false);
   const [file, setFile] = useState();
   const textArea = useRef();
   const toastRef = useRef();
+  const fileRef = useRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,24 +26,22 @@ const SmallNewPost = ({ post, parentId, comment }) => {
         mode: "info",
         message: "Add text to the post",
       });
-    if (!file) {
-      return uploadPost({ text, parentId, dispatch, addToast });
-    }
-    uploadPostWithImage({
-      text,
-      file,
-      parentId,
-      dispatch,
-      addToast,
-    });
+    await uploadPost({ text, parentId, dispatch, addToast, file });
+    setText("");
+    textArea.current.value = "";
+    setFile();
   };
 
-    const addToast = () => {
-      toastRef.current.addMessage({
-        mode: "success",
-        message: "Post successfully Added",
-      });
-    };
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const addToast = () => {
+    toastRef.current.addMessage({
+      mode: "success",
+      message: "Post successfully Added",
+    });
+  };
 
   const variants = {
     open: {
@@ -78,12 +78,39 @@ const SmallNewPost = ({ post, parentId, comment }) => {
               ref={textArea}
               onChange={(e) => setText(e.target.value)}
               id="message"
-              rows={2}
+              rows={rows}
               className={`${
                 !open && "truncate"
               } my-1 block min-h-[70px] w-full resize-none bg-transparent py-2.5 text-xl text-black outline-none transition-all  dark:text-white`}
               placeholder={comment ? t("send_post_in_response") : t("tweet")}
             />
+            {file && (
+              <section className="my-2 px-2">
+                <div className="mb-1 flex w-full justify-between text-slate-100">
+                  {t("attached_photo")}
+                </div>
+                <div className="relative">
+                  <svg
+                    onClick={() => setFile("")}
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="absolute m-1 h-5 w-5 rounded-full bg-slate-50 p-[3px]"
+                    viewBox="0 0 20 20"
+                    fill="black"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <img
+                    className="h-28 w-28 rounded-md"
+                    src={URL.createObjectURL(file)}
+                    alt="Preview"
+                  />
+                </div>
+              </section>
+            )}
             <div className="flex items-start justify-between">
               {open ? (
                 <motion.div
@@ -93,7 +120,7 @@ const SmallNewPost = ({ post, parentId, comment }) => {
                   inherit={false}
                   className="flex w-full items-center justify-between"
                 >
-                  <div>
+                  <button onClick={() => fileRef.current.click()} type="button">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-6 w-6 text-green-500"
@@ -108,7 +135,14 @@ const SmallNewPost = ({ post, parentId, comment }) => {
                         d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                       />
                     </svg>
-                  </div>
+                  </button>
+                  <input
+                    ref={fileRef}
+                    onChange={handleFileChange}
+                    multiple={false}
+                    type="file"
+                    hidden
+                  />
                   <div className="flex items-center gap-3">
                     <CircularProgress
                       size={17}

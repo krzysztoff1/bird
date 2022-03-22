@@ -24,8 +24,7 @@ i18n.use(initReactI18next).init({
   defaultNS: "translations",
 });
 
-// let lng = localStorage.getItem("lng");
-// console.log(lng);
-// if (lng) localStorage.setItem("lng", lng);
+let lng = localStorage.getItem("lng");
+if (lng) i18n.changeLanguage(lng);
 
 export default i18n;

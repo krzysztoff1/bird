@@ -15,8 +15,8 @@ const PostImage = ({ averageColor, imageUrl, thumbnailUrl, id }) => {
         isOpen
           ? "fixed top-0 right-0 bottom-0 left-0 z-[1000] mt-0 h-screen w-screen"
           : "mt-3"
-      } w-full bg-slate-900 object-cover`}
-      style={{ background: averageColor?.hex }}
+      } w-full bg-slate-900 bg-opacity-50 object-cover`}
+      style={{ background: averageColor?.rgba.slice(0, -2) + "0.9)" }}
     >
       {isOpen && (
         <nav className="fixed top-0 mx-auto w-full p-3">

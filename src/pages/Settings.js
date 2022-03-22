@@ -12,7 +12,7 @@ const Settings = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  //TODO save lang pref to firestore or localstorage
+  //TODO save lang pref to firestore
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
     localStorage.setItem("lng", lng);

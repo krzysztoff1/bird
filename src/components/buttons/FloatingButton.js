@@ -45,39 +45,37 @@ const FloatingButton = () => {
   }, [user]);
 
   function handleSubmit(e) {
-    e.preventDefault();
-    if (!file) {
-      uploadPost({ text });
-      return;
-    }
-    uploadPostWithImage({ text, file });
+    // e.preventDefault();
+    // if (!file) {
+    //   uploadPost({ text });
+    //   return;
+    // }
+    // uploadPostWithImage({ text, file });
   }
 
   return (
     <>
-      {!open && (
-        <Link to="/compose/post">
-          <div
-            onClick={() => toggleOpen((state) => !state)}
-            className="fixed bottom-20 right-8 z-[100] overflow-hidden rounded-full bg-teal-400"
+      <Link to="/compose/post">
+        <div
+          className="fixed bottom-20 right-8 z-[100] rounded-full bg-emerald-500"
+          onClick={() => toggleOpen((state) => !state)}
+        >
+          <svg
+            className={`h-12 w-12 transition-all ${open && "rotate-45"}`}
+            fill="none"
+            stroke="white"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <svg
-              className={`h-12 w-12 transition-all ${open && "rotate-45"}`}
-              fill="none"
-              stroke="white"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-              />
-            </svg>
-          </div>
-        </Link>
-      )}
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            />
+          </svg>
+        </div>
+      </Link>
     </>
   );
 };

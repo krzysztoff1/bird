@@ -109,7 +109,8 @@ const Profile = () => {
         description={userData?.description}
         uid={uid}
       />
-      <span ref={ref}></span>
+      {/* //TODO remove this span, forward ref to profileHeader */}
+      <span ref={ref} />
       <InfiniteScroll
         dataLength={numberOfPosts}
         next={() => setNumberOfPosts(numberOfPosts + 5)}

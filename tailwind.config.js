@@ -38,7 +38,6 @@ module.exports = {
     "./src/components/post/highlightedPost/HighlightedPost.js",
     "./src/components/notifications/Notification.js",
     "./src/components/notifications/CommentNotification.js",
-    "./src/components/floatingButton/FloatingButton.js",
     "./src/components/alerts/Alert.js",
     "./src/components/toast/Toast.js",
     "./src/components/toast/ToastPortal.js",
@@ -49,6 +48,8 @@ module.exports = {
     "./src/components/comment/Comments.js",
     "./src/components/profile/ProfileHeader.js",
     "./src/components/profile/SettingsProfileHeader.js",
+    "./src/components/toolTip/ToolTip.js",
+    "./src/components/buttons/FloatingButton.js",
   ],
   theme: {
     extend: {},

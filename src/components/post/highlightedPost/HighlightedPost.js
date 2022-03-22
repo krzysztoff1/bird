@@ -40,6 +40,8 @@ const Post = ({
     );
   }, []);
 
+  console.log(imageUrl);
+
   useEffect(() => {
     const unsubscribe = onSnapshot(
       query(

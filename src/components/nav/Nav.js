@@ -11,8 +11,10 @@ import {
 import { AuthContext } from "../../context/auth-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { SignOut } from "../../services/firebase";
+import { useTranslation } from "react-i18next";
 
 const Nav = () => {
+  const { t } = useTranslation();
   const authState = useContext(AuthContext);
   const [notifications, setNotifications] = useState(false);
   const [isOpenFooter, toggleIsOpenFooter] = useState(false);
@@ -40,7 +42,7 @@ const Nav = () => {
 
   const items = [
     {
-      name: "Home",
+      name: t("home"),
       url: "/",
       icon: (
         <svg
@@ -54,7 +56,7 @@ const Nav = () => {
       ),
     },
     {
-      name: "Activity",
+      name: t("activity"),
       url: "/activity",
       icon: (
         <>
@@ -73,7 +75,7 @@ const Nav = () => {
       ),
     },
     {
-      name: "Messages",
+      name: t("messages"),
       url: "/messages",
       icon: (
         <svg
@@ -94,7 +96,7 @@ const Nav = () => {
 
   const menuItems = [
     {
-      name: "Settings",
+      name: t("settings"),
       icon: (
         <svg
           className="h-6 w-6"
@@ -120,7 +122,7 @@ const Nav = () => {
       url: "/settings",
     },
     {
-      name: "About",
+      name: t("about"),
       icon: (
         <svg
           className="h-6 w-6"

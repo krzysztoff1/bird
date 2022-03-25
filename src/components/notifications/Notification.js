@@ -8,16 +8,16 @@ const Notification = ({ docId, name, timestamp, id }) => {
   const { t } = useTranslation();
 
   return (
-    <article className="my-1 mx-2 rounded-md bg-slate-800 px-3 py-4">
+    <article className="my-1 mx-2 rounded-md px-3 py-4">
       <div className="flex justify-between">
-        <p className="inline-flex text-slate-300">
+        <p className="inline-flex text-black/70 dark:text-white/70">
           {timestamp?.seconds
             ? timeAgo.format(new Date(timestamp.seconds * 1000), "twitter")
             : ""}
         </p>
         <svg
           onClick={() => markReadNotification(docId)}
-          className="inline-flex h-6 w-6 text-white"
+          className="inline-flex h-6 w-6 text-black dark:text-white"
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -30,10 +30,10 @@ const Notification = ({ docId, name, timestamp, id }) => {
           />
         </svg>
       </div>
-      <div className="flex text-slate-100">
+      <div className="flex text-black dark:text-white">
         <Link to={`/post/${id}`}>
           <b>{name}</b>{" "}
-          <span className="font-light text-slate-300">
+          <span className="font-light text-black dark:text-white">
             {t("liked_your_post.")}
           </span>{" "}
         </Link>

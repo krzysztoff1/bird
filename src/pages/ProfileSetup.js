@@ -28,15 +28,14 @@ const ProfileSetup = () => {
 
   return (
     <section className="fixed left-0 right-0 bottom-0 top-0 z-[5000] flex items-center justify-center bg-slate-400/30 backdrop-blur-sm">
-      <main className="flex h-screen w-screen flex-col justify-between rounded-lg border border-slate-200/30 bg-slate-900 px-4 py-4 text-white md:m-4 md:max-h-[750px] md:max-w-xl">
+      <main className="flex h-screen w-screen flex-col justify-between rounded-lg border border-slate-200/30 bg-black bg-white px-4 py-4 text-white dark:bg-slate-900 md:m-4 md:max-h-[750px] md:max-w-xl">
         <header>
           <div className="h-1.5 w-full">
             <motion.div
               initial={{ width: 0 }}
-              animate={{ width: state.data.progress + "%" }}
+              animate={{ width: (state.status / 2) * 100 + "%" }}
               transition={{ type: "spring", damping: 30 }}
               className="h-1.5 overflow-hidden rounded-full bg-emerald-400 transition"
-              style={{ width: state.data.progress + "%" }}
             />
           </div>
           <div className="mt-4 flex justify-between">

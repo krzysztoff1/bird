@@ -60,7 +60,7 @@ const SmallNewPost = ({ post, parentId, comment }) => {
         className="w-full md:p-4"
       >
         {comment && open && (
-          <label className=" ml-16 text-white/50">
+          <label className="text-black/70 dark:text-white/70">
             {t("in_response_to")}{" "}
             <span className="text-green-400">
               @{post?.account.toLowerCase()}

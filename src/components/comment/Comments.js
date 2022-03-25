@@ -49,7 +49,6 @@ const Comments = ({
         orderBy("timestamp", "desc")
       ),
       (snapshot) => {
-        console.log(snapshot.size);
         setPosts(
           snapshot.docs.map((doc) => ({
             id: doc.id,

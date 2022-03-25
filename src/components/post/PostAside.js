@@ -4,9 +4,6 @@ import Spinner from "../loaders/Spinner";
 const PostAside = ({ uid, profilePicture, inlineComment }) => {
   return (
     <aside className={`mr-2 flex flex-shrink-0`}>
-      {inlineComment && (
-        <div className="mr-2 h-full w-[2px] bg-slate-500"></div>
-      )}
       <Link to={`/profile/${uid}`}>
         {profilePicture ? (
           <img

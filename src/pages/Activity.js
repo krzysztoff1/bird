@@ -50,13 +50,16 @@ const Activity = () => {
 
   if (empty)
     return (
-      <section className="flex min-h-screen  items-center justify-center bg-slate-900 text-slate-100">
-        You are up to date
+      <section className="min-h-screen">
+        <Header text={t("activity")} />
+        <div className="flex min-h-screen  items-center justify-center text-black dark:text-white">
+          You are up to date
+        </div>
       </section>
     );
 
   return (
-    <section className="min-h-screen bg-slate-900">
+    <section className="min-h-screen">
       <Header text={t("activity")} />
       <div className="overflow-y-scroll">
         {notifications ? (

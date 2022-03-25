@@ -40,8 +40,6 @@ const Post = ({
     );
   }, []);
 
-  console.log(imageUrl);
-
   useEffect(() => {
     const unsubscribe = onSnapshot(
       query(
@@ -65,7 +63,7 @@ const Post = ({
       className={`${
         inlineComment ? "border-r-2 border-t-0 pl-8" : "mt-2 "
       } inlineComment shadow-slate-500" z-0
-          mx-auto w-full max-w-full flex-grow bg-slate-900 p-3 px-3 dark:border-slate-800 sm:max-w-md sm:p-3 sm:px-8 md:max-w-xl`}
+          mx-auto w-full max-w-full flex-grow  p-3 px-3 dark:border-slate-800 sm:max-w-md sm:p-3 sm:px-8 md:max-w-xl`}
     >
       <div className="flex">
         {profilePicture ? (
@@ -89,7 +87,7 @@ const Post = ({
           </Link>
         </div>
       </div>
-      <p className="text-md mt-4 mb-1 text-xl text-white dark:text-slate-200">
+      <p className="text-md mt-4 mb-1 text-xl text-black dark:text-white">
         {text}
       </p>
       {imageUrl && thumbnailUrl ? (
@@ -117,7 +115,9 @@ const Post = ({
       >
         {likedByUsers.length ? (
           <p className="text-slate-900 dark:text-slate-500">
-            <b className="font-bold text-slate-200">{likedByUsers.length}</b>{" "}
+            <b className="font-bold text-black dark:text-white">
+              {likedByUsers.length}
+            </b>{" "}
             {t("likes")}
           </p>
         ) : null}

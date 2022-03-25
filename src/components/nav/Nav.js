@@ -69,7 +69,7 @@ const Nav = () => {
             <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path>
           </svg>
           {notifications ? (
-            <div className="absolute h-3 w-3 -translate-y-2 rounded-full border-2 border-slate-900 bg-green-400"></div>
+            <div className="absolute h-3 w-3 -translate-y-2 rounded-full border-2 border-white bg-green-400 dark:border-slate-900"></div>
           ) : null}
         </>
       ),
@@ -255,7 +255,7 @@ const Nav = () => {
           </div>
           <NavLink
             className="m-2 flex scale-110 items-center justify-center rounded-full bg-emerald-500 p-2 text-white transition-all hover:bg-emerald-700 dark:text-slate-100 sm:px-4"
-            to="/compose/post"
+            to="/"
           >
             <svg
               className="h-6 w-6 text-white md:hidden"

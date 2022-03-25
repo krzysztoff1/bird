@@ -98,8 +98,7 @@ export async function saveWorkingCopy(text) {
   });
 }
 
-//! upload posts and comments
-//TODO make uploadPost one function (both with photo and without)
+// upload posts and comments
 export const uploadPost = async ({
   text,
   parentId,
@@ -220,7 +219,9 @@ export const uploadPost = async ({
         };
 
         let thumbnailUrl = await uploadThumbnail();
-        postTemplate.averageColor = await fac.getColorAsync(thumbnailUrl);
+        postTemplate.averageColor = await fac.getColorAsync(
+          URL.createObjectURL(file)
+        );
         postTemplate.thumbnailUrl = thumbnailUrl;
 
         let imageUrl = await uploadImage();

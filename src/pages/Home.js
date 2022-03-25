@@ -1,5 +1,5 @@
 import FloatingButton from "../components/buttons/FloatingButton";
-import SmallNewPost from "../components/forms/NewComment";
+import SmallNewPost from "../components/forms/SmallNewPost";
 import Header from "../components/header/Header";
 import { isMobile } from "react-device-detect";
 import { useLocation } from "react-router";

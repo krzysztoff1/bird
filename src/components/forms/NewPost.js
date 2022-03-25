@@ -73,7 +73,6 @@ const SmallNewPost = ({ post, comment }) => {
   return (
     <>
       <ToastPortal ref={toastRef} />
-
       <Modal
         modal={modal}
         toggleModal={toggleModal}
@@ -124,7 +123,6 @@ const SmallNewPost = ({ post, comment }) => {
             : null}
         </ul>
       </Modal>
-
       <section
         className={`${
           !isMobile &&

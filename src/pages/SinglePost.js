@@ -1,7 +1,7 @@
 import Post from "../components/post/Post";
 import PostSkeleton from "../components/post/PostSkeleton";
 import HighlightedPost from "../components/post/highlightedPost/HighlightedPost";
-import SmallNewPost from "../components/forms/NewComment";
+import SmallNewPost from "../components/forms/SmallNewPost";
 import Comments from "../components/comment/Comments";
 import { db } from "../lib/firebase";
 import {
@@ -82,7 +82,7 @@ const SinglePost = () => {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-slate-100"
+            className="h-6 w-6 text-black dark:text-white"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

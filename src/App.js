@@ -3,7 +3,7 @@ import AppLogo from "./components/loaders/AppLogo";
 import AuthForm from "./pages/Auth";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import { isBrowser } from "react-device-detect";
-import { lazy, Suspense, useContext } from "react";
+import { lazy, Suspense, useContext, useEffect } from "react";
 import { AuthContext } from "./context/auth-context";
 import { ProfileFlowProvider } from "./context/profileFlow-context";
 import TimeAgo from "javascript-time-ago";
@@ -60,18 +60,17 @@ function App() {
                 />
                 <Route path="/messages" element={<Messages />} />
                 <Route path="/settings" element={<Settings />} />
+                {/* //TODO Open as overlay in browser view, don't remove profile component*/}
                 <Route
+                  exact
                   path="/flow/profile_setup"
                   element={
-                    <>
-                      <ProfileFlowProvider>
-                        <ProfileSetup />
-                      </ProfileFlowProvider>
-                      {/* <Profile /> */}
-                    </>
+                    <ProfileFlowProvider>
+                      <ProfileSetup />
+                    </ProfileFlowProvider>
                   }
                 />
-                <Route element={<NotFound />} />
+                <Route path="*" exact element={<NotFound />} />
               </Routes>
             </main>
             {isBrowser && <SideBar />}

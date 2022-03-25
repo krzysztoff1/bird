@@ -34,11 +34,13 @@ const Settings = () => {
       <Header text="Settings" />
       <section className="mx-auto mt-8 flex max-w-md flex-col gap-4 px-4 py-2">
         <div className="flex items-center justify-between">
-          <h5 className="text-white">{t("theme")}</h5>
+          <h5 className="text-black dark:text-white">
+            {t("theme")} temporarily disabled
+          </h5>
           <ThemeButton />
         </div>
         <div className="flex items-center justify-between">
-          <h5 className="text-white">{t("language")}</h5>
+          <h5 className="text-black dark:text-white">{t("language")}</h5>
           <div className="relative">
             <button
               onClick={() => togglelngDropdown((state) => !state)}

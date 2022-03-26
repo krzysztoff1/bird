@@ -156,7 +156,7 @@ const SinglePost = () => {
             ))}
           </InfiniteScroll>
         ) : (
-          <p className="mx-auto my-4 text-center text-slate-200">
+          <p className="m-4 text-center text-black dark:text-white">
             {t("no_comments_yet")}
           </p>
         )}
@@ -166,5 +166,3 @@ const SinglePost = () => {
 };
 
 export default SinglePost;
-
-  

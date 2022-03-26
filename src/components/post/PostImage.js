@@ -11,6 +11,7 @@ const PostImage = ({ averageColor, imageUrl, thumbnailUrl, id }) => {
 
   return (
     <div
+      onClick={() => setOpen(!isOpen)}
       className={`${
         isOpen
           ? "fixed top-0 right-0 bottom-0 left-0 z-[1000] mt-0 h-screen w-screen"
@@ -51,7 +52,6 @@ const PostImage = ({ averageColor, imageUrl, thumbnailUrl, id }) => {
             className={`${
               isOpen && "object-contain"
             } h-full w-full overflow-hidden rounded-xl`}
-            onClick={() => setOpen(!isOpen)}
             src={src}
             alt="post"
           />

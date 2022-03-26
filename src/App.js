@@ -1,6 +1,6 @@
 import "./index.css";
 import AppLogo from "./components/loaders/AppLogo";
-import AuthForm from "./pages/Auth";
+import AuthForm from "./pages/AuthForm";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import { isBrowser } from "react-device-detect";
 import { lazy, Suspense, useContext, useEffect } from "react";
@@ -36,7 +36,7 @@ function App() {
         <BrowserRouter>
           <div className="mx-auto flex max-w-6xl">
             {isBrowser ? <Nav /> : <MobileNav />}
-            <main className="flex-grow-1  mr-0 w-full max-w-full justify-center border-r-[1px] border-slate-100 dark:border-slate-800  sm:mr-0 md:mr-12 md:max-w-lg">
+            <main className="flex-grow-1 w-full max-w-full justify-center border-r-[1px] border-slate-100 dark:border-slate-800 md:max-w-lg">
               <Routes>
                 <Route exact path="/" element={<Home />} />
                 <Route

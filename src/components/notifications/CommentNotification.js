@@ -9,16 +9,16 @@ const CommentNotification = ({ docId, id, name, timestamp, commentText }) => {
   const { t } = useTranslation();
 
   return (
-    <article className="my-1 mx-2 rounded-md bg-slate-800 px-3 py-4">
+    <article className="my-1 mx-2 rounded-md px-3 py-4">
       <div className="flex justify-between">
-        <p className="inline-flex text-slate-300">
+        <p className="inline-flex font-light text-black dark:text-white">
           {timestamp?.seconds
             ? timeAgo.format(new Date(timestamp.seconds * 1000), "twitter")
             : ""}
         </p>
         <button type="button" onClick={() => markReadNotification(docId)}>
           <svg
-            className="inline-flex h-6 w-6 cursor-pointer text-white"
+            className="inline-flex h-6 w-6 cursor-pointer text-black dark:text-white"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -34,12 +34,16 @@ const CommentNotification = ({ docId, id, name, timestamp, commentText }) => {
       </div>
       <div className="flex text-slate-100">
         <p>
-          <b>{name}</b>{" "}
-          <span className="font-light text-slate-300">{t("commented")}</span>{" "}
+          <b className="font-bold text-black dark:text-white">{name}</b>{" "}
+          <span className="font-light text-black dark:text-white">
+            {t("commented")}
+          </span>{" "}
         </p>
       </div>
       <Link to={`/post/${id}`}>
-        <p className="text-md text-slate-100">"{commentText}"</p>
+        <p className="text-md font-bold text-black dark:text-white">
+          "{commentText}"
+        </p>
       </Link>
     </article>
   );

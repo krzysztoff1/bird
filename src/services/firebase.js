@@ -27,6 +27,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { createResizedImage } from "./resizeImage";
 import FastAverageColor from "fast-average-color";
@@ -74,6 +75,16 @@ export async function signUpWithEmail({ email, password, name }) {
       const errorMessage = error.message;
     });
 }
+
+export const logInWithEmail = ({ email, password }) => {
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
 
 export async function checkUserName(name) {
   const q = query(collection(db, "users"), where("name", "==", name));

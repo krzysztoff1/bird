@@ -42,53 +42,14 @@ const SignIn = ({ toggle }) => {
   }, [email]);
 
   useEffect(() => {
-    console.log(!!nameIsAvailable);
-    // console.log(emailIsCorrect);
-    // console.log(password.length);
     if (emailIsCorrect && password.length > 3) toggleFormReady(true);
   }, [email, name, nameIsAvailable, emailIsCorrect, password]);
-
-  // console.log(formReady);
 
   const handleNameChange = async (e) => {
     setName(e.target.value);
     const res = await checkUserName(name.replace(/\s/g, "").toLowerCase());
     console.log(res);
     setNameIsAvailable(res);
-  };
-
-  const Check = () => {
-    return (
-      <svg
-        className="inline-flex h-6 w-6"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fillRule="evenodd"
-          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-          clipRule="evenodd"
-        />
-      </svg>
-    );
-  };
-
-  const Crossed = () => {
-    return (
-      <svg
-        className="inline-flex h-6 w-6"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fillRule="evenodd"
-          d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z"
-          clipRule="evenodd"
-        />
-      </svg>
-    );
   };
 
   return (

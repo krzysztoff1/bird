@@ -6,13 +6,13 @@ import { AuthContext } from "../../context/auth-context";
 import { ToastPortal } from "../toast/ToastPortal";
 import { UploadPostContext } from "../../context/upload-context";
 import { motion } from "framer-motion";
+import { unmountComponentAtNode } from "react-dom";
 
-const SmallNewPost = ({ post, parentId, comment }) => {
+const SmallNewPost = ({ post, parentId, comment, onPost }) => {
   const { t } = useTranslation();
   const authState = useContext(AuthContext);
   const { state, dispatch } = useContext(UploadPostContext);
   const [text, setText] = useState("");
-  const [rows, setRows] = useState(2);
   const [open, toggleOpen] = useState(post ? true : false);
   const [file, setFile] = useState();
   const textArea = useRef();
@@ -60,7 +60,7 @@ const SmallNewPost = ({ post, parentId, comment }) => {
         className="w-full md:p-4"
       >
         {comment && open && (
-          <label className="text-black/70 dark:text-white/70">
+          <label className="ml-4 text-black/70 dark:text-white/70">
             {t("in_response_to")}{" "}
             <span className="text-green-400">
               @{post?.account.toLowerCase()}
@@ -78,7 +78,6 @@ const SmallNewPost = ({ post, parentId, comment }) => {
               ref={textArea}
               onChange={(e) => setText(e.target.value)}
               id="message"
-              rows={rows}
               className={`${
                 !open && "truncate"
               } my-1 block min-h-[70px] w-full resize-none bg-transparent py-2.5 text-xl text-black outline-none transition-all  dark:text-white`}
@@ -86,14 +85,11 @@ const SmallNewPost = ({ post, parentId, comment }) => {
             />
             {file && (
               <section className="my-2 px-2">
-                <div className="mb-1 flex w-full justify-between text-slate-100">
-                  {t("attached_photo")}
-                </div>
                 <div className="relative">
                   <svg
                     onClick={() => setFile("")}
                     xmlns="http://www.w3.org/2000/svg"
-                    className="absolute m-1 h-5 w-5 rounded-full bg-slate-50 p-[3px]"
+                    className="absolute m-1 h-5 w-5 rounded-full p-[3px] text-black dark:text-white"
                     viewBox="0 0 20 20"
                     fill="black"
                   >
@@ -122,16 +118,16 @@ const SmallNewPost = ({ post, parentId, comment }) => {
                 >
                   <button onClick={() => fileRef.current.click()} type="button">
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
                       className="h-6 w-6 text-green-500"
                       fill="none"
+                      stroke="#22c55e"
                       viewBox="0 0 24 24"
-                      stroke="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth="2"
+                        strokeWidth={2}
                         d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                       />
                     </svg>

@@ -12,6 +12,7 @@ module.exports = {
     "./src/pages/Settings.js",
     "./src/pages/Photo.js",
     "./src/pages/ProfileSetup.js",
+    "./src/components/feed/PostsList.js",
     "./src/components/auth/SignInEmail.js",
     "./src/components/auth/SignInGoogle.js",
     "./src/components/loaders/Spinner.js",
@@ -50,6 +51,8 @@ module.exports = {
     "./src/components/profile/SettingsProfileHeader.js",
     "./src/components/toolTip/ToolTip.js",
     "./src/components/buttons/FloatingButton.js",
+    "./src/components/modals/ModalPortal.js",
+    "./src/components/forms/SmallNewPost.js",
   ],
   theme: {
     extend: {},

@@ -7,7 +7,6 @@ import { db } from "../lib/firebase";
 import {
   collection,
   onSnapshot,
-  doc,
   orderBy,
   limit,
   where,
@@ -17,8 +16,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import Post from "../components/post/Post";
 import PostSkeleton from "../components/post/PostSkeleton";
-import Loading from "./Loading";
 import Header from "../components/header/Header";
+import Spinner from "../components/loaders/Spinner";
 import { getUserByUid } from "../services/firebase";
 
 const Profile = () => {
@@ -67,7 +66,7 @@ const Profile = () => {
     document.body.style.overflow = "visible";
   }, []);
 
-  if (!userData) return <Loading />;
+  if (!userData) return <Spinner />;
 
   return (
     <div className="min-h-screen">

@@ -13,7 +13,14 @@ const PostsList = () => {
       </div>
     );
 
-  if (!state.data.length) return <p className="text-white">No posts yet</p>;
+  if (!state.data.length)
+    return (
+      <p className="mt-12 text-center text-white">
+        No posts yet
+        <br />
+        follow someone 👉
+      </p>
+    );
 
   return (
     <InfiniteScroll

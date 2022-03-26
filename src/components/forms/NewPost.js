@@ -16,10 +16,11 @@ import { UploadPostContext } from "../../context/upload-context";
 import { ToastPortal } from "../toast/ToastPortal";
 import { isMobile } from "react-device-detect";
 
-const SmallNewPost = ({ post, comment }) => {
+const NewPost = ({ post, comment }) => {
   const { t } = useTranslation();
   const authState = useContext(AuthContext);
   const { state, dispatch } = useContext(UploadPostContext);
+  const navigate = useNavigate();
   const [open, toggleOpen] = useState(false);
   const [modal, toggleModal] = useState(false);
   const [draftsModal, toggleDraftsModal] = useState(false);
@@ -28,9 +29,8 @@ const SmallNewPost = ({ post, comment }) => {
   const [file, setFile] = useState();
   const textField = useRef();
   const fileRef = useRef();
-  const navigate = useNavigate();
-  const user = authState.userData;
   const toastRef = useRef();
+  const user = authState.userData;
 
   useEffect(() => {
     if (!user) return;
@@ -85,7 +85,7 @@ const SmallNewPost = ({ post, comment }) => {
             navigate("/");
           }}
           type="button"
-          className="text-md mb-3 w-full rounded-full border-[1px] border-slate-50 bg-slate-50 py-2 font-medium transition hover:bg-slate-200"
+          className="text-md mb-3 w-full rounded-full border-[1px] border-slate-50 bg-neutral-600 py-2 font-medium text-white transition hover:bg-slate-200 dark:bg-slate-50 dark:text-black"
         >
           Save draft
         </button>
@@ -95,7 +95,7 @@ const SmallNewPost = ({ post, comment }) => {
             navigate("/");
           }}
           type="button"
-          className="text-md w-full  rounded-full border-[1px] border-slate-50/30 py-2 font-medium text-slate-50"
+          className="text-md w-full rounded-full border-[1px] border-slate-50/30 py-2 font-medium text-black dark:text-slate-50"
         >
           Discard
         </button>
@@ -151,7 +151,7 @@ const SmallNewPost = ({ post, comment }) => {
                   className="p-3 font-bold text-slate-100"
                 >
                   <svg
-                    className="h-6 w-6"
+                    className="h-6 w-6 text-black dark:text-white"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -185,7 +185,7 @@ const SmallNewPost = ({ post, comment }) => {
               </div>
               <div className="mt-4 flex w-full px-3">
                 <img
-                  className="h-8 w-8 flex-none rounded-full"
+                  className="h-8 w-8 flex-none rounded-full object-cover"
                   src={
                     user?.profilePicture
                       ? user?.profilePicture
@@ -341,4 +341,4 @@ const SmallNewPost = ({ post, comment }) => {
   );
 };
 
-export default SmallNewPost;
+export default NewPost;

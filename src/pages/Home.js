@@ -18,7 +18,7 @@ const Home = () => {
       } min-h-screen `}
     >
       {isMobile && <FloatingButton />}
-      <Header text="Główna" />
+      <Header text="Główna" scrollToTop />
       {!isMobile && (
         <UploadPostProvider>
           <SmallNewPost post />

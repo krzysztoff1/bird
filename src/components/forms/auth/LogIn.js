@@ -1,9 +1,15 @@
-const LogIn = () => {
+import { useState, useRef } from "react";
+import { logInWithEmail } from "../../../services/firebase";
+
+const LogIn = ({ toggle }) => {
+  const [email, setEmail] = useState();
+  const [password, setPass] = useState();
+
   return (
     <div className="w-md my-4 w-full max-w-md px-4">
       <header className="flex w-full justify-between">
         <button
-          onClick={() => toggleLogIn(0)}
+          onClick={() => toggle(0)}
           className="mb-2 rounded-full p-2 backdrop-blur-md transition-all hover:bg-white/25"
         >
           <svg
@@ -24,8 +30,8 @@ const LogIn = () => {
       </header>
       <form
         onSubmit={(e) => {
+          logInWithEmail({ email, password });
           e.preventDefault();
-          // signUpWithEmail({ email, password, name });
         }}
         className="mb-6 px-2"
       >
@@ -65,7 +71,7 @@ const LogIn = () => {
           <input
             required
             autoComplete="off"
-            // onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPass(e.target.value)}
             type="password"
             className="text-md input[type='password']
  block w-full rounded-lg border-2 border-slate-800 bg-slate-800 p-2.5 text-slate-100 placeholder-slate-300 outline-none"
@@ -74,11 +80,10 @@ const LogIn = () => {
         </section>
         <section className="my-2 flex items-center justify-center">
           <button
-            onClick={() => toggleSignIn(1)}
             type="submit"
             className="mx-auto mt-2 inline-flex items-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-600"
           >
-            Sign up
+            Log in
           </button>
         </section>
       </form>

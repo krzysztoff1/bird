@@ -101,7 +101,7 @@ const ProfileSetup = () => {
               onClick={() =>
                 dispatch({
                   type: state.status + 1,
-                  payload: { ready: false, progress: state.data.progress + 25 },
+                  payload: { ready: false },
                 })
               }
               className="mx-auto hover:underline"

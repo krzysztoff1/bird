@@ -34,7 +34,7 @@ function App() {
     <Suspense fallback={<AppLogo />}>
       <div className="bg-white dark:bg-slate-900">
         <BrowserRouter>
-          <div className="mx-auto flex max-w-6xl">
+          <div className="mx-auto flex max-w-6xl justify-center">
             {isBrowser ? <Nav /> : <MobileNav />}
             <main className="flex-grow-1 w-full max-w-full justify-center border-r-[1px] border-slate-100 dark:border-slate-800 md:max-w-lg">
               <Routes>

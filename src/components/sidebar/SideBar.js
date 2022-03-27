@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom";
 import { ModalPortal } from "../modals/ModalPortal";
 import { useRef } from "react";
+import PersonLink from "./PersonLink";
+import Search from "./Search";
 
 const SideBar = () => {
-  //TODO get topics from firebase - temporary solution
+  //TODO get topics from firebase
+  //temporary solution
   const people = [
     { id: 1, title: "Krzysztof", uid: "sGdpDpyhEfb25VaLXrmvAFqcFfs1" },
-    { id: 1, title: "TestAccountThree", uid: "d9PCpTwMYqNKNJEXDF4IMPZlnQf2" },
+    { id: 2, title: "TestAccountThree", uid: "d9PCpTwMYqNKNJEXDF4IMPZlnQf2" },
   ];
 
   const topics = [
@@ -24,33 +27,7 @@ const SideBar = () => {
     <>
       <aside className="hidden p-4 dark:border-slate-800/50 lg:block">
         <div className="sticky top-0 left-0 z-50 mb-2 h-screen overflow-hidden overflow-y-scroll py-2">
-          <section>
-            <label htmlFor="table-search" className="sr-only">
-              Search
-            </label>
-            <div className="relative mt-1">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <svg
-                  className="h-5 w-5 text-gray-500 dark:text-gray-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <input
-                type="search"
-                id="table-search"
-                className="block w-80 rounded-full border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                placeholder="Search for items"
-              />
-            </div>
-          </section>
+          <Search />
           <section className="my-4 rounded-xl bg-neutral-100 pt-3 dark:bg-slate-800/50">
             <header className="mb-3 flex justify-between px-3">
               <h3 className="text-xl font-bold text-black dark:text-white">
@@ -59,37 +36,7 @@ const SideBar = () => {
             </header>
             <ul>
               {people.map((person, i) => (
-                <Link
-                  to={`/profile/${person.uid}`}
-                  key={i}
-                  className="flex items-start justify-between overflow-hidden py-2 px-3 transition hover:bg-neutral-200 dark:hover:bg-slate-700/50"
-                >
-                  <div className="flex items-center">
-                    <img
-                      className="h-12 w-12 rounded-full"
-                      src="https://picsum.photos/50"
-                      alt=" "
-                    />
-                    <div className="ml-3">
-                      <p className="text-black dark:text-white">
-                        {person.title}
-                      </p>
-                      <p className="text-black/50 dark:text-white/50">
-                        @{person.title.toLowerCase()}
-                      </p>
-                    </div>
-                  </div>
-                  <button>
-                    <svg
-                      className="h-4 w-4 text-black/50 dark:text-white/50"
-                      fill="currentColor"
-                      viewBox="0 0 20 5"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                    </svg>
-                  </button>
-                </Link>
+                <PersonLink key={person.id} person={person} />
               ))}
             </ul>
             <button className="w-full overflow-clip p-3 text-left text-blue-400 transition hover:bg-neutral-200 dark:hover:bg-slate-700/50">

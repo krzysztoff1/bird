@@ -2,24 +2,37 @@ import Post from "../post/Post";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Spinner from "../loaders/Spinner";
 import useFeed from "../../hooks/useFeed";
+import PersonLink from "../sidebar/PersonLink";
+import { isMobile } from "react-device-detect";
 
 const PostsList = () => {
   const { state, fetchMoreData } = useFeed();
 
+  const people = [
+    { id: 1, title: "Krzysztof", uid: "sGdpDpyhEfb25VaLXrmvAFqcFfs1" },
+    { id: 2, title: "TestAccountThree", uid: "d9PCpTwMYqNKNJEXDF4IMPZlnQf2" },
+  ];
+
   if (state.status === "loading" || state.status === "idle")
     return (
       <div className="my-12 flex items-center justify-center">
-        <Spinner />;
+        <Spinner />
       </div>
     );
 
   if (!state.data.length)
     return (
-      <p className="mt-12 text-center text-white">
-        No posts yet
-        <br />
-        follow someone 👉
-      </p>
+      <>
+        <p className="my-12 text-center font-medium text-black dark:text-white">
+          No posts yet
+          <br />
+          follow someone {isMobile ? "👇" : "👉"}
+        </p>
+        {isMobile &&
+          people.map((person) => (
+            <PersonLink key={person.id} person={person} />
+          ))}
+      </>
     );
 
   return (

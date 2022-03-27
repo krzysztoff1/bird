@@ -53,6 +53,7 @@ module.exports = {
     "./src/components/buttons/FloatingButton.js",
     "./src/components/modals/ModalPortal.js",
     "./src/components/forms/SmallNewPost.js",
+    "./src/components/sidebar/Search.js",
   ],
   theme: {
     extend: {},

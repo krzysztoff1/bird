@@ -19,6 +19,11 @@ const SmallNewPost = ({ post, parentId, comment, onPost }) => {
   const toastRef = useRef();
   const fileRef = useRef();
 
+  useEffect(() => {
+    textArea.current.style.height = "auto";
+    textArea.current.style.height = textArea.current.scrollHeight + "px";
+  }, [text]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!text.length)
@@ -70,14 +75,14 @@ const SmallNewPost = ({ post, parentId, comment, onPost }) => {
         <div className="flex px-3 sm:p-0">
           <img
             src={authState.userData?.profilePicture}
-            className="my-3 mr-3 h-10 w-10 rounded-full object-cover"
+            className="my-3 mr-3 h-10 w-10 flex-shrink-0 rounded-full object-cover"
             alt="User avatar"
           />
           <div className={`w-full ${!open && "flex"}`}>
             <textarea
               ref={textArea}
               onChange={(e) => setText(e.target.value)}
-              id="message"
+              maxLength="280"
               className={`${
                 !open && "truncate"
               } my-1 block min-h-[70px] w-full resize-none bg-transparent py-2.5 text-xl text-black outline-none transition-all  dark:text-white`}

@@ -33,6 +33,11 @@ const NewPost = ({ post, comment }) => {
   const user = authState.userData;
 
   useEffect(() => {
+    textField.current.style.height = "auto";
+    textField.current.style.height = textField.current.scrollHeight + "px";
+  }, [text]);
+
+  useEffect(() => {
     if (!user) return;
     const unsubscribe = onSnapshot(
       query(collection(db, "drafts"), where("uid", "==", user.uid)),

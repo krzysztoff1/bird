@@ -59,7 +59,7 @@ const LogIn = ({ toggle }) => {
               type="text"
               onChange={(e) => setEmail(e.target.value)}
               className={`
-                  block w-full rounded-lg border-2   bg-slate-800 p-2.5 pl-10 text-sm  text-white dark:placeholder-gray-400 `}
+                  block w-full rounded-lg bg-slate-800 p-2.5 pl-10 text-sm text-white  outline-none dark:placeholder-gray-400 `}
               placeholder="name@email.com"
             />
           </div>

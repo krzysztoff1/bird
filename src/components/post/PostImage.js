@@ -14,7 +14,7 @@ const PostImage = ({ averageColor, imageUrl, thumbnailUrl, id }) => {
       onClick={() => setOpen(!isOpen)}
       className={`${
         isOpen
-          ? "fixed top-0 right-0 bottom-0 left-0 z-[1000] mt-0 h-screen w-screen"
+          ? "fixed top-0 right-0 bottom-0 left-0 z-[2000] mt-0 h-screen w-screen"
           : "mt-3"
       } w-full bg-slate-900 bg-opacity-50 object-cover`}
       style={{ background: averageColor?.rgba.slice(0, -2) + "0.9)" }}
@@ -51,7 +51,7 @@ const PostImage = ({ averageColor, imageUrl, thumbnailUrl, id }) => {
           <img
             className={`${
               isOpen && "object-contain"
-            } h-full w-full overflow-hidden rounded-xl`}
+            } z-[2000] h-full w-full overflow-hidden rounded-xl`}
             src={src}
             alt="post"
           />

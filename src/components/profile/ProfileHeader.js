@@ -40,7 +40,7 @@ const ProfileHeader = ({
           <Link
             to="/flow/profile_setup"
             type="button"
-            className={`text-md z-20 h-min w-[8rem] rounded-full border-[1px] border-slate-50/30  p-2 px-4 text-center font-medium text-black transition-all hover:bg-neutral-100 dark:border-black dark:bg-slate-900 dark:text-white
+            className={`text-md z-20 h-min w-[8rem] rounded-full border-[1px] border-slate-50/30  bg-white p-2 px-4 text-center font-medium text-black transition-all hover:bg-neutral-100 dark:border-black dark:bg-slate-900 dark:text-white dark:hover:bg-slate-700
         `}
           >
             {t("fill_profile")}

@@ -26,4 +26,6 @@ export const strengthIndicator = (number) => {
 };
 
 export const validateEmail = (email) =>
-  new RegExp(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/).test(email);
+  new RegExp(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/).test(
+    email.replace(/\s/g, "")
+  );

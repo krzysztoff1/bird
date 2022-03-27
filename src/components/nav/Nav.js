@@ -157,11 +157,11 @@ const Nav = () => {
     <>
       <ModalPortal ref={modalRef} />
       <nav className="z-50 w-fit overflow-visible border-r-[1px] border-slate-100 dark:border-slate-800">
-        <div className="sticky top-0 z-50 mx-0 flex h-screen flex-col items-center justify-between sm:items-start md:mx-6">
+        <div className="sticky top-0 z-50 mx-0 flex h-screen flex-col items-center justify-between sm:items-start">
           <header
             className={`${
               !settings && "overflow-hidden"
-            }left-0 /30 z-50 mx-1 flex w-full flex-col items-center justify-around gap-3 px-0 py-3 backdrop-blur-xl dark:bg-slate-900 sm:px-4 md:items-start`}
+            } z-10 flex w-full flex-col items-center justify-around gap-3 overflow-hidden  px-0 py-3 backdrop-blur-xl md:items-start md:px-4`}
           >
             <NavLink className="mb-6 w-fit p-2" to="/">
               <div className="h-6 w-6">
@@ -259,7 +259,7 @@ const Nav = () => {
             </div>
             <button
               onClick={() => modalRef.current.toggleModal()}
-              className="m-2 flex scale-110 items-center justify-center rounded-full bg-emerald-500 p-2 text-white transition-all hover:bg-emerald-700 dark:text-slate-100 sm:px-4"
+              className="m-2 flex h-[44px] w-[44px] scale-110 items-center justify-center rounded-full bg-emerald-500 p-2 text-white transition-all hover:bg-emerald-700 dark:text-slate-100 sm:h-fit md:w-fit md:px-4"
               to="/"
             >
               <svg
@@ -344,7 +344,7 @@ const Nav = () => {
             >
               <div className="flex items-center">
                 <img
-                  className="h-8 w-8 rounded-full object-cover md:h-12 md:w-12"
+                  className="h-8 w-8 flex-shrink-0 rounded-full object-cover md:h-12 md:w-12"
                   src={authState.userData?.profilePicture}
                   alt="profile avatar"
                 />

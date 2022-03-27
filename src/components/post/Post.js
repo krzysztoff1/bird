@@ -37,7 +37,7 @@ const Post = ({
     });
   }, []);
 
-  if (!profilePicture) return <PostSkeleton />;
+  if (!profilePicture) return <></>;
 
   return (
     <article

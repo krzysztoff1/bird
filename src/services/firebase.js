@@ -47,6 +47,26 @@ export function signInWithGoogle() {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
       const user = result.user;
+      const createUserData = async () => {
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          console.log("logged");
+        } else {
+          setDoc(doc(db, "users", user.uid), {
+            lang: navigator.language.substring(0, 2),
+            name: user.displayName.replace(/\s/g, ""),
+            searchName: user.displayName.toLowerCase().replace(/\s/g, ""),
+            uid: user.uid,
+            email: user.email,
+            profilePicture:
+              "https://img.redro.pl/plakaty/default-profile-picture-avatar-photo-placeholder-vector-illustration-400-205664584.jpg",
+            darkTheme: true,
+            following: [user.uid],
+          });
+        }
+      };
+      createUserData();
     })
     .catch((error) => {
       console.log(error.code + error.message);
@@ -54,14 +74,14 @@ export function signInWithGoogle() {
 }
 
 export async function signUpWithEmail({ email, password, name }) {
-  console.log(name);
   const auth = getAuth();
-  createUserWithEmailAndPassword(auth, email, password)
+  createUserWithEmailAndPassword(auth, email.replace(/\s/g, ""), password)
     .then((userCredential) => {
       const user = userCredential.user;
       setDoc(doc(db, "users", user.uid), {
         lang: navigator.language.substring(0, 2),
-        name: name,
+        name: name.replace(/\s/g, ""),
+        searchName: name.toLowerCase().replace(/\s/g, ""),
         uid: user.uid,
         email: user.email,
         profilePicture:
@@ -228,7 +248,6 @@ export const uploadPost = async ({
             );
           });
         };
-
         let thumbnailUrl = await uploadThumbnail();
         postTemplate.averageColor = await fac.getColorAsync(
           URL.createObjectURL(file)
@@ -411,3 +430,21 @@ export async function unFollow(uid) {
     followedBy: arrayRemove(user.uid),
   });
 }
+// search
+
+export const basicSearchUsers = async ({ text }) => {
+  return new Promise(async function (resolve, reject) {
+    const q = query(
+      collection(db, "users"),
+      where("searchName", ">=", text.toLowerCase().replace(/\s/g, "")),
+      where(
+        "searchName",
+        "<=",
+        text.toLowerCase().replace(/\s/g, "") + "\uf8ff"
+      )
+    );
+
+    const querySnapshot = await getDocs(q);
+    resolve(querySnapshot.docs.map((doc) => doc.data()));
+  });
+};

@@ -1,4 +1,4 @@
-export const hasNumber = (number) => new RegExp(/[0-9]/).test(number);
+export const hasNumber = (number) => new RegExp(/\d/).test(number);
 
 export const hasMixed = (number) =>
   new RegExp(/[a-z]/).test(number) && new RegExp(/[A-Z]/).test(number);

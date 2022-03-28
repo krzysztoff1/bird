@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { basicSearchUsers } from "../../services/firebase";
+import { basicSearchUsers } from "services/firebase";
 import PersonLink from "./PersonLink";
 
 const Search = () => {
@@ -16,7 +16,7 @@ const Search = () => {
   };
 
   return (
-    <section className="relative">
+    <section className="relative w-full">
       {isOpen && (
         <div className="min-2-[228px] absolute right-0 top-[3rem] z-50 w-full rounded-xl border border-neutral-300 bg-white py-2 shadow dark:bg-slate-900">
           <span className="mb-3 flex items-center gap-3 px-2">

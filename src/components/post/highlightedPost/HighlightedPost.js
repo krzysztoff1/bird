@@ -1,16 +1,12 @@
 import { db } from "../../../lib/firebase";
 import PostImage from "../PostImage";
-import {
-  likePost,
-  getCurrentUser,
-  getUserByUid,
-} from "../../../services/firebase";
+import { getCurrentUser, getUserByUid } from "../../../services/firebase";
 import Spinner from "../../loaders/Spinner";
 import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { monthsShort } from "../../../constans/date";
+import { monthsShort } from "constans/date";
 import PostFooter from "../PostFooter";
 
 const Post = ({
@@ -32,12 +28,16 @@ const Post = ({
   const [numberOfComments, setNumberOfComments] = useState("");
 
   useEffect(() => {
-    getCurrentUser().then((res) => setUser(res));
-    getUserByUid(uid).then((res) =>
-      setProfilePicture(
-        res.profilePicture ? res.profilePicture : res.googleProfilePicture
+    getCurrentUser()
+      .then((res) => setUser(res))
+      .catch((error) => console.log(error));
+    getUserByUid(uid)
+      .then((res) =>
+        setProfilePicture(
+          res.profilePicture ? res.profilePicture : res.googleProfilePicture
+        )
       )
-    );
+      .catch((error) => console.log(error));
   }, []);
 
   useEffect(() => {

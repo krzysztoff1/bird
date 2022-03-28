@@ -109,10 +109,10 @@ export const logInWithEmail = ({ email, password }) => {
 export async function checkUserName(name) {
   const q = query(collection(db, "users"), where("name", "==", name));
   const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((user) => {
-    return true;
-  });
-  return false;
+  // querySnapshot.forEach((user) => {
+  //   return true;
+  // });
+  return true;
 }
 
 export function SignOut() {
@@ -211,9 +211,11 @@ export const uploadPost = async ({
                 reject(new Error(error));
               },
               () => {
-                getDownloadURL(uploadImage.snapshot.ref).then((downloadURL) => {
-                  resolve(downloadURL);
-                });
+                getDownloadURL(uploadImage.snapshot.ref)
+                  .then((downloadURL) => {
+                    resolve(downloadURL);
+                  })
+                  .catch((error) => console.log(error));
               }
             );
           });
@@ -239,11 +241,11 @@ export const uploadPost = async ({
                 reject(new Error(error));
               },
               () => {
-                getDownloadURL(uploadThumbnail.snapshot.ref).then(
-                  (downloadURL) => {
+                getDownloadURL(uploadThumbnail.snapshot.ref)
+                  .then((downloadURL) => {
                     resolve(downloadURL);
-                  }
-                );
+                  })
+                  .catch((error) => console.log(error));
               }
             );
           });
@@ -260,6 +262,25 @@ export const uploadPost = async ({
       });
     };
     await handleUploads();
+  }
+
+  if (text.includes("#")) {
+    const getHashtags = async () => {
+      return new Promise(async function (resolve, reject) {
+        let hashtags = [];
+        function locations(substring, string) {
+          var a = [],
+            i = -1;
+          while ((i = string.indexOf(substring, i + 1)) >= 0) a.push(i);
+          return a;
+        }
+        locations("#", text).map((location) =>
+          hashtags.push(text.slice(location).split(" ")[0])
+        );
+        resolve(hashtags);
+      });
+    };
+    postTemplate.hashtags = await getHashtags();
   }
 
   addDoc(collection(db, "posts"), postTemplate);
@@ -338,12 +359,14 @@ export async function setUserPhoto(file) {
       console.log(error);
     },
     () => {
-      getDownloadURL(uploadImage.snapshot.ref).then((downloadURL) => {
-        updateDoc(postRef, {
-          profilePicture: downloadURL,
-        });
-        return true;
-      });
+      getDownloadURL(uploadImage.snapshot.ref)
+        .then((downloadURL) => {
+          updateDoc(postRef, {
+            profilePicture: downloadURL,
+          });
+          return true;
+        })
+        .catch((error) => console.log(error));
     }
   );
 }

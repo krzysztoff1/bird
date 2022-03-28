@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import { useEffect, useRef, useState } from "react";
-import Spinner from "../components/loaders/Spinner";
-import { getPostById } from "../services/firebase";
+import Spinner from "components/loaders/Spinner";
+import { getPostById } from "services/firebase";
 import ProgressiveImage from "react-progressive-graceful-image";
 
 const Photo = ({ toggle }) => {
@@ -9,9 +9,11 @@ const Photo = ({ toggle }) => {
   const [photo, setPhoto] = useState();
 
   useEffect(() => {
-    getPostById(id).then((res) => {
-      setPhoto(res);
-    });
+    getPostById(id)
+      .then((res) => {
+        setPhoto(res);
+      })
+      .catch((error) => console.log(error));
   }, [id]);
 
   if (!photo) return <Spinner />;

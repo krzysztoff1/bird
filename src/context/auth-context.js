@@ -12,13 +12,13 @@ export const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState();
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       getUserData();
       setPending(false);
     });
-    return () => unsub();
-  }, [currentUser]);
+    return () => unsubscribe();
+  }, [JSON.stringify(currentUser)]);
 
   const getUserData = async () => {
     if (!currentUser) return;

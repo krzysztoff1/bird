@@ -64,7 +64,7 @@ export default function useFeed() {
       }
     );
     return () => unsubscribe();
-  }, [users, pending, numberOfPosts]);
+  }, [JSON.stringify(users), pending, numberOfPosts]);
 
   const fetchMoreData = () => {
     setNumberOfPosts((n) => n + 10);

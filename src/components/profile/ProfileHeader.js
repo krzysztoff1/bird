@@ -18,7 +18,9 @@ const ProfileHeader = ({
 
   useEffect(() => {
     if (uid !== authState.currentUser.uid) return;
-    isFollowed(uid).then((res) => setFollowState(res));
+    isFollowed(uid)
+      .then((res) => setFollowState(res))
+      .catch((error) => console.error(error));
   }, [uid]);
 
   return (

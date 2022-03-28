@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PostSkeleton from "./PostSkeleton";
 import PostLink from "../post/PostLink";
+import PostHashtags from "./PostHashtags";
 
 const Post = ({
   accountName,
@@ -24,17 +25,20 @@ const Post = ({
   parent,
   linkData,
   inlineComment,
+  hashtags,
 }) => {
   const [profilePicture, setProfilePicture] = useState();
 
   useEffect(() => {
-    getUserByUid(uid).then((userData) => {
-      setProfilePicture(
-        userData.profilePicture
-          ? userData.profilePicture
-          : userData.googleProfilePicture
-      );
-    });
+    getUserByUid(uid)
+      .then((userData) => {
+        setProfilePicture(
+          userData.profilePicture
+            ? userData.profilePicture
+            : userData.googleProfilePicture
+        );
+      })
+      .catch((error) => console.log(error));
   }, []);
 
   if (!profilePicture) return <></>;
@@ -85,6 +89,7 @@ const Post = ({
             thumbnailUrl={thumbnailUrl}
           />
         )}
+        {hashtags && <PostHashtags hashtags={hashtags} />}
         <PostFooter
           commentedByUsers={commentedByUsers}
           likedByUsers={likedByUsers}

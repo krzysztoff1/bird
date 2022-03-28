@@ -56,6 +56,7 @@ const PostsList = () => {
           commentedByUsers={post?.commentedByUsers}
           imageUrl={post.imageUrl}
           thumbnailUrl={post.thumbnailUrl}
+          hashtags={post.hashtags}
         />
       ))}
     </InfiniteScroll>

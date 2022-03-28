@@ -1,9 +1,8 @@
-import pl from "javascript-time-ago/locale/en.json";
 import TimeAgo from "javascript-time-ago";
 import { Link } from "react-router-dom";
-const timeAgo = new TimeAgo("pl-PL");
 
 const PostHeader = ({ account, time, uid, accountName }) => {
+  const timeAgo = new TimeAgo("pl-PL");
   return (
     <div className="flex items-center justify-between">
       <div className="flex w-full flex-wrap items-baseline">

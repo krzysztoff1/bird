@@ -22,9 +22,9 @@ export const ModalPortal = forwardRef((props, ref) => {
     <div
       ref={bgRef}
       onClick={(e) => bgRef.current === e.target && setModal(false)}
-      className="modal flex h-screen w-screen items-center justify-center bg-slate-900/10 p-4"
+      className="modal flex h-screen w-screen items-center justify-center bg-slate-900/10 p-4 dark:bg-slate-500/50"
     >
-      <section className="rounded-2xl bg-white p-4 shadow dark:bg-slate-900">
+      <section className="rounded-2xl bg-white p-4 shadow dark:border dark:border-slate-700 dark:bg-slate-900">
         <button type="button" onClick={() => setModal((state) => !state)}>
           <svg
             className="h-6 w-6 text-black dark:text-white"

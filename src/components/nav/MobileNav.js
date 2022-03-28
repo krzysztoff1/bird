@@ -11,7 +11,7 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { AuthContext } from "../../context/auth-context";
+import { AuthContext } from "context/auth-context";
 import { useTranslation } from "react-i18next";
 
 const Nav = () => {
@@ -28,7 +28,9 @@ const Nav = () => {
   }, [location]);
 
   useEffect(() => {
-    getCurrentUser().then((res) => setUser(res));
+    getCurrentUser()
+      .then((res) => setUser(res))
+      .catch((error) => console.log(error));
   }, []);
 
   useEffect(() => {

@@ -20,7 +20,9 @@ const Activity = () => {
   const [empty, setEmpty] = useState(false);
 
   useEffect(() => {
-    getCurrentUser().then((res) => setUser(res));
+    getCurrentUser()
+      .then((res) => setUser(res))
+      .catch((error) => console.log(error));
   }, []);
 
   useEffect(() => {

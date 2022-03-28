@@ -1,26 +1,18 @@
-import SmallNewPost from "../forms/NewPost";
 import { useState, useEffect, useRef } from "react";
-import { db } from "../../lib/firebase";
-import {
-  getCurrentUser,
-  uploadPost,
-  uploadPostWithImage,
-} from "../../services/firebase";
+import { db } from "lib/firebase";
+import { getCurrentUser } from "services/firebase";
 import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { Link } from "react-router-dom";
 
 const FloatingButton = () => {
   const [open, toggleOpen] = useState(Boolean);
-  const [modal, toggleModal] = useState(Boolean);
-  const [draftsModal, toggleDraftsModal] = useState(Boolean);
-  const [text, setText] = useState(String);
   const [user, setUser] = useState();
   const [drafts, setDrafts] = useState();
-  const [file, setFile] = useState();
-  const textField = useRef();
 
   useEffect(() => {
-    getCurrentUser().then((res) => setUser(res));
+    getCurrentUser()
+      .then((res) => setUser(res))
+      .catch((error) => console.log(error));
   }, []);
 
   useEffect(() => {
@@ -43,15 +35,6 @@ const FloatingButton = () => {
 
     return () => unsubscribe();
   }, [user]);
-
-  function handleSubmit(e) {
-    // e.preventDefault();
-    // if (!file) {
-    //   uploadPost({ text });
-    //   return;
-    // }
-    // uploadPostWithImage({ text, file });
-  }
 
   return (
     <>

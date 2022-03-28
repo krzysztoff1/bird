@@ -10,6 +10,7 @@ import TimeAgo from "javascript-time-ago";
 import pl from "javascript-time-ago/locale/en.json";
 import ProfileSetup from "./pages/ProfileSetup";
 import { UploadPostProvider } from "./context/upload-context";
+import Hashtags from "./pages/Hashtags";
 
 const Home = lazy(() => import("./pages/Home"));
 const Activity = lazy(() => import("./pages/Activity"));
@@ -70,6 +71,7 @@ function App() {
                     </ProfileFlowProvider>
                   }
                 />
+                <Route exact path="/hashtag=:hashtag" element={<Hashtags />} />
                 <Route path="*" exact element={<NotFound />} />
               </Routes>
             </main>

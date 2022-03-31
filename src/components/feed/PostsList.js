@@ -45,7 +45,7 @@ const PostsList = () => {
         <Post
           key={post.id}
           id={post.id}
-          linkData={post?.linkData}
+          linkData={post.linkData}
           averageColor={post.averageColor}
           uid={post.uid}
           accountName={post.userName}
@@ -57,6 +57,8 @@ const PostsList = () => {
           imageUrl={post.imageUrl}
           thumbnailUrl={post.thumbnailUrl}
           hashtags={post.hashtags}
+          repostedPostId={post.repostedPostId}
+          repostedBy={post.repostedBy}
         />
       ))}
     </InfiniteScroll>

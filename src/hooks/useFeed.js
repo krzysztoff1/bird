@@ -64,7 +64,7 @@ export default function useFeed() {
       }
     );
     return () => unsubscribe();
-  }, [JSON.stringify(users), pending, numberOfPosts]);
+  }, [JSON.stringify(users), pending, numberOfPosts]); //eslint-disable
 
   const fetchMoreData = () => {
     setNumberOfPosts((n) => n + 10);

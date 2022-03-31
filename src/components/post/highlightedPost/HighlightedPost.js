@@ -1,7 +1,7 @@
-import { db } from "../../../lib/firebase";
+import { db } from "lib/firebase";
 import PostImage from "../PostImage";
-import { getCurrentUser, getUserByUid } from "../../../services/firebase";
-import Spinner from "../../loaders/Spinner";
+import { getCurrentUser, getUserByUid } from "services/firebase";
+import Spinner from "components/loaders/Spinner";
 import { collection, onSnapshot, where, query } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";

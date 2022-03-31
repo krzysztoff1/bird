@@ -19,15 +19,54 @@ import PostSkeleton from "../components/post/PostSkeleton";
 import Header from "../components/header/Header";
 import Spinner from "../components/loaders/Spinner";
 import { getUserByUid } from "../services/firebase";
+import { TabletView } from "react-device-detect";
+
+const tabs = [
+  {
+    title: "Recent",
+    orderBy: "timestamp",
+    direction: "desc",
+    comment: false,
+  },
+  {
+    title: "Popular",
+    orderBy: "likedByUsers",
+    direction: "desc",
+    comment: false,
+  },
+  {
+    title: "Comments",
+    orderBy: "timestamp",
+    direction: "desc",
+    comment: true,
+  },
+];
+
+const sortByList = [
+  { title: "Recent", orderBy: "timestamp", direction: "desc" },
+  { title: "Most Popular", orderBy: "likedByUsers", direction: "desc" },
+];
 
 const Profile = () => {
   const { uid } = useParams();
   const authState = useContext(AuthContext);
   const [posts, setPosts] = useState();
   const [userData, setUserData] = useState();
+  const [loading, setLoading] = useState(true);
   const [numberOfPosts, setNumberOfPosts] = useState(7);
-  const [tab, setTab] = useState("posts");
+  const [activeTab, setActiveTab] = useState({
+    title: "Recent",
+    orderBy: "timestamp",
+    direction: "desc",
+    comment: false,
+  });
+  const [sortBy, setSortBy] = useState(sortByList[0]);
+
   const { ref, inView } = useInView();
+
+  useEffect(() => {
+    setLoading(false);
+  }, [posts]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -38,13 +77,14 @@ const Profile = () => {
   }, [uid]);
 
   useEffect(() => {
+    setLoading(true);
     const unsubscribe = onSnapshot(
       query(
         collection(db, "posts"),
-        where("comment", "==", false),
+        where("comment", "==", activeTab.comment),
         where("uid", "==", uid),
         limit(numberOfPosts),
-        orderBy("timestamp", "desc")
+        orderBy(activeTab.orderBy, activeTab.direction)
       ),
       (snapshot) => {
         setPosts(
@@ -60,7 +100,7 @@ const Profile = () => {
     );
 
     return () => unsubscribe();
-  }, [numberOfPosts, uid, tab, authState]);
+  }, [numberOfPosts, uid, activeTab, authState]);
 
   useEffect(() => {
     document.body.style.overflow = "visible";
@@ -108,38 +148,60 @@ const Profile = () => {
         description={userData?.description}
         uid={uid}
       />
-      {/* //TODO remove this span, forward ref to profileHeader */}
       <span ref={ref} />
-      <InfiniteScroll
-        dataLength={numberOfPosts}
-        next={() => setNumberOfPosts(numberOfPosts + 5)}
-        hasMore={true}
-        loader={Array(3)
-          .fill()
-          .map((item, i) => (
-            <PostSkeleton key={i} />
+      <section className="flex justify-between">
+        <ul className="flex flex-wrap border-b border-gray-200 text-center text-sm font-medium text-gray-500 dark:border-gray-700 dark:text-gray-400">
+          {tabs.map((tab, i) => (
+            <button
+              key={tab.title}
+              onClick={() => setActiveTab(tab)}
+              className={`${
+                activeTab.title === tab.title
+                  ? "text-bold border-emerald-400 bg-slate-800"
+                  : "border-transparent"
+              } inline-block rounded-t-lg border-b p-4 transition hover:bg-gray-50 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300`}
+            >
+              {tab.title}
+            </button>
           ))}
-        endMessage={
-          <p className="text-center font-bold text-slate-100">
-            Yay! You have seen it all
-          </p>
-        }
-      >
-        {posts?.map((post) => (
-          <Post
-            key={post.id}
-            id={post.id}
-            uid={post.uid}
-            account={post.account}
-            time={post.timestamp}
-            averageColor={post.averageColor}
-            text={post.text}
-            likedByUsers={post.likedByUsers}
-            imageUrl={post.imageUrl}
-            thumbnailUrl={post.thumbnailUrl}
-          />
-        ))}
-      </InfiniteScroll>
+        </ul>
+      </section>
+      {!loading ? (
+        <InfiniteScroll
+          dataLength={numberOfPosts}
+          next={() => setNumberOfPosts(numberOfPosts + 5)}
+          hasMore={true}
+          loader={Array(3)
+            .fill()
+            .map((item, i) => (
+              <PostSkeleton key={i} />
+            ))}
+          endMessage={
+            <p className="text-center font-bold text-slate-100">
+              Yay! You have seen it all
+            </p>
+          }
+        >
+          {posts?.map((post) => (
+            <Post
+              key={post.id}
+              id={post.id}
+              uid={post.uid}
+              account={post.account}
+              time={post.timestamp}
+              averageColor={post.averageColor}
+              text={post.text}
+              likedByUsers={post.likedByUsers}
+              imageUrl={post.imageUrl}
+              thumbnailUrl={post.thumbnailUrl}
+            />
+          ))}
+        </InfiniteScroll>
+      ) : (
+        <div className="flex w-full justify-center py-16">
+          <Spinner />
+        </div>
+      )}
     </div>
   );
 };

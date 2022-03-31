@@ -201,9 +201,10 @@ const Nav = () => {
                 style={({ isActive }) => {
                   return {
                     color: isActive ? "#34d399" : "",
+                    fontWeight: isActive ? "600" : "400",
                   };
                 }}
-                className="flex items-center rounded-lg p-2 text-black transition-all hover:bg-slate-700/30 dark:text-white md:pr-4"
+                className="flex items-center rounded-lg p-2 text-black transition-all hover:bg-slate-300/20 dark:text-white md:pr-4"
                 to={item.url}
               >
                 {item.icon}
@@ -213,7 +214,7 @@ const Nav = () => {
             <div>
               <button
                 onClick={() => toggleSettings((state) => !state)}
-                className="flex items-center rounded-lg p-2 text-slate-800 outline-none transition-all hover:bg-slate-700/30 dark:text-slate-100 md:pr-4"
+                className="flex items-center rounded-lg p-2 text-slate-800 outline-none transition-all hover:bg-slate-300/20 dark:text-slate-100 md:pr-4"
               >
                 <svg
                   className="h-6 w-6"
@@ -244,9 +245,10 @@ const Nav = () => {
                         style={({ isActive }) => {
                           return {
                             color: isActive ? "#34d399" : "",
+                            fontWeight: isActive ? "600" : "400",
                           };
                         }}
-                        className="flex items-center rounded-lg p-2 text-black outline-none transition-all hover:bg-slate-700/30 dark:text-white md:pr-4"
+                        className="flex items-center rounded-lg p-2 text-black outline-none transition-all hover:bg-slate-300/20 dark:text-white md:pr-4"
                         to={item.url}
                       >
                         {item.icon}
@@ -342,7 +344,7 @@ const Nav = () => {
               onClick={() => toggleIsOpenFooter((isOpen) => !isOpen)}
               className="m-2 flex items-center rounded-lg p-2 text-slate-800 hover:bg-slate-700/30 dark:text-slate-100"
             >
-              <div className="flex items-center">
+              <div className="flex flex-shrink-0 items-center">
                 <img
                   className="h-8 w-8 flex-shrink-0 rounded-full object-cover md:h-12 md:w-12"
                   src={authState.userData?.profilePicture}

@@ -11,6 +11,8 @@ import pl from "javascript-time-ago/locale/en.json";
 import ProfileSetup from "./pages/ProfileSetup";
 import { UploadPostProvider } from "./context/upload-context";
 import Hashtags from "./pages/Hashtags";
+import Discover from "pages/Discover";
+import LogRocket from "logrocket";
 
 const Home = lazy(() => import("./pages/Home"));
 const Activity = lazy(() => import("./pages/Activity"));
@@ -30,6 +32,11 @@ function App() {
   const AuthState = useContext(AuthContext);
 
   if (!AuthState.currentUser) return <AuthForm />;
+
+  LogRocket.identify("THE_USER_ID_IN_YOUR_APP", {
+    name: AuthState.currentUser.uid,
+    email: AuthState.currentUser.email,
+  });
 
   return (
     <Suspense fallback={<AppLogo />}>
@@ -72,6 +79,7 @@ function App() {
                   }
                 />
                 <Route exact path="/hashtag=:hashtag" element={<Hashtags />} />
+                <Route exact path="/discover" element={<Discover />} />
                 <Route path="*" exact element={<NotFound />} />
               </Routes>
             </main>

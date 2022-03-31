@@ -454,7 +454,6 @@ export async function unFollow(uid) {
   });
 }
 // search
-
 export const basicSearchUsers = async ({ text }) => {
   return new Promise(async function (resolve, reject) {
     const q = query(
@@ -470,4 +469,26 @@ export const basicSearchUsers = async ({ text }) => {
     const querySnapshot = await getDocs(q);
     resolve(querySnapshot.docs.map((doc) => doc.data()));
   });
+};
+// repost
+export const repost = async ({ data }) => {
+  const user = await getCurrentUser();
+  const userData = await getUserByUid(user.uid);
+
+  let postTemplate = {
+    comment: false,
+    repost: true,
+    repostedPostId: data.id,
+    account: userData.name,
+    uid: user.uid,
+    timestamp: serverTimestamp(),
+    likedByUsers: [],
+    commentedByUsers: 0,
+  };
+  console.log(postTemplate);
+  // updateDoc(doc(db, "posts", props.id), {
+  //   repostedBy: arrayUnion(user.uid),
+  // });
+
+  // addDoc(collection(db, "posts"), postTemplate);
 };

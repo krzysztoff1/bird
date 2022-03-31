@@ -55,6 +55,7 @@ module.exports = {
     "./src/components/forms/SmallNewPost.js",
     "./src/components/sidebar/Search.js",
     "./src/components/post/PostHashtags.js",
+    "./src/pages/Discover.js",
   ],
   theme: {
     extend: {},

@@ -9,11 +9,15 @@ import { Link } from "react-router-dom";
 import PostSkeleton from "./PostSkeleton";
 import PostLink from "../post/PostLink";
 import PostHashtags from "./PostHashtags";
+import PostRepost from "./PostRepost";
 
 const Post = ({
+  repost,
+  repostedPostId,
   accountName,
   averageColor,
   account,
+  repostedBy,
   text,
   likedByUsers,
   time,
@@ -41,7 +45,28 @@ const Post = ({
       .catch((error) => console.log(error));
   }, []);
 
+  const data = {
+    repostedPostId,
+    accountName,
+    averageColor,
+    account,
+    text,
+    likedByUsers,
+    time,
+    id,
+    uid,
+    thumbnailUrl,
+    commentedByUsers,
+    imageUrl,
+    parent,
+    linkData,
+    inlineComment,
+    hashtags,
+  };
+
   if (!profilePicture) return <></>;
+
+  if (repostedPostId) return <PostRepost {...data} />;
 
   return (
     <article
@@ -90,12 +115,16 @@ const Post = ({
           />
         )}
         {hashtags && <PostHashtags hashtags={hashtags} />}
-        <PostFooter
-          commentedByUsers={commentedByUsers}
-          likedByUsers={likedByUsers}
-          id={id}
-          parent={parent}
-        />
+        {!repost && (
+          <PostFooter
+            commentedByUsers={commentedByUsers}
+            likedByUsers={likedByUsers}
+            id={id}
+            parent={parent}
+            repostedBy={repostedBy}
+            data={data}
+          />
+        )}
       </div>
     </article>
   );
